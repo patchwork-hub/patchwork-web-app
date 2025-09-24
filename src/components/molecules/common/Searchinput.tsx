@@ -1,10 +1,11 @@
 "use client";
 import React, { ChangeEvent, KeyboardEvent, useEffect } from "react";
-import { Input } from "../ui/input";
+
 import { Search } from "lucide-react";
 import { useDebouncedCallback } from "use-debounce";
 import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";
+import { Input } from "@/components/atoms/ui/input";
 
 interface SearchInputProps {
   onSearch: (searchTerm: string) => void;
@@ -25,7 +26,7 @@ const SearchInput: React.FC<SearchInputProps> = ({
   closeIcon = false,
   onClose,
 }) => {
-  const [searchTerm, setSearchTerm] = React.useState<string>(value);
+  const [searchTerm, setSearchTerm] = React.useState<string>(value ?? "");
   const { theme } = useTheme();
   const debouncedSearch = useDebouncedCallback((term: string) => {
     onSearch(term.trim());

@@ -10,7 +10,8 @@ export const useGroupedNotifications = (
 ) => {
   return useInfiniteQuery({
     queryKey: ["notifications"],
-    queryFn: async ({ pageParam }) => getGroupedNotifications(pageParam),
+    queryFn: async ({ pageParam }: { pageParam: string | undefined }) => 
+      getGroupedNotifications(pageParam),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => lastPage.nextMaxId,
     enabled: options.enabled ?? true,

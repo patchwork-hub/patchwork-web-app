@@ -1,7 +1,8 @@
 "use client"
 import React from "react";
 import { BellOff } from "lucide-react";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+
 
 const EmptyNotifications = () => {
   const {t} = useLocale()

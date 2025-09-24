@@ -1,15 +1,9 @@
 "use client";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import GoBack from "./GoBack";
-import {
-  ListMembersIcon,
-  PenIcon,
-  SettingIcon,
-  StatusDeleteIcon,
-} from "../icons/Icons";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { ListMembersIcon, PenIcon, SettingIcon, StatusDeleteIcon } from "@/components/atoms/icons/Icons";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/atoms/ui/popover";
 
 interface THeader {
   title: string | React.ReactNode;

@@ -6,7 +6,7 @@ import { cleanDomain } from "@/utils/helper/helper";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { useEffect } from "react";
-import { getToken } from "@/lib/auth";
+import { getToken } from "@/stores/auth";
 
 export default function ThemeInitializer() {
   const { setTheme } = useTheme();
