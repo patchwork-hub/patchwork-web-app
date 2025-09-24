@@ -43,7 +43,7 @@ function Input({
       />
 
       <Button
-        tabIndex={type !== "password" ? -1 : null}
+        tabIndex={type !== "password" ? -1 : undefined}
         type="button"
         variant="ghost"
         size="sm"
