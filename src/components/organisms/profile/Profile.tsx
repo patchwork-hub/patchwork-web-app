@@ -33,7 +33,7 @@ import {
 import InfoSection from "./InfoSection";
 import SocialLinks from "./SocialLinks";
 import SocialSection from "./SocialSection";
-import { formatNumber } from "@/utils/format-number";
+import { formatNumber } from "@/utils/formatNumber";
 import { isValidImageUrl, sanitizeInput } from "@/utils";
 import { MANDATORY_BIO } from "@/utils/constant";
 import { useTheme } from "next-themes";

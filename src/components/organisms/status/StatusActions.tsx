@@ -55,7 +55,7 @@ import {
   Status as StatusType,
 } from "../../../types/status";
 import Status from "./Status";
-import { formatNumber } from "@/utils/format-number";
+import { formatNumber } from "@/utils/formatNumber";
 import { useModalAction } from "../modal/modal.context";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
 import LoginDialog from "./LoginDialog";

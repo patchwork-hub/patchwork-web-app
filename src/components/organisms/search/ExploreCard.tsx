@@ -1,6 +1,6 @@
 import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { FALLBACK_MOME_IMAGE_URL, FALLBACK_PREVIEW_IMAGE_URL, FALLBACK_PREVIEW_NEWSMAST_URL } from "@/constants/url";
-import { formatNumber } from "@/utils/format-number";
+import { formatNumber } from "@/utils/formatNumber";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";

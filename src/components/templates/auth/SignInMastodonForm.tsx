@@ -31,7 +31,7 @@ import {
   useRequestPermissionToInstanceMutation,
   useSearchServerInstance,
 } from "@/hooks/auth/useSearchInstance";
-import { formatNumber } from "@/utils/format-number";
+import { formatNumber } from "@/utils/formatNumber";
 import { routeFilter } from "@/utils";
 import { setToken } from "@/lib/auth";
 import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
