@@ -1,6 +1,8 @@
 import { z } from "zod";
 
-export const createSchemas = (t?: (key: string, options?: any) => string) => {
+export const createSchemas = (
+  t?: (key: string, options?: Record<string, unknown>) => string
+) => {
   const translate = t ?? ((key: string) => key);
   return {
     SignInFormSchema: z.object({
