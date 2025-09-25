@@ -11,6 +11,7 @@ import PatchworkLogo from "../atoms/icons/patchwork-logo";
 import { ThemeText } from "./common/ThemeText";
 import { SettingIcon } from "../atoms/icons/Icons";
 import { LinkStatus } from "./common/LinkStatus";
+import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 
 type THomeheader = {
   search?: boolean;
