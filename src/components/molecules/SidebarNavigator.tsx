@@ -26,6 +26,7 @@ import { useSearchStore } from "@/stores/search/useSearchStore";
 import { useFCMStore } from "@/stores/conversations/useFCMStore";
 import { getToken } from "@/stores/auth";
 import { useAuthStoreAction } from "@/stores/auth/authStore";
+import { NotificationGroup } from "@/types/notification";
 
 const NotificationIcon = ({
   pathname,
@@ -34,15 +35,15 @@ const NotificationIcon = ({
   message,
 }: {
   pathname: string;
-  lastReadId?: string | {};
-  notificationGroups?: any[];
-  message?: any;
+  lastReadId?: string | object;
+  notificationGroups?: NotificationGroup[];
+  message?: { data?: { noti_type?: string; visibility?: string } } | null;
 }) => {
   const unreadCount = getUnreadNotificationCount(
     notificationGroups,
     lastReadId
   );
-  const hasMessageBadge = shouldShowMessageBadge(message);
+  const hasMessageBadge = shouldShowMessageBadge(message ?? null);
   const showBadge =
     pathname !== "/notifications" && (hasMessageBadge || unreadCount > 0);
   const displayCount = unreadCount > 20 ? "20+" : unreadCount;
@@ -270,7 +271,10 @@ const SidebarNavigator = () => {
             <div className="px-2 flex flex-col justify-start h-full space-y-8">
               <div className="max-w-[400px] mx-auto px-4">
                 <div className="flex flex-col items-center gap-2 px-4 mb-2">
-                  <div className="rounded-full cursor-pointer" onClick={() => router.push("/home")}>
+                  <div
+                    className="rounded-full cursor-pointer"
+                    onClick={() => router.push("/home")}
+                  >
                     <PatchworkLogo className="w-20 h-20" />
                   </div>
                 </div>

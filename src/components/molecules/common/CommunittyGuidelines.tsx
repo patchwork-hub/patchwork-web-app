@@ -1,14 +1,19 @@
-"use client"
+"use client";
 import React from "react";
 import { ThemeText } from "./ThemeText";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
 
 type Props = {
-  channelAbout: any;
+  channelAbout: {
+    rules?: { text: string }[];
+    attributes?: {
+      patchwork_community_rules?: string[] | string;
+    };
+  } | null;
 };
 
 const ChannelGuidelines: React.FC<Props> = ({ channelAbout }) => {
-  const {t} = useLocale();
+  const { t } = useLocale();
   if (
     !channelAbout ||
     channelAbout?.rules?.length === 0 ||
@@ -23,27 +28,30 @@ const ChannelGuidelines: React.FC<Props> = ({ channelAbout }) => {
         </ThemeText>
         <div>
           {channelAbout &&
-            (channelAbout?.rules?.length > 0 ||
-            channelAbout?.attributes?.patchwork_community_rules?.length > 0 ? (
-              channelAbout.rules?.length > 0 ? (
-                channelAbout.rules.map((item: { text: string }, idx: number) => (
-                  <div className="flex items-center gap-2 my-2" key={idx}>
-                    <ThemeText className="text-bold text-white bg-orange-500 w-6 h-6 rounded-full px-2.5 py-1">
-                      {idx + 1}
-                    </ThemeText>
-                    <ThemeText>{item.text}</ThemeText>
-                  </div>
-                ))
+            ((channelAbout?.rules?.length ?? 0) > 0 ||
+            (channelAbout?.attributes?.patchwork_community_rules?.length ?? 0) >
+              0 ? (
+              (channelAbout?.rules?.length ?? 0) > 0 ? (
+                channelAbout.rules?.map(
+                  (item: { text: string }, idx: number) => (
+                    <div className="flex items-center gap-2 my-2" key={idx}>
+                      <ThemeText className="text-bold text-white bg-orange-500 w-6 h-6 rounded-full px-2.5 py-1">
+                        {idx + 1}
+                      </ThemeText>
+                      <ThemeText>{item.text}</ThemeText>
+                    </div>
+                  )
+                )
               ) : Array.isArray(
                   channelAbout.attributes?.patchwork_community_rules
                 ) ? (
                 channelAbout.attributes.patchwork_community_rules.map(
-                  (rule: {rule: string}, idx: number) => (
+                  (rule: string, idx: number) => (
                     <div className="flex items-center gap-2 my-2" key={idx}>
                       <ThemeText className="text-bold text-white bg-orange-500 rounded-full px-2.5 py-1">
                         {idx + 1}
                       </ThemeText>
-                      <ThemeText>{rule.rule}</ThemeText>
+                      <ThemeText>{rule}</ThemeText>
                     </div>
                   )
                 )

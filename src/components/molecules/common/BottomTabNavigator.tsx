@@ -24,6 +24,7 @@ import { useLocale } from "../providers/localeProvider";
 import { useAuthStoreAction } from "@/stores/auth/authStore";
 import { getToken } from "@/stores/auth";
 import { Button } from "@/components/atoms/ui/button";
+import { NotificationGroup } from "@/types/notification";
 
 const NotificationIcon = ({
   pathname,
@@ -32,15 +33,15 @@ const NotificationIcon = ({
   message,
 }: {
   pathname: string;
-  lastReadId?: string | {};
-  notificationGroups?: any[];
-  message?: any;
+  lastReadId?: string | object;
+  notificationGroups?: NotificationGroup[];
+  message?: { data?: { noti_type?: string; visibility?: string } } | null;
 }) => {
   const unreadCount = getUnreadNotificationCount(
     notificationGroups,
     lastReadId
   );
-  const hasMessageBadge = shouldShowMessageBadge(message);
+  const hasMessageBadge = shouldShowMessageBadge(message ?? null);
   const showBadge =
     pathname !== "/notifications" && (hasMessageBadge || unreadCount > 0);
   const displayCount = unreadCount > 20 ? "20+" : unreadCount;
@@ -80,7 +81,7 @@ const BottomTabNavigator = () => {
   const { openModal } = useModalAction();
   const { removeSchedule } = useScheduleStore();
   const { setSearch } = useSearchStore();
-  const token = getToken()
+  const token = getToken();
 
   const isNewsmast = domain === cleanDomain(MOME_INSTANCE);
 

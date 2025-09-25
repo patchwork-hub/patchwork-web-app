@@ -1,10 +1,9 @@
 "use client";
 
-import React, { useEffect, useMemo } from "react";
+import React from "react";
 import dayjs from "dayjs";
 import { ThemeText } from "./ThemeText";
 import { CalendarIcon, ChevronRightIcon } from "lucide-react";
-import { useTipTapEditor } from "@/components/organisms/compose/hooks/useTipTapEditor";
 import { useRouter } from "next/navigation";
 import {
   CommunityAccountResponse,
@@ -16,19 +15,20 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 
 type ChannelAdditionalInfo = {
   content: string;
 };
 
 type Props = {
-  channelAbout?: ChannelAbout | undefined | any;
+  channelAbout?: ChannelAbout | undefined;
   channelAdditionalInfo?: ChannelAdditionalInfo;
   channelDetail?: ChannelList | undefined;
   isCommunity?: boolean;
   communityHashtag?: HashtagTimelineResponse;
   suggestedPeople?: CommunityAccountResponse;
-  relationships?: any;
+  relationships?: unknown;
   createdAt?: string;
   onRefetch?: () => void;
   querySlug?: string;
@@ -158,90 +158,98 @@ const CommunityAbout: React.FC<Props> = ({
             {t("channel.community_guidelines")}
           </p>
           <div className="flex flex-col space-y-2">
-            {channelAbout?.guides?.map((item:{ title: string, description: string}, index: number) => (
-              <div key={index} className="flex items-start flex-col space-y-2">
-                <span className="font-bold">{item.title}</span>
-                <ThemeText>{item.description}</ThemeText>
-              </div>
-            ))}
+            {channelAbout?.guides?.map(
+              (item: { title: string; description: string }, index: number) => (
+                <div
+                  key={index}
+                  className="flex items-start flex-col space-y-2"
+                >
+                  <span className="font-bold">{item.title}</span>
+                  <ThemeText>{item.description}</ThemeText>
+                </div>
+              )
+            )}
           </div>
         </div>
       )}
 
-      {isCommunity && Array.isArray(suggestedPeople?.contributors) && suggestedPeople.contributors.length > 0 && (
-        <div className="border-b border-y-gray-600 py-4">
-          <div className="flex items-center justify-between pb-4">
-            <p className="text-start font-bold text-[15px]">
-              {t("common.people_to_follow")}
-            </p>
-            <button
-              className="text-orange-500 cursor-pointer"
-              type="button"
-              onClick={() =>
-                router.push(`${window.location.pathname}/contributors`)
-              }
-            >
-              {t("common.see_more")}
-            </button>
-          </div>
-          <div className="flex space-x-4 overflow-x-auto scroll-smooth snap-x snap-mandatory">
-            {suggestedPeople?.contributors
-              ?.slice(0, 10)
-              .map((account, index) => {
-                const { editorjsx: nameEditor } = useTipTapEditor({
-                  editable: false,
-                  className: "text-center",
-                  content:
-                    account.attributes.display_name ||
-                    account.attributes.username,
-                });
+      {isCommunity &&
+        Array.isArray(suggestedPeople?.contributors) &&
+        suggestedPeople.contributors.length > 0 && (
+          <div className="border-b border-y-gray-600 py-4">
+            <div className="flex items-center justify-between pb-4">
+              <p className="text-start font-bold text-[15px]">
+                {t("common.people_to_follow")}
+              </p>
+              <button
+                className="text-orange-500 cursor-pointer"
+                type="button"
+                onClick={() =>
+                  router.push(`${window.location.pathname}/contributors`)
+                }
+              >
+                {t("common.see_more")}
+              </button>
+            </div>
+            <div className="flex space-x-4 overflow-x-auto scroll-smooth snap-x snap-mandatory">
+              {suggestedPeople?.contributors
+                ?.slice(0, 10)
+                .map((account, index) => {
+                  const { editorjsx: nameEditor } = useTipTapEditor({
+                    editable: false,
+                    className: "text-center",
+                    content:
+                      account.attributes.display_name ||
+                      account.attributes.username,
+                  });
 
-                return (
-                  <div
-                    key={index}
-                    className={`relative flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-300 ${
-                      index === 0 ? "ml-4" : ""
-                    } ${index === 9 ? "mr-4" : ""}`}
-                  >
-                    <Image
-                      src={
-                        account?.attributes.avatar_url ??
-                        FALLBACK_PREVIEW_IMAGE_URL
-                      }
-                      alt={`${account?.attributes?.username} image`}
-                      onClick={() =>
-                        router.push(`/${account?.attributes?.acct}`)
-                      }
-                      width={200}
-                      height={200}
-                      loading="lazy"
-                      className="w-32 sm:w-30 h-32 sm:h-30 object-cover rounded-full transition-all duration-300 ease-in-out"
-                    />
+                  return (
                     <div
-                      onClick={() =>
-                        router.push(`/${account?.attributes?.acct}`)
-                      }
-                      className="absolute top-0 left-0 w-32 sm:w-30 h-32 sm:h-30 bg-gradient-to-b from-transparent to-black/70 rounded-full transition-all duration-300 ease-in-out"
-                    />
-                    <div
-                      className={cn(
-                        "text-center mt-2",
-                        theme === "dark" || (theme === "system" && isSystemDark)
-                          ? "text-white"
-                          : "text-black"
-                      )}
-                      onClick={() =>
-                        router.push(`/${account?.attributes?.acct}`)
-                      }
+                      key={index}
+                      className={`relative flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-300 ${
+                        index === 0 ? "ml-4" : ""
+                      } ${index === 9 ? "mr-4" : ""}`}
                     >
-                      {nameEditor}
+                      <Image
+                        src={
+                          account?.attributes.avatar_url ??
+                          FALLBACK_PREVIEW_IMAGE_URL
+                        }
+                        alt={`${account?.attributes?.username} image`}
+                        onClick={() =>
+                          router.push(`/${account?.attributes?.acct}`)
+                        }
+                        width={200}
+                        height={200}
+                        loading="lazy"
+                        className="w-32 sm:w-30 h-32 sm:h-30 object-cover rounded-full transition-all duration-300 ease-in-out"
+                      />
+                      <div
+                        onClick={() =>
+                          router.push(`/${account?.attributes?.acct}`)
+                        }
+                        className="absolute top-0 left-0 w-32 sm:w-30 h-32 sm:h-30 bg-gradient-to-b from-transparent to-black/70 rounded-full transition-all duration-300 ease-in-out"
+                      />
+                      <div
+                        className={cn(
+                          "text-center mt-2",
+                          theme === "dark" ||
+                            (theme === "system" && isSystemDark)
+                            ? "text-white"
+                            : "text-black"
+                        )}
+                        onClick={() =>
+                          router.push(`/${account?.attributes?.acct}`)
+                        }
+                      >
+                        {nameEditor}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
+                  );
+                })}
+            </div>
           </div>
-        </div>
-      )}
+        )}
     </div>
   );
 };
