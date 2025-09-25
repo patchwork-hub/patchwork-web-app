@@ -5,7 +5,7 @@ import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import { LinkStatus } from "../common/LinkStatus";
 import { useDraftStore } from "../../organisms/compose/store/useDraftStore";
-import { useFCMStore } from "@/store/conversations/useFCMStore";
+import { useFCMStore } from "@/stores/conversations/useFCMStore";
 import { useGroupedNotifications } from "@/hooks/queries/notifications/useGroupNotifications";
 import { useNotificationMarker } from "@/hooks/queries/notifications/useNotificationMarket";
 import Cookies from "js-cookie";
@@ -18,12 +18,12 @@ import { MOME_INSTANCE } from "@/utils/constant";
 import { useSaveLastReadIdNotification } from "@/hooks/mutations/notifications/useSaveLastReadIdNotification";
 import { useModalAction } from "@/components/organisms/modal/modal.context";
 import { useScheduleStore } from "@/components/organisms/compose/store/useScheduleStore";
-import { useSearchStore } from "@/store/search/useSearchStore";
-import useLoggedIn from "@/lib/auth/useLoggedIn";
-import { Button } from "../ui/button";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { useAuthStoreAction } from "@/store/auth/authStore";
-import { getToken } from "@/lib/auth";
+import { useSearchStore } from "@/stores/search/useSearchStore";
+import useLoggedIn from "@/stores/auth/useLoggedIn";
+import { useLocale } from "../providers/localeProvider";
+import { useAuthStoreAction } from "@/stores/auth/authStore";
+import { getToken } from "@/stores/auth";
+import { Button } from "@/components/atoms/ui/button";
 
 const NotificationIcon = ({
   pathname,
@@ -87,7 +87,7 @@ const BottomTabNavigator = () => {
   const { data: notificationMarker } = useNotificationMarker({
     enabled: !isNewsmast && !!token,
   });
-  const { data: groupNotificationsData, isLoading } = useGroupedNotifications({
+  const { data: groupNotificationsData } = useGroupedNotifications({
     enabled: !isNewsmast && !!token,
   });
 
@@ -220,7 +220,7 @@ const BottomTabNavigator = () => {
               <Button
                 variant="outline"
                 onClick={() => {
-                  setSignInWithMastodon(false);
+                  setSignInWithMastodon?.(false);
                   router.push("/auth/sign-in");
                 }}
                 className={cn(

@@ -9,7 +9,6 @@ import {
   Sun,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { Popover, PopoverContent, PopoverTrigger } from "../ui/popover";
 import { useEffect, useState } from "react";
 import { useUpdateSettings } from "@/hooks/queries/useSetting.query";
 import { SettingsParams } from "@/types/queries/setting.type";
@@ -17,6 +16,7 @@ import { cleanDomain, isSystemDark } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { Popover, PopoverContent, PopoverTrigger } from "@/components/atoms/ui/popover";
 
 export function ThemeSwitcher() {
   const { theme } = useTheme();

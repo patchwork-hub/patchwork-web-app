@@ -10,15 +10,20 @@ import {
 import Status from "@/components/organisms/status/Status";
 import TimeAgo from "@/utils/helper/timeAgo";
 import { useGroupedNotifications } from "@/hooks/queries/notifications/useGroupNotifications";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DisplayName } from "../atoms/common/DisplayName";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { DisplayName } from "../common/DisplayName";
 
-const GroupedNotificationsV2 = ({ uri }) => {
+
+type GroupedNotificationsV2Props = {
+  uri: string;
+}
+
+const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
   const {
     data: groupNotificationsData,
     fetchNextPage: fetchNextGroupNotifications,
@@ -88,7 +93,7 @@ const GroupedNotificationsV2 = ({ uri }) => {
                     <span className="text-gray-400 text-sm">
                       <TimeAgo
                         timestamp={
-                          groupNotification.latest_page_notification_at
+                          groupNotification.latest_page_notification_at || ""
                         }
                       />
                     </span>
@@ -107,7 +112,7 @@ const GroupedNotificationsV2 = ({ uri }) => {
                         <span className="text-gray-400 text-sm">
                           <TimeAgo
                             timestamp={
-                              groupNotification.latest_page_notification_at
+                              groupNotification.latest_page_notification_at || ""
                             }
                           />
                         </span>
@@ -187,7 +192,7 @@ const GroupedNotificationsV2 = ({ uri }) => {
                       <span className="text-gray-400 text-sm">
                         <TimeAgo
                           timestamp={
-                            groupNotification.latest_page_notification_at
+                            groupNotification.latest_page_notification_at || ""
                           }
                         />
                       </span>

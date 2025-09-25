@@ -7,20 +7,15 @@ import { CalendarIcon, ChevronRightIcon } from "lucide-react";
 import { useTipTapEditor } from "@/components/organisms/compose/hooks/useTipTapEditor";
 import { useRouter } from "next/navigation";
 import {
-  // Account,
   CommunityAccountResponse,
   HashtagTimelineResponse,
 } from "@/types/community";
-import { calculateHashTagCount, isSystemDark } from "@/utils/helper/helper";
+import { isSystemDark } from "@/utils/helper/helper";
 import Image from "next/image";
-// import { useSearchAccounts } from "@/hooks/queries/useSearchMembers";
-// import { useFollowAccount } from "@/hooks/mutations/status/useFollowAccount";
-// import { useUnfollowAccount } from "@/hooks/mutations/status/useUnfollowAccount";
-import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { Button } from "../ui/button";
 import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 
 type ChannelAdditionalInfo = {
   content: string;
@@ -47,8 +42,6 @@ const CommunityAbout: React.FC<Props> = ({
   communityHashtag,
   suggestedPeople,
   createdAt,
-  relationships,
-  onRefetch,
   querySlug,
 }) => {
   const { editorjsx } = useTipTapEditor({
@@ -159,13 +152,13 @@ const CommunityAbout: React.FC<Props> = ({
           <p>{t("common.see_more")}</p>
         </div>
       )}
-      {isCommunity && CommunityAbout && channelAbout?.guides?.length > 0 && (
+      {isCommunity && channelAbout && channelAbout?.guides?.length > 0 && (
         <div className="border-b border-b-gray-600 py-4">
           <p className="text-start font-bold text-[15px] mb-4">
             {t("channel.community_guidelines")}
           </p>
           <div className="flex flex-col space-y-2">
-            {channelAbout?.guides?.map((item, index) => (
+            {channelAbout?.guides?.map((item:{ title: string, description: string}, index: number) => (
               <div key={index} className="flex items-start flex-col space-y-2">
                 <span className="font-bold">{item.title}</span>
                 <ThemeText>{item.description}</ThemeText>
@@ -175,7 +168,7 @@ const CommunityAbout: React.FC<Props> = ({
         </div>
       )}
 
-      {isCommunity && suggestedPeople?.contributors?.length > 0 && (
+      {isCommunity && Array.isArray(suggestedPeople?.contributors) && suggestedPeople.contributors.length > 0 && (
         <div className="border-b border-y-gray-600 py-4">
           <div className="flex items-center justify-between pb-4">
             <p className="text-start font-bold text-[15px]">

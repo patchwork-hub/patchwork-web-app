@@ -1,13 +1,14 @@
 import { useAcceptFollowRequest } from "@/hooks/mutations/notifications/useAcceptFollowRequest";
 import { useRejectFollowRequest } from "@/hooks/mutations/notifications/useRejectFollowRequest";
 import { useFollowRequestsNotifications } from "@/hooks/queries/notifications/useFollowRequestsNotifications";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import TimeAgo from "@/utils/helper/timeAgo";
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
-import { DisplayName } from "../atoms/common/DisplayName";
+
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
+import { DisplayName } from "../common/DisplayName";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 
 const FollowRequestsNotifications = () => {
   const {

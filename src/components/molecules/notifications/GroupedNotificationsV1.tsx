@@ -10,13 +10,13 @@ import {
 import Status from "@/components/organisms/status/Status";
 import TimeAgo from "@/utils/helper/timeAgo";
 import { useNotifications } from "@/hooks/queries/notifications/useNotifications";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DisplayName } from "../atoms/common/DisplayName";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { DisplayName } from "../common/DisplayName";
 
 const GroupedNotificationsV1 = () => {
   const {

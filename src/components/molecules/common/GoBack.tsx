@@ -1,6 +1,6 @@
 "use client";
 import { cn } from "@/lib/utils";
-import { useSearchStore } from "@/store/search/useSearchStore";
+import { useSearchStore } from "@/stores/search/useSearchStore";
 import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";

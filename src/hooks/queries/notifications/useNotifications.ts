@@ -4,7 +4,8 @@ import { useInfiniteQuery } from "@tanstack/react-query";
 export const useNotifications = () => {
   return useInfiniteQuery({
     queryKey: ["notifications"],
-    queryFn: async ({ pageParam }) => getNotifications(pageParam),
+     queryFn: (context: { pageParam?: string }) => 
+            getNotifications(context.pageParam),
     initialPageParam: undefined,
     getNextPageParam: (lastPage) => lastPage.nextMaxId,
     refetchOnMount: "always",

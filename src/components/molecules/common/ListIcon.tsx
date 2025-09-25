@@ -1,4 +1,10 @@
-const ListIcon = (props) => {
+import React, { SVGProps } from 'react';
+
+type ListIconProps = SVGProps<SVGSVGElement> & {
+  stroke?: string;
+}
+
+const ListIcon: React.FC<ListIconProps> = (props) => {
   return (
     <svg width={60} height={60} viewBox="0 0 24 24" fill="none" {...props}>
       <path
