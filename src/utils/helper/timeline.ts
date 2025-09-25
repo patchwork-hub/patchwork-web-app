@@ -9,11 +9,11 @@ export type PagedResponse<T = unknown> = {
 };
 
 export const infinitePageParam = {
-  getPreviousPageParam: (firstPage: PagedResponse<any>) =>
+  getPreviousPageParam: <T>(firstPage: PagedResponse<T>) =>
     firstPage.links?.prev?.min_id,
-  getNextPageParam: (lastPage: PagedResponse<any>) => {
+  getNextPageParam: <T>(lastPage: PagedResponse<T>) => {
     return lastPage.links?.next?.max_id;
-  }
+  },
 };
 
 export const flattenPages = <T>(

@@ -1,4 +1,6 @@
-export const routeFilter = (params: any) => {
+export const routeFilter = (
+  params: string | Record<string, string> | string[][]
+) => {
   return new URLSearchParams(params);
 };
 
