@@ -1,4 +1,6 @@
-// declare namespace Patchwork {
+import { Guide } from "./community";
+
+
 type MyChannel = {
   channel: {
     data: ChannelList;
@@ -19,7 +21,7 @@ type JoinedCommunitiesList = {
   id: string;
   type: string;
   attributes: ChannelAttributes;
-  relationships: any;
+  relationships: unknown;
 };
 
 type CollectionList = {
@@ -31,7 +33,7 @@ type HashtagDetail = {
   id: string;
   name: string;
   url: string;
-  history: any[];
+  history: HashtagHistory[];
   following: boolean;
 };
 type ChannelAdditionalInfo = {
@@ -39,8 +41,13 @@ type ChannelAdditionalInfo = {
   updated_at: string;
 };
 
+type guide = {
+  title: string;
+  description: number;
+};
+
 type ChannelAbout = {
-  configuration: any;
+  configuration: unknown;
   contact: {
     account: {
       acct: string;
@@ -71,6 +78,7 @@ type ChannelAbout = {
     };
     email: string;
   };
+  guides: Guide[];
   description: string;
   domain: string;
   languages: string;
@@ -80,6 +88,7 @@ type ChannelAbout = {
     url: string;
   };
   title: string;
+  note: string;
 };
 
 type CollectionAttributes = {
@@ -284,7 +293,7 @@ type Status = {
   muted: boolean;
   pinned: boolean;
   content: string;
-  filtered: any;
+  filtered: unknown;
   reblog?: Status;
   application: {
     name: string;
@@ -294,7 +303,7 @@ type Status = {
   media_attachments: Attachment[];
   mentions: Mention[];
   tags: Tags[];
-  emojis: any;
+  emojis: unknown;
   card?: Card;
   poll: Poll;
   is_rss_content: boolean;

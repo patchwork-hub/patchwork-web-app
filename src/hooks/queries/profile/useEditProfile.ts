@@ -1,6 +1,5 @@
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useDeleteProfileMediaMutation } from "@/hooks/mutations/profile/useDeleteProfileMedia";
-import { useProfileMediaStore } from "@/store/profile/useProfileMediaStore";
 import { UpdateProfilePayload } from "@/types/profile";
 import { AccountInfoQueryKey } from "@/types/queries/profile.type";
 import { DEFAULT_API_URL } from "@/utils/constant";
@@ -8,7 +7,8 @@ import { useEffect, useState } from "react";
 import { toast } from "sonner";
 import { useVerifyAuthToken } from "../useVerifyAuthToken.query";
 import { useProfileMutation } from "./useProfile";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useProfileMediaStore } from "@/stores/profile/useProfileMediaStore";
 
 export const useEditProfile = () => {
   const {
@@ -34,13 +34,14 @@ export const useEditProfile = () => {
     }
   }, [userInfo]);
 
-  // Const
   const acctInfoQueryKey: AccountInfoQueryKey = [
     "get_account_info",
-    { id: userInfo?.id!, domain_name: process.env.API_URL ?? DEFAULT_API_URL }
+    { 
+      id: userInfo.id,
+      domain_name: process.env.API_URL ?? DEFAULT_API_URL 
+    }
   ];
 
-  // mutations
   const { mutateAsync, isPending: isUpdatingProfile } = useProfileMutation({
     onSuccess: (response) => {
       queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
@@ -65,18 +66,18 @@ export const useEditProfile = () => {
       }
     });
 
-  // handlers
   const handleUpdateProfile = async () => {
-    let payload: UpdateProfilePayload;
+    const payload: UpdateProfilePayload = {};
+
     payload.avatar =
       typeof avatar.selectedMedia === "string"
         ? avatar.selectedMedia
-        : avatar.selectedMedia[0]?.uri || null;
+        : avatar.selectedMedia[0]?.uri ?? undefined;
+
     payload.header =
       typeof header.selectedMedia === "string"
         ? header.selectedMedia
-        : header.selectedMedia[0]?.uri || null;
-    // mutateAsync(payload);
+        : header.selectedMedia[0]?.uri ?? undefined;
   };
 
   const handlePressDelConf = () => {
@@ -94,6 +95,7 @@ export const useEditProfile = () => {
     actions,
     top,
     delConfAction,
+    mutateAsync,
     setDelConfAction,
     handleUpdateProfile,
     handlePressDelConf,

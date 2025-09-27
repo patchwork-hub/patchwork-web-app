@@ -21,5 +21,24 @@ const firebaseConfig: FirebaseConfig = {
 
 export const app: FirebaseApp = initializeApp(firebaseConfig);
 
-// Check if messaging is supported in the browser
-export const messaging: Messaging | null = await isSupported() ? getMessaging(app) : null;
+let messagingInstance: Messaging | null = null;
+
+export const getMessagingInstance = async (): Promise<Messaging | null> => {
+    if (messagingInstance) {
+        return messagingInstance;
+    }
+    
+    if (await isSupported()) {
+        messagingInstance = getMessaging(app);
+    }
+    
+    return messagingInstance;
+};
+
+export let messaging: Messaging | null = null;
+
+if (typeof window !== 'undefined') {
+    getMessagingInstance().then(instance => {
+        messaging = instance;
+    });
+}

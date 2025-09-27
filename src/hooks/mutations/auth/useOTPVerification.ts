@@ -5,8 +5,13 @@ import {
   forgetPasswordVerifyOTP
 } from "@/services/auth/forgotPassword";
 import { signupVerifyOTP } from "@/services/auth/signup";
+import { LoginResponse } from "@/types/auth";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+
+export type ErrorResponseData = {
+  message?: string;
+}
 
 export const useOTPVerificationMutation = (
   options: UseMutationOptions<
@@ -18,7 +23,7 @@ export const useOTPVerificationMutation = (
         created_at: string;
       };
     },
-    AxiosError,
+    AxiosError<ErrorResponseData>,
     {
       id: string;
       otp_secret: string;

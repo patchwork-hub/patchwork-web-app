@@ -2,9 +2,10 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { cleanDomain, handleError } from "@/utils/helper/helper";
 import { CHANNEL_ORG_INSTANCE, DEFAULT_DASHBOARD_API_URL, userOriginInstanceDomain } from "@/utils/constant";
+import { ChannelList } from "@/types/patchwork";
 
 export const getChannelListForChannelSection = async () => {
-  const params: Record<string, any> = { 
+  const params: Record<string, unknown> = { 
       domain_name: process.env.DASHBOARD_API_URL || DEFAULT_DASHBOARD_API_URL, 
       isDynamicDomain: true 
     };

@@ -6,12 +6,15 @@ export type ConversationListResponse = {
     conversations: Conversation[];
     nextMaxId: string | null;
 };
-
+type ViewConversationsParams = {
+    max_id?: string;
+    limit?: number;
+}
 export const viewAllConversations = async ({
     max_id,
     limit = 20,
-}): Promise<ConversationListResponse> => {
-    const params: Record<string, any> = { limit };
+}: ViewConversationsParams): Promise<ConversationListResponse> => {
+    const params: Record<string, unknown> = { limit };
     if (max_id) {
         params.max_id = max_id;
     }

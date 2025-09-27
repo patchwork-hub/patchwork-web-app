@@ -87,7 +87,7 @@ export type Account = {
   bio: string;
   is_popular: boolean;
   is_recommended: boolean;
-  emojis: any[];
+  emojis: unknown[];
   fields: AccountField[];
   relationship_id: string;
   following: string;

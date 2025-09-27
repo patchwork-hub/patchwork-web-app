@@ -1,4 +1,4 @@
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import {
   blockUnBlockUserMutationFn,
   muteUnMuteUserMutationFn

@@ -2,20 +2,33 @@ import {
   useMutation,
   useQueryClient,
   QueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import {
   StatusActionParams,
   unfavouriteStatus,
 } from "@/services/status/statuses";
 import { Context, Status } from "@/types/status";
-import { StatusListResponse } from "@/services/status/fetchAccountStatuses";
 import { ErrorResponse } from "@/types/error";
 import { AxiosError } from "axios";
+
+type PaginatedStatuses = {
+  statuses: Status[] | { data: Status[] };
+  [key: string]: unknown;
+}
+
+type SnapshotType = [
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>
+];
+
 
 export const useUnfavouriteStatus = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams>({
+  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams, SnapshotType>({
     mutationFn: unfavouriteStatus,
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({ queryKey: ["statusList"] });
@@ -72,7 +85,7 @@ export const useUnfavouriteStatus = () => {
     onError: (
       err,
       variables,
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
+      snapshot
     ) => {
       snapshot?.forEach((it) => {
         it?.forEach(([key, data]) => {
@@ -91,10 +104,7 @@ export const useUnfavouriteStatus = () => {
 
 const getUnfavUpdaterFn =
   (id: string) =>
-  (old: {
-    pages?: Array<{ statuses: Status[] | any }>;
-    pageParams?: any[];
-  }) => {
+  (old: InfiniteData<PaginatedStatuses> | undefined) => {
     if (!old?.pages) return old;
 
     const pages = old.pages.map((page) => {
@@ -127,7 +137,7 @@ const getUnfavContextUpdaterFn = (id: string) => (old: Context) => ({
 
 const getFavSearchUpdaterFn =
   (id: string) =>
-  (old: { accounts: any[]; statuses: Status[]; hashtags: any[] }) => {
+  (old: { accounts: unknown[]; statuses: Status[]; hashtags: unknown[] }) => {
     if (!old) return old;
     return {
       ...old,

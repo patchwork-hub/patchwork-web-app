@@ -1,4 +1,5 @@
 import { accountInfo } from "@/services/profile/accountInfo";
+import { Account } from "@/types/account";
 import { ErrorResponse } from "@/types/error";
 import { useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";

@@ -6,6 +6,7 @@ import {
   GetCommunityAndChannelSearchQueryKey,
   SearchAllQueryKey
 } from "./searchQuery";
+import { ChannelAndCollectionSearch, HashtagDetail, SearchAll } from "@/types/patchwork";
 
 export const trendingHashtagFn = async () => {
   try {

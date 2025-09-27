@@ -2,21 +2,41 @@ import {
   useMutation,
   useQueryClient,
   QueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import {
   favouriteStatus,
   StatusActionParams,
 } from "@/services/status/statuses";
 import { Context, Status } from "@/types/status";
-import { StatusListResponse } from "@/services/status/fetchAccountStatuses";
 import { ErrorResponse } from "@/types/error";
 import { AxiosError } from "axios";
 import { toast } from "sonner";
 
+
+type PaginatedStatuses ={
+  statuses: Status[] | { data: Status[] };
+  [key: string]: unknown;
+}
+
+type SearchData = {
+  accounts: unknown[];
+  statuses: Status[];
+  hashtags: unknown[];
+  [key: string]: unknown;
+}
+
+type SnapshotType = [
+  ReturnType<QueryClient['getQueriesData']>,
+  ReturnType<QueryClient['getQueriesData']>,
+  ReturnType<QueryClient['getQueriesData']>,
+  ReturnType<QueryClient['getQueriesData']>
+] | undefined;
+
 export const useFavouriteStatus = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams>({
+  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams, SnapshotType>({
     mutationFn: favouriteStatus,
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({ queryKey: ["statusList"] });
@@ -74,7 +94,7 @@ export const useFavouriteStatus = () => {
     onError: (
       err,
       { id },
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
+      snapshot
     ) => {
       const error = err?.response?.data?.error;
       if (error) {
@@ -95,36 +115,31 @@ export const useFavouriteStatus = () => {
   });
 };
 
-const getFavStatusListUpdaterFn =
-  (id: string) =>
-  (old: {
-    pages?: Array<{ statuses: Status[] | any }>;
-    pageParams?: any[];
-  }) => {
-    if (!old?.pages) return old;
+const getFavStatusListUpdaterFn = (id: string) => (old: InfiniteData<PaginatedStatuses> | undefined) => {
+  if (!old?.pages) return old;
 
-    const pages = old.pages.map((page) => {
-      const statusesArray = Array.isArray(page.statuses)
-        ? page.statuses
-        : page.statuses?.data;
+  const pages = old.pages.map((page: PaginatedStatuses) => {
+    const statusesArray = Array.isArray(page.statuses)
+      ? page.statuses
+      : (page.statuses as { data: Status[] })?.data;
 
-      if (!statusesArray) return page;
+    if (!statusesArray) return page;
 
-      const updatedStatuses = statusesArray.map(getUpdater(id));
-
-      return {
-        ...page,
-        statuses: Array.isArray(page.statuses)
-          ? updatedStatuses
-          : { ...page.statuses, data: updatedStatuses },
-      };
-    });
+    const updatedStatuses = statusesArray.map(getUpdater(id));
 
     return {
-      pages,
-      pageParams: old.pageParams,
+      ...page,
+      statuses: Array.isArray(page.statuses)
+        ? updatedStatuses
+        : { ...(page.statuses as object), data: updatedStatuses },
     };
+  });
+
+  return {
+    pages,
+    pageParams: old.pageParams ?? [],
   };
+};
 
 const getFavContextUpdaterFn = (id: string) => (old: Context) => {
   if (!old) return old;
@@ -134,9 +149,7 @@ const getFavContextUpdaterFn = (id: string) => (old: Context) => {
   };
 };
 
-const getFavSearchUpdaterFn =
-  (id: string) =>
-  (old: { accounts: any[]; statuses: Status[]; hashtags: any[] }) => {
+const getFavSearchUpdaterFn = (id: string) => (old: SearchData | undefined): SearchData | undefined => {
     if (!old) return old;
     return {
       ...old,

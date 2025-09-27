@@ -2,21 +2,42 @@ import {
   useMutation,
   useQueryClient,
   QueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import { BoostActionParams, boostStatus } from "@/services/status/statuses";
 import { Status } from "@/types/status";
 import { ErrorResponse } from "@/types/error";
 import { AxiosError } from "axios";
 
-// Assuming StatusListResponse from your previous context
-interface StatusListResponse {
+type StatusListResponse ={
   statuses: Status[] | { data: Status[] };
+  [key: string]: unknown;
 }
+
+type ContextData ={
+  ancestors: Status[];
+  descendants: Status[];
+  [key: string]: unknown;
+}
+
+type SearchData ={
+  accounts: unknown[];
+  statuses: Status[];
+  hashtags: unknown[];
+  [key: string]: unknown;
+}
+
+type SnapshotType = [
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>
+];
 
 export const useBoostStatus = () => {
   const queryClient = useQueryClient();
 
-  return useMutation<Status, AxiosError<ErrorResponse>, BoostActionParams>({
+  return useMutation<Status, AxiosError<ErrorResponse>, BoostActionParams, SnapshotType>({
     mutationFn: boostStatus,
     onMutate: async ({ id }) => {
       await queryClient.cancelQueries({ queryKey: ["statusList"] });
@@ -29,36 +50,27 @@ export const useBoostStatus = () => {
         getBoostUpdaterFn(id)
       );
 
-      const previousStatusData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["status"],
-        });
+      const previousStatusData = queryClient.getQueriesData({
+        queryKey: ["status"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["status"],
-        },
+        { queryKey: ["status"] },
         getBoostStatusUpdaterFn(id)
       );
 
-      const previousContextData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["context"],
-        });
+      const previousContextData = queryClient.getQueriesData({
+        queryKey: ["context"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["context"],
-        },
+        { queryKey: ["context"] },
         getBoostContextUpdaterFn(id)
       );
 
-      const previousSearchData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["search-all"],
-        });
+      const previousSearchData = queryClient.getQueriesData({
+        queryKey: ["search-all"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["search-all"],
-        },
+        { queryKey: ["search-all"] },
         getBoostSearchUpdaterFn(id)
       );
 
@@ -72,14 +84,12 @@ export const useBoostStatus = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["statusList"] });
     },
-    onError: (
-      err,
-      { id },
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
-    ) => {
-      snapshot?.forEach((it) => {
-        it?.forEach(([key, data]) => {
-          queryClient.setQueryData(key, data);
+    onError: (err, { id }, snapshot) => {
+      if (!snapshot) return;
+      
+      snapshot.forEach((queryData) => {
+        queryData?.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
         });
       });
     },
@@ -89,93 +99,75 @@ export const useBoostStatus = () => {
   });
 };
 
-const getBoostUpdaterFn =
-  (id: string) =>
-  (old: { pages?: StatusListResponse[]; pageParams?: any[] } | undefined) => {
-    if (!old?.pages) return old;
+const getBoostUpdaterFn = (id: string) => (old: InfiniteData<StatusListResponse> | undefined) => {
+  if (!old?.pages) return old;
 
-    const pages = old.pages.map((page) => {
-      const statusesArray = Array.isArray(page.statuses)
-        ? page.statuses
-        : Array.isArray(page.statuses?.data)
-        ? page.statuses.data
-        : null;
+  const pages = old.pages.map((page: StatusListResponse) => {
+    const statusesArray = Array.isArray(page.statuses)
+      ? page.statuses
+      : (page.statuses as { data: Status[] })?.data;
 
-      if (!statusesArray) return page;
+    if (!statusesArray) return page;
 
-      const updatedStatuses = statusesArray.map((status: Status) => {
-        if (status.id === id) {
-          return {
-            ...status,
-            reblogged: true,
-            reblogs_count: status.reblogs_count + 1,
-          };
-        }
-        return status;
-      });
-
-      return {
-        ...page,
-        statuses: Array.isArray(page.statuses)
-          ? updatedStatuses
-          : { ...page.statuses, data: updatedStatuses },
-      };
-    });
+    const updatedStatuses = statusesArray.map((status: Status) => 
+      getBoostStatusUpdaterFn(id)(status)
+    );
 
     return {
-      pages,
-      pageParams: old.pageParams ?? [],
+      ...page,
+      statuses: Array.isArray(page.statuses)
+        ? updatedStatuses
+        : { ...(page.statuses as object), data: updatedStatuses },
     };
+  });
+
+  return {
+    pages,
+    pageParams: old.pageParams ?? [],
   };
+};
 
-const getBoostStatusUpdaterFn = (id: string) => (old: Status | undefined) =>
-  old?.id === id
-    ? ({
-        ...old,
-        reblogged: true,
-        reblogs_count: old.reblogs_count + 1,
-      } as Status)
-    : old;
-
-const getBoostContextUpdaterFn =
-  (id: string) =>
-  (old: { ancestors: Status[]; descendants: Status[] } | undefined) => {
-    if (!old) return old;
-    return {
-      ancestors: old.ancestors.map(getUpdater(id)),
-      descendants: old.descendants.map(getUpdater(id)),
-    };
-  };
-
-const getBoostSearchUpdaterFn =
-  (id: string) =>
-  (
-    old: { accounts?: any[]; statuses?: Status[]; hashtags?: any[] } | undefined
-  ) => {
-    if (!old?.statuses) return old;
+const getBoostStatusUpdaterFn = (id: string) => (old: Status | undefined): Status | undefined => {
+  if (!old) return old;
+  
+  if (old.id === id) {
     return {
       ...old,
-      statuses: old.statuses.map(getUpdater(id)),
-    };
-  };
-
-const getUpdater = (id: string) => (status: Status | undefined) => {
-  if (!status) return status;
-  if (status.id === id) {
-    return {
-      ...status,
       reblogged: true,
-      reblogs_count: status.reblogs_count + 1,
+      reblogs_count: (old.reblogs_count || 0) + 1,
     };
-  } else if (status.reblog && status.reblog.id === id) {
+  }
+  
+  // Handle reblogged status
+  if (old.reblog && old.reblog.id === id) {
     return {
-      ...status,
+      ...old,
       reblog: {
-        ...status.reblog,
+        ...old.reblog,
         reblogged: true,
-        reblogs_count: status.reblog.reblogs_count + 1,
+        reblogs_count: (old.reblog.reblogs_count || 0) + 1,
       },
     };
   }
-  return status;
+  
+  return old;
+};
+
+const getBoostContextUpdaterFn = (id: string) => (old: ContextData | undefined) => {
+  if (!old) return old;
+  
+  return {
+    ...old,
+    ancestors: old.ancestors?.map(getBoostStatusUpdaterFn(id)) || [],
+    descendants: old.descendants?.map(getBoostStatusUpdaterFn(id)) || [],
+  };
+};
+
+const getBoostSearchUpdaterFn = (id: string) => (old: SearchData | undefined) => {
+  if (!old?.statuses) return old;
+  
+  return {
+    ...old,
+    statuses: old.statuses.map(getBoostStatusUpdaterFn(id)),
+  };
 };

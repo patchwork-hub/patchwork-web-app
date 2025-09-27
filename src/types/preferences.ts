@@ -18,5 +18,5 @@ export interface PreferencesResponse {
 export interface ApiError {
   message: string;
   code?: number;
-  details?: any;
+  details?: unknown;
 }

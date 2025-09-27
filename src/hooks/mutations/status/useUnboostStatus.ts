@@ -2,16 +2,31 @@ import { BoostActionParams, unboostStatus } from "@/services/status/statuses";
 import { ErrorResponse } from "@/types/error";
 import { Status } from "@/types/status";
 import {
+  InfiniteData,
   QueryClient,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
-// Define the expected structure for StatusListResponse based on previous context
-interface StatusListResponse {
+type StatusListResponse = {
   statuses: Status[] | { data: Status[] };
 }
+
+type SnapshotType = [
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>
+];
+
+type SearchData = {
+  accounts: unknown[];
+  statuses: Status[];
+  hashtags: unknown[];
+  [key: string]: unknown;
+}
+
 
 export const useUnboostStatus = () => {
   const queryClient = useQueryClient();
@@ -19,7 +34,8 @@ export const useUnboostStatus = () => {
   return useMutation<
     Status,
     AxiosError<ErrorResponse>,
-    Omit<BoostActionParams, "content" | "visibility">
+    Omit<BoostActionParams, "content" | "visibility">,
+    SnapshotType
   >({
     mutationFn: unboostStatus,
     onMutate: async ({ id }) => {
@@ -78,7 +94,7 @@ export const useUnboostStatus = () => {
     onError: (
       err,
       id,
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
+      snapshot
     ) => {
       snapshot?.forEach((it) => {
         it?.forEach(([key, data]) => {
@@ -89,12 +105,13 @@ export const useUnboostStatus = () => {
   });
 };
 
+
 const getUnboostUpdaterFn =
   (id: string) =>
-  (old: { pages?: StatusListResponse[]; pageParams?: any[] } | undefined) => {
+  (old: InfiniteData<StatusListResponse> | undefined) => {
     if (!old?.pages) return old;
 
-    const pages = old.pages.map((page) => {
+    const pages = old.pages.map((page: StatusListResponse) => {
       const statusesArray = Array.isArray(page.statuses)
         ? page.statuses
         : Array.isArray(page.statuses?.data)
@@ -158,9 +175,7 @@ const getUnboostContextUpdaterFn =
 
 const getBoostSearchUpdaterFn =
   (id: string) =>
-  (
-    old: { accounts?: any[]; statuses?: Status[]; hashtags?: any[] } | undefined
-  ) => {
+  (old: SearchData | undefined) => {
     if (!old?.statuses) return old;
     return {
       ...old,

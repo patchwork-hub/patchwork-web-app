@@ -3,6 +3,7 @@ import { UseQueryOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { DEFAULT_API_URL } from "../constant";
 import { formatNumber } from "../formatNumber";
+import { HashtagHistory } from "@/types/community";
 
 export const handleError = (error: unknown) => {
   const axiosError = error as {

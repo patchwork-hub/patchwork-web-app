@@ -1,6 +1,7 @@
 import axiosInstance from '@/lib/http';
 import { ApiError } from '@/types/locale';
 import { PreferencesResponse } from '@/types/preferences';
+import { isAxiosError } from 'axios';
 
 
 export async function getUserPreferences(): Promise<PreferencesResponse> {
@@ -9,11 +10,18 @@ export async function getUserPreferences(): Promise<PreferencesResponse> {
       '/api/v1/preferences',
     );
     return response.data;
-  } catch (error: any) {
+  } catch (error) {
+    if (isAxiosError(error)) {
+      const apiError: ApiError = {
+        message: error.response?.data?.message || 'Failed to update locale',
+        code: error.response?.status,
+      };
+      throw apiError;
+    }
+    
     const apiError: ApiError = {
-      message: error.response?.data?.message || 'Failed to fetch preferences',
-      code: error.response?.status,
-      details: error.response?.data,
+      message: 'Failed to update locale',
+      code: undefined,
     };
     throw apiError;
   }

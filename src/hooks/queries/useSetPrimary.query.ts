@@ -1,12 +1,13 @@
 import { setPrimaryChannel } from "@/services/community/primaryChannelService";
+import { ChannelList } from "@/types/patchwork";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 interface SetPrimaryChannelOptions {
   id: string;
   instance_domain?: string;
   platform_type?: string;
-  onSuccess?: (data: any) => void;
-  onError?: (error: any) => void;
+  onSuccess?: (data: ChannelList[]) => void;
+  onError?: (error: Error) => void;
 }
 
 export const useSetPrimaryChannel = () => {
@@ -32,8 +33,8 @@ export const useSetPrimaryChannel = () => {
             "newsmast-channel-list",
             { instance_domain: newPrimary.instance_domain },
           ],
-          (old: any) =>
-            old?.map((channel) => ({
+          (old: ChannelList[]) =>
+            old?.map((channel:ChannelList) => ({
               ...channel,
               attributes: {
                 ...channel.attributes,
@@ -55,14 +56,6 @@ export const useSetPrimaryChannel = () => {
           context.previousChannels
         );
       }
-    },
-    onSettled: (data, error, variables) => {
-      // queryClient.invalidateQueries({
-      //   queryKey: [
-      //     "newsmast-channel-list",
-      //     { instance_domain: variables.instance_domain },
-      //   ],
-      // });
     },
   });
 };

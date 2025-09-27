@@ -1,6 +1,8 @@
+import { Account } from "@/types/account";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { ensureHttp } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
+import { SetStateAction } from "react";
 import { create } from "zustand";
 
 export type AuthState = {
@@ -13,7 +15,7 @@ export type AuthState = {
     clearAuthState: () => void;
     setUserInfo: (user: Account) => void;
     setUserOriginInstance: (userOrigin: string) => void;
-    setSignInWithMastodon?: (isMastodon: boolean) => void;
+    setSignInWithMastodon: (isMastodon: SetStateAction<boolean>) => void;
   };
 };
 
@@ -37,8 +39,14 @@ export const useAuthStore = create<AuthState>((set) => ({
       set((state) => ({ ...state, userInfo: user })),
     setUserOriginInstance: (domain: string) =>
       set((state) => ({ ...state, userOriginInstance: ensureHttp(domain) })),
-    setSignInWithMastodon: (isMastodon: boolean) =>
-      set((state) => ({ ...state, isSignInWithMastodon: isMastodon })),
+    setSignInWithMastodon: (action: SetStateAction<boolean>) =>
+      set((state) => ({
+        ...state,
+        isSignInWithMastodon:
+          typeof action === "function"
+            ? action(state.isSignInWithMastodon) 
+            : action, 
+      })),
   },
 }));
 

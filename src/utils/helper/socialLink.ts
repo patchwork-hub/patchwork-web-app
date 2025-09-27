@@ -1,4 +1,5 @@
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
+import { Account } from "@/types/account";
 import { UpdateProfilePayload } from "@/types/profile";
 
 export const getFullSocialLink = (
@@ -35,7 +36,7 @@ export const extractUserName = (url: string | undefined): string | null => {
     Patreon: /https?:\/\/www\.patreon\.com\/([^/?]+)/
   };
 
-  for (const [platform, regex] of Object.entries(patterns)) {
+  for (const [_, regex] of Object.entries(patterns)) {
     const match = url?.match(regex);
     if (match) return match[1];
   }

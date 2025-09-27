@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { LoginResponse } from "@/types/auth";
 import { AxiosResponse } from "axios";
 
 export const forgotPassword = async (params: { email: string }) => {
