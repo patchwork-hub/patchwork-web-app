@@ -2,21 +2,19 @@
 
 import {
   ChevronDown,
-  ChevronRight,
   CircleCheck,
   Monitor,
   Moon,
   Sun,
 } from "lucide-react";
 import { useTheme } from "next-themes";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useUpdateSettings } from "@/hooks/queries/useSetting.query";
-import { SettingsParams } from "@/types/queries/setting.type";
-import { cleanDomain, isSystemDark } from "@/utils/helper/helper";
+import { cleanDomain } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
 import { DEFAULT_API_URL } from "@/utils/constant";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/atoms/ui/popover";
+import { useLocale } from "@/providers/localeProvider";
 
 export function ThemeSwitcher() {
   const { theme } = useTheme();

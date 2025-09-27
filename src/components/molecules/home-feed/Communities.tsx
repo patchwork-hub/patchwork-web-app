@@ -5,10 +5,10 @@ import Image from "next/image";
 import React from "react";
 import CardSkeleton from "../skeletons/cardSkeleton";
 import { useRouter } from "next/navigation";
-
-import { useLocale } from "../providers/localeProvider";
 import { ThemeText } from "../common/ThemeText";
 import { formatNumber } from "@/utils/formatNumber";
+import { CollectionList } from "@/types/patchwork";
+import { useLocale } from "@/providers/localeProvider";
 
 type TCollections = {
   collections: CollectionList[];
@@ -70,19 +70,16 @@ const Communities = ({
       <div
         className="relative flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-300 ml-4!"
         onClick={() => {
-          activeTab
-            ? router.push(
-                `/communities/${collections[0].attributes.name.toLowerCase()}?slug=${
-                  collections[0].attributes.slug
-                }&tab=${activeTab}`
-              )
-            : router.push(
-                `/communities/${collections[0].attributes.name.toLowerCase()}?slug=${
-                  collections[0].attributes.slug
-                }`
-              );
+          const basePath = `/communities/${collections[0].attributes.name.toLowerCase()}?slug=${
+            collections[0].attributes.slug
+          }`;
+          if (activeTab) {
+            router.push(`${basePath}&tab=${activeTab}`);
+          } else {
+            router.push(basePath);
+          }
         }}
-      >
+        >
         <div className="w-36 sm:w-40 h-38 sm:h-40 rounded-lg overflow-hidden">
           {(() => {
             const slicedCollections = collections.slice(1, 5);

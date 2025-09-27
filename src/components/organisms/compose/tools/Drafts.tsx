@@ -21,8 +21,9 @@ import {
 } from "@/components/atoms/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useLocale } from "@/providers/localeProvider";
+import Image from "next/image";
 
 export const Drafts = () => {
   const [open, setOpen] = useState(false);
@@ -128,7 +129,7 @@ export const Drafts = () => {
                                 autoPlay
                               />
                             ) : (
-                              <img
+                              <Image
                                 src={draft.media_attachments[0].url}
                                 alt="Draft media"
                                 className="w-full h-32 object-cover rounded"

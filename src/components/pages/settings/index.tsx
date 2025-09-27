@@ -11,8 +11,8 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/atoms/ui/dialog";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { ReceiveEmailNotification } from "@/components/notifications/ReceiveEmailNotification";
 import { ReceivePushNotification } from "@/components/notifications/ReceivePushNotification";
 import { Schedules } from "@/components/organisms/compose/tools/Schedules";

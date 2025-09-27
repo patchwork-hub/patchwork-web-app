@@ -1,7 +1,6 @@
 import { Status as StatusType } from "@/types/status";
 import Status from "./Status";
 import { cn } from "@/lib/utils";
-import { SearchX } from "lucide-react";
 
 export const StatusList = ({
   statusList,

@@ -1,6 +1,7 @@
 import { FC } from "react"
 import { useLinkStore } from '../store/useLinkStore';
 import { truncateLongUrls } from "@/utils/helper/helper";
+import Image from "next/image";
 
 export const LinkPreviewer: FC = () => {
     const { preview } = useLinkStore();
@@ -10,7 +11,7 @@ export const LinkPreviewer: FC = () => {
     const { url, title, description, images } = preview;
 
     return (
-        <LinkPreview url={url} title={title} description={description} image={images && images[0]?.src} />
+        <LinkPreview url={url} title={title} description={description} image={images && images[0]?.src || ""} />
     )
 }
 
@@ -27,7 +28,7 @@ export const LinkPreview: FC<{
 }) => {
         return (
             <a key={url} href={url} target="_blank" className="block mt-4 border-[0.5] border-[#96A6C2] p-2 rounded">
-                {image && <img src={image} alt="preview" className="mb-2 w-full max-h-[200px] object-cover" />}
+                {image && <Image src={image} alt="preview" className="mb-2 w-full max-h-[200px] object-cover" width={400} height={200}/>}
                 <h1 className="text-orange-500 line-clamp-1">
                     {title}
                 </h1>

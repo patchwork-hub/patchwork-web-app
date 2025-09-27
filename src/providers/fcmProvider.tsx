@@ -2,7 +2,6 @@
 
 import { PropsWithChildren, useEffect, useState } from "react";
 import { usePathname } from "next/navigation";
-import { useFCM } from "@/hooks/fcm/useFCM";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import Cookies from "js-cookie";
 import {
@@ -16,6 +15,7 @@ import {
 import { Button } from "@/components/atoms/ui/button";
 import { useSaveFCMToken } from "@/hooks/mutations/fcm/useSaveFCMToken";
 import { getToken } from "@/lib/auth";
+import { useFCM } from "@/hooks/customs/useFCM";
 
 export const FCMProvider = ({ children }: PropsWithChildren) => {
     const [saved, setSaved] = useState<boolean>(false);

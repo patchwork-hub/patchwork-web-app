@@ -46,7 +46,7 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
   const [locale, setLocale] = useState<Locale>();
   const [isMounted, setIsMounted] = useState(false);
   const domain = Cookies.get("domain") ?? DEFAULT_API_URL;
-  const { data: Instance, isLoading, isError } = useGetCommunityAbout(domain);
+  const { data: Instance, isLoading } = useGetCommunityAbout(domain);
 
   useEffect(() => {
     setIsMounted(true);
@@ -77,8 +77,13 @@ export function LocaleProvider({ children }: { children: ReactNode }) {
     }
   }, [locale]);
 
-  const getNestedTranslation = (obj: any, path: string): string => {
-    return path.split(".").reduce((acc, part) => acc?.[part], obj) || path;
+  const getNestedTranslation = (obj: Record<string, unknown>, path: string): string => {
+    return path.split(".").reduce((acc: unknown, part: string) => {
+      if (acc && typeof acc === "object" && part in acc) {
+        return (acc as Record<string, unknown>)[part];
+      }
+      return undefined;
+    }, obj) as string || path;
   };
 
   const t = (

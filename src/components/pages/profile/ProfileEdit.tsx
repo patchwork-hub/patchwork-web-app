@@ -1,12 +1,13 @@
 "use client";
-import GoBack from "@/components/atoms/common/GoBack";
+
 import ImagePicker from "@/components/molecules/ImagePicker";
-import ProfileEditForm from "@/components/template/profile/ProfileEditForm";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { cn } from "@/lib/utils";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { useState } from "react";
+import GoBack from "@/components/molecules/common/GoBack";
+import ProfileEditForm from "@/components/templates/profile/ProfileEditForm";
 
 const ProfileEditPage = () => {
   const { data: userInfo } = useVerifyAuthToken({ enabled: true });
@@ -58,7 +59,7 @@ const ProfileEditPage = () => {
           </div>
           <p>{userInfo?.display_name || userInfo?.username}</p>
           <ProfileEditForm
-            userId={userInfo?.id!}
+            userId={userInfo && userInfo?.id}
             headerImage={headerCrop || ""}
             avatarImage={avatarCrop || ""}
             display_name={userInfo?.display_name || userInfo?.username}

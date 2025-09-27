@@ -1,6 +1,5 @@
 "use client";
 
-import HomeHeader from "@/components/atoms/home-feed/HomeHeader";
 import Channels from "@/components/molecules/home-feed/Channels";
 import Communities from "@/components/molecules/home-feed/Communities";
 import HashtagLists from "@/components/molecules/home-feed/HashtagLists";
@@ -8,10 +7,8 @@ import MyChannels from "@/components/molecules/home-feed/MyChannels";
 import MyLists from "@/components/molecules/home-feed/MyLists";
 import NewsmastChannels from "@/components/molecules/home-feed/NewsmastChannel";
 import PeopleFollowing from "@/components/molecules/home-feed/PeopleFollowing";
-import LayoutContainer from "@/components/template/LayoutContainer";
 import { useEffect, useState } from "react";
 
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { useGetChannelFeedListQuery } from "@/hooks/queries/useChannelList.query";
 import { useCollectionChannelList } from "@/hooks/queries/useCollections.query";
 import { useFavouriteChannelLists } from "@/hooks/queries/useFavouriteChannelList.query";
@@ -21,11 +18,7 @@ import { useListsQueries } from "@/hooks/queries/useLists.query";
 import { useMyChannel } from "@/hooks/queries/useMyChannel.query";
 import { useNewsmastCollections } from "@/hooks/queries/useNewsmastCollections";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useChannelFeedReOrder } from "@/hooks/useCustomHook";
-import {
-  useActiveDomainStore,
-  useSelectedDomain,
-} from "@/store/auth/activeDomain";
+
 import {
   CHANNEL_ORG_INSTANCE,
   DEFAULT_API_URL,
@@ -33,11 +26,18 @@ import {
 } from "@/utils/constant";
 import { ensureHttp } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
 import { HomeTimeline } from "@/components/organisms/status/HomeTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { getToken } from "@/lib/auth";
+import { useActiveDomainStore, useSelectedDomain } from "@/stores/auth/activeDomain";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
+import { useChannelFeedReOrder } from "@/hooks/customs/useCustomHook";
+import LayoutContainer from "@/components/templates/LayoutContainer";
+import HomeHeader from "@/components/molecules/HomeHeader";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
+import { Instance_V2 } from "@/types/auth";
+import { Account } from "@/types/status";
 
 const Home = () => {
   const router = useRouter();
@@ -61,7 +61,7 @@ const Home = () => {
   const domain_name = useSelectedDomain();
 
   const { actions } = useActiveDomainStore();
-  const { data: serverInfo, isFetching: isSearching } = useSearchServerInstance(
+  const { data: serverInfo } = useSearchServerInstance(
     {
       domain: domain,
       enabled: domain !== DEFAULT_API_URL,
@@ -99,7 +99,7 @@ const Home = () => {
 
   const { data: peopleFollowing, isLoading: peopleFollowingLoading } =
     useFollowingAccountsQuery({
-      accountId: userInfo?.id!,
+      accountId: userInfo?.id && userInfo?.id,
       enabled: !!userInfo?.id,
     });
 
@@ -146,39 +146,43 @@ const Home = () => {
             favList={favouriteChannelLists}
           />
           <PeopleFollowing
-            data={peopleFollowing?.pages[0].data}
+            data={
+              peopleFollowing && Array.isArray(peopleFollowing.pages) && peopleFollowing.pages[0] && typeof peopleFollowing.pages[0] === "object" && "data" in peopleFollowing.pages[0]
+                ? (peopleFollowing.pages[0]).data as Account[]
+                : []
+            }
             loading={peopleFollowingLoading}
           />
 
           {isDefaultApi && (
             <NewsmastChannels
-              lists={newsmastColletionlList}
+              lists={newsmastColletionlList ?? []}
               loading={newsmastCollectionLoading}
             />
           )}
           <Channels
-            lists={reorderedChannelFeedList}
+            lists={reorderedChannelFeedList ?? []}
             loading={channelFeedLoading}
-            serverInfo={serverInfo}
+            serverInfo={serverInfo ?? ({} as Instance_V2)}
           />
           {!isDefaultApi && (
             <NewsmastChannels
-              lists={newsmastColletionlList}
+              lists={newsmastColletionlList ?? []}
               loading={newsmastCollectionLoading}
             />
           )}
 
           <Communities
-            collections={collectionList}
+            collections={collectionList ?? []}
             loading={collectionLoading}
           />
 
           <HashtagLists
-            data={hashtagsFollowing}
+            data={hashtagsFollowing ?? []}
             loading={hashtagsFollowingLoading}
           />
 
-          <MyLists data={myLists} loading={myListsLoading} />
+          <MyLists data={myLists ?? []} loading={myListsLoading} />
         </>
       )}
       {activeTab === "home" && (

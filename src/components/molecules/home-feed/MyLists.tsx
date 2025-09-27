@@ -4,8 +4,9 @@ import { ChevronRight, Menu } from "lucide-react";
 import React from "react";
 import ListSkeleton from "../skeletons/listSkeleton";
 import { useRouter } from "next/navigation";
-import { useLocale } from "../providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { ThemeText } from "../common/ThemeText";
+import { Lists } from "@/types/patchwork";
 
 type TLists = {
   data: Lists[];

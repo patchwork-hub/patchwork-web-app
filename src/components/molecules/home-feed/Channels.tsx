@@ -11,8 +11,9 @@ import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
-import { useLocale } from "../providers/localeProvider";
 import { ThemeText } from "../common/ThemeText";
+import { ChannelList } from "@/types/patchwork";
+import { useLocale } from "@/providers/localeProvider";
 
 type TChannels = {
   lists: ChannelList[];
@@ -31,13 +32,14 @@ const Channels = ({
   activeTab,
   hideSpecialCard = false,
 }: TChannels) => {
-  if (!loading && (!lists || lists.length === 0)) {
-    return null;
-  }
-  const { data: userInfo } = useVerifyAuthToken({ enabled: true });
   const router = useRouter();
   const {t} = useLocale()
   const domain = Cookies.get("domain") ?? DEFAULT_API_URL;
+  const { data: userInfo } = useVerifyAuthToken({ enabled: true });
+
+  if (!loading && (!lists || lists.length === 0)) {
+    return null;
+  }
 
   const handleChannelClick = (channel: ChannelList) => {
     const userId = channel.attributes.community_admin.account_id;
@@ -91,24 +93,12 @@ const Channels = ({
   const showSpecialCard =
     domain && serverInfo && typeof serverInfo !== "string";
   const sliceLimit = showSpecialCard ? 9 : 10;
-
-  const handleSpecialChannelClick = (serverInfo: Instance_V2) => {
-    return activeTab
-      ? router.push(`/@${serverInfo?.contact?.account?.acct}?tab=${activeTab}`)
-      : router.push(`/@${serverInfo?.contact?.account?.acct}`);
-  };
-
   const renderSpecialCard = () => {
     const serverInfoTyped = serverInfo as Instance_V2;
 
     return (
       <div
         onClick={() => {
-          // if (serverInfo.domain === "newsmast.social") {
-          //   router.push(`/community/${cleanDomain(domain)}`);
-          // } else {
-          //   handleSpecialChannelClick(serverInfoTyped);
-          // }
           router.push(`/community/${cleanDomain(domain)}`);
         }}
         className="relative flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-300 ml-4!"

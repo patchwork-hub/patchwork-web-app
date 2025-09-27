@@ -1,10 +1,8 @@
 "use client";
 
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { Locale, locales } from "../../../lib/i18n";
-
+import { useEffect, useMemo, useState } from "react";
 import { ChevronDown, CircleCheck, Loader2 } from "lucide-react";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import {
   Popover,
   PopoverContent,
@@ -18,6 +16,8 @@ import {
 } from "@/hooks/mutations/locale/useUserPreferences";
 import { getToken } from "@/lib/auth";
 import { cn } from "@/lib/utils";
+import { Locale } from "@/lib/locale/i18n";
+import { UserPreferences } from "@/types/preferences";
 
 type Languages = {
   value: Locale;
@@ -62,12 +62,12 @@ export default function LanguageSwitcher({
       onSuccess: (data, variables) => {
         setLocale(variables.lang);
 
-        queryClient.setQueryData([PREFERENCES_QUERY_KEY], (old: any) => ({
+        queryClient.setQueryData([PREFERENCES_QUERY_KEY], (old: UserPreferences) => ({
           ...old,
           "posting:default:language": variables.lang,
         }));
       },
-      onError: (error, variables) => {
+      onError: (error) => {
         console.error("Failed to update locale:", error);
         queryClient.invalidateQueries({ queryKey: [PREFERENCES_QUERY_KEY] });
       },
@@ -75,13 +75,6 @@ export default function LanguageSwitcher({
 
   const currentLanguage =
     preferences?.data?.["posting:default:language"] || currentUiLocale;
-
-  const getLangName = useCallback((lang: string | null) => {
-    if (!lang) return "Default";
-    return (
-      LANGUAGE_OPTIONS.find((item) => item.value === lang)?.label || "Default"
-    );
-  }, []);
 
   const handleLanguageChange = (newLocale: Locale) => {
     if (newLocale !== currentLanguage && !isUpdatingLocale && token) {
@@ -105,7 +98,6 @@ export default function LanguageSwitcher({
   }, [currentLanguage, currentUiLocale, setLocale]);
 
   const language = t("setting.appearance.language");
-  const selectedLanguage = t("setting.appearance.selected_language");
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

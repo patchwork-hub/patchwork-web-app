@@ -17,7 +17,7 @@ import { MOME_INSTANCE } from "@/utils/constant";
 import { useSaveLastReadIdNotification } from "@/hooks/mutations/notifications/useSaveLastReadIdNotification";
 import { useModalAction } from "../organisms/modal/modal.context";
 import { useScheduleStore } from "../organisms/compose/store/useScheduleStore";
-import { useLocale } from "./providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { Button } from "../atoms/ui/button";
 import LanguageSwitcher from "../organisms/locale/LanguageSwitcher";
 import { LinkStatus } from "./common/LinkStatus";
@@ -79,7 +79,7 @@ const SidebarNavigator = () => {
   const { data: notificationMarker } = useNotificationMarker({
     enabled: !isNewsmast && !!token,
   });
-  const { data: groupNotificationsData, isLoading } = useGroupedNotifications({
+  const { data: groupNotificationsData } = useGroupedNotifications({
     enabled: !isNewsmast && !!token,
   });
   const { mutate: saveLastReadId } = useSaveLastReadIdNotification();

@@ -6,10 +6,11 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import FollowAvatarSkeleton from "../skeletons/followAvatarSkeleton";
 import { useTheme } from "next-themes";
-import { useLocale } from "../providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
 import { ThemeText } from "../common/ThemeText";
 import ListIcon from "../common/ListIcon";
+import { Account } from "@/types/status";
+import { useLocale } from "@/providers/localeProvider";
 
 type TFollowing = {
   data?: Account[];

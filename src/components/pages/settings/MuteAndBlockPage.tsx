@@ -6,8 +6,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/components/atoms/ui/tabs";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import MuteAndBlockUserStats from "@/components/template/profile/MuteAndBlockUserStats";
+import { useLocale } from "@/providers/localeProvider";
+import MuteAndBlockUserStats from "@/components/templates/profile/MuteAndBlockUserStats";
 import {
   useGetBlockedUserList,
   useGetMutedUserList,

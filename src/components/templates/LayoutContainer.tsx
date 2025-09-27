@@ -9,9 +9,7 @@ import { useRouter } from "next/navigation";
 import { useEffect } from "react";
 import SidebarNavigator from "../molecules/SidebarNavigator";
 import RightSidebar from "../molecules/RightSidebar";
-import { useCustomEmojis } from "../organisms/compose/hooks/useCustomEmojis";
 import { useTheme } from "next-themes";
-import { useLocale } from "../molecules/providers/localeProvider";
 import { Locale } from "@/lib/locale/i18n";
 import { cn } from "@/lib/utils";
 import { isSystemDark } from "@/utils/helper/helper";
@@ -20,6 +18,8 @@ import useLoggedIn from "@/lib/auth/useLoggedIn";
 import { useAuthStoreAction } from "@/stores/auth/authStore";
 import { useReportDialogStore } from "@/stores/reportDialogStore";
 import BottomTabNavigator from "../molecules/common/BottomTabNavigator";
+import { useCustomEmojis } from "@/hooks/customs/useCustomEmojis";
+import { useLocale } from "@/providers/localeProvider";
 
 export default function LayoutContainer({
   children,

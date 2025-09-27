@@ -15,7 +15,7 @@ import { TooltipTrigger } from "@/components/atoms/ui/tooltip";
 import { TooltipContent } from "@/components/atoms/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
 
 type LanguageModalProps = {

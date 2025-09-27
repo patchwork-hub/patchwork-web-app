@@ -15,8 +15,9 @@ import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { Visibility } from "@/types/preferences";
 
 type ContextProps = {
   id: string;
@@ -41,10 +42,6 @@ export const Context: FC<ContextProps> = ({
   );
   const createStatusMutation = useCreateStatus();
   const { mutateAsync: uploadMedia, isPending: isUploading } = useUploadMedia();
-  const { data: authToken } = useVerifyAuthToken({
-    enabled: true,
-  });
-
   const [uploadedMedias, setUploadedMedias] = useState<Media[]>([]);
 
   const onUploadMedia = async (files: File[]) => {
@@ -64,14 +61,14 @@ export const Context: FC<ContextProps> = ({
       formData: {
         status: replyContent,
         in_reply_to_id: status?.id,
-        visibility: status?.visibility,
+        visibility: status?.visibility as Visibility,
         language: "en",
         media_ids: uploadedMedias.map((media) => media.id),
       },
       differentOrigin:
-        status.account.acct.includes("@") &&
+        status && status.account.acct.includes("@") &&
         !status.account.acct.includes("@" + Cookies.get("domain")),
-      url: status.url,
+      url: status && status.url,
     });
     setUploadedMedias([]);
   }

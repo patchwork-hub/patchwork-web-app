@@ -13,7 +13,7 @@ export const useMarkConversationAsRead = () => {
             const previousData = queryClient.getQueryData(["conversations"]);
 
             // Optimistically update the cache
-            queryClient.setQueryData(["conversations"], (old: { pages: ConversationListResponse[], pageParams: any[] }) => {
+            queryClient.setQueryData(["conversations"], (old: { pages: ConversationListResponse[], pageParams: unknown[] }) => {
                 if (!old) return old;
                 const pages = old.pages?.map(page => ({
                     ...page,

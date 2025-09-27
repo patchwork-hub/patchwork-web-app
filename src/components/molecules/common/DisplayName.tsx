@@ -1,4 +1,5 @@
-import { useTipTapEditor } from "@/components/organisms/compose/hooks/useTipTapEditor";
+import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 import Link from "next/link";
 import { FC } from "react";

@@ -1,6 +1,7 @@
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+
 import { Button } from "@/components/atoms/ui/button";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { useLocale } from "@/providers/localeProvider";
 import InfoSection from "@/components/organisms/profile/InfoSection";
 import { useUserRelationshipMutation } from "@/hooks/mutations/profile/useCheckRelationship";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
@@ -72,8 +73,9 @@ const SocialConnections: React.FC<SocialConnectionsProps> = ({
         queryKey: ["suggested-people"],
       });
     },
-    onError: (_, __, context: { previousRelationships?: RelationShip[] }) => {
-      queryClient.setQueryData(queryKey, context?.previousRelationships);
+    onError: (_, __, context) => {
+      const typedContext = context as { previousRelationships?: RelationShip[] };
+      queryClient.setQueryData(queryKey, typedContext?.previousRelationships);
     },
   });
 
@@ -154,7 +156,7 @@ const SocialConnections: React.FC<SocialConnectionsProps> = ({
                   </div>
                 )
             )
-            .concat(lastItem)}
+            .concat(lastItem ? [lastItem] : [])}
         </div>
       )}
       {data && data.length === 0 && (

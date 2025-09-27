@@ -1,8 +1,7 @@
-import { DisplayName } from "@/components/atoms/common/DisplayName";
-import { BadgeCheck } from "lucide-react";
 import React from "react";
 import { MastodonCustomEmoji } from "../compose/tools/Emoji";
 import { ProfileNameRedMark } from "@/components/atoms/icons/Icons";
+import { DisplayName } from "@/components/molecules/common/DisplayName";
 
 type AccountNameProps = {
   accountName: string;

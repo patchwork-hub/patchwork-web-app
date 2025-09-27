@@ -10,11 +10,11 @@ import { Icons, SOCIAL_MEDIA_LINKS } from "@/utils/constant";
 import { GlobeIcon } from "@/components/atoms/icons/Icons";
 import { cleanText, extractUserName } from "@/utils/helper/socialLink";
 import { Trash2 } from "lucide-react";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import { Badge } from "@/components/atoms/ui/badge";
 import { Input } from "@/components/atoms/ui/input";
 import { cn } from "@/lib/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 type SocialMediaLink = {
   icon: JSX.Element;
@@ -95,9 +95,14 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
     if (formType === "edit" && data && selectedLink) {
       const relatedData = data.find((item) => item.name === selectedLink.title);
 
-      setUsername(extractUserName(cleanText(relatedData?.value!)) || null);
+      const valueToClean = relatedData?.value;
+      if (valueToClean) {
+        setUsername(extractUserName(cleanText(valueToClean)) || null);
+      } else {
+        setUsername(null);
+      }
     }
-  }, [formType, data, selectedLink]);
+  }, [formType, data, selectedLink, openThemeModal]);
 
   return (
     <Dialog open={openThemeModal} onOpenChange={handleClose}>

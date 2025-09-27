@@ -1,9 +1,9 @@
 import { useMemo, useState } from "react";
 import { AccountStatusList } from "./AccountStatusList";
 import { cn } from "@/lib/utils";
-import { Tab, TabItem } from "@/components/molecules/common/Tab";
 import Cookies from "js-cookie";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { Tab, TabItem } from "@/components/molecules/common/Tab";
 
 type TabId = "Posts" | "Replies" | "Reposts" | "Posts & Replies";
 

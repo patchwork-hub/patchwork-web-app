@@ -1,5 +1,5 @@
 import { Switch } from "@/components/atoms/ui/switch";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 import {
   updateChannelContentTypeCache,
   useChangeChannelContentType,
@@ -35,7 +35,7 @@ const ContentTypeSwitch = ({
         thumbClassName="dark:data-[state=checked]:bg-white"
         aria-label="Toggle between contributors or hashtags and contributors and hashtags"
         checked={isSwitchOn}
-        onCheckedChange={(value) => {
+        onCheckedChange={() => {
           mutate({
             channel_type: "custom_channel",
             custom_condition:

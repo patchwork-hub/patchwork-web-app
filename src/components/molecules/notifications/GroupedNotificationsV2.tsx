@@ -17,6 +17,7 @@ import { cn } from "@/lib/utils";
 import { useLocale } from "@/providers/localeProvider";
 import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { DisplayName } from "../common/DisplayName";
+import Image from "next/image";
 
 
 type GroupedNotificationsV2Props = {
@@ -102,7 +103,7 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                   <>
                     <div className="flex items-center">
                       <Link href={`/@${filteredAccounts[0]?.acct}`}>
-                        <img
+                        <Image
                           src={filteredAccounts[0]?.avatar}
                           alt={filteredAccounts[0]?.username}
                           className="w-9 h-9 rounded-full mr-2"
@@ -151,7 +152,7 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                     <div className="flex items-center gap-1">
                       {filteredAccounts.map((acc) => (
                         <Link key={acc.id} href={`/@${acc.acct}`}>
-                          <img
+                          <Image
                             src={acc.avatar}
                             alt={acc.username}
                             className="w-9 h-9 rounded-full"

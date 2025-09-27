@@ -3,7 +3,6 @@ import { Outfit } from "next/font/google";
 import { cn } from "@/lib/utils";
 import { ModalProvider } from "@/components/organisms/modal/modal.context";
 import ManagedModal from "@/components/organisms/modal/managed-modal";
-
 import "./globals.css";
 import "flag-icons/css/flag-icons.min.css";
 import { ThemeProvider } from "@/providers/themeProvider";

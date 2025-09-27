@@ -5,6 +5,7 @@ import tippy from 'tippy.js';
 import { Account } from '@/types/status';
 import { debounce } from 'lodash';
 import { searchAccounts } from '@/services/status/account';
+import Image from 'next/image';
 
 // Mention Suggestion Component
 type MentionSuggestionProps = {
@@ -15,7 +16,7 @@ type MentionSuggestionProps = {
     isFetching: boolean
 }
 
-const MentionSuggestion: React.FC<MentionSuggestionProps> = ({ query, editor, range, items, isFetching }) => {
+const MentionSuggestion: React.FC<MentionSuggestionProps> = ({ editor, range, items, isFetching }) => {
     return !isFetching && items.length === 0 ? null : (
         <div className="bg-gray-800 text-white p-2 rounded shadow max-h-[400px] overflow-auto">
             {isFetching ? (
@@ -41,7 +42,7 @@ const MentionSuggestion: React.FC<MentionSuggestionProps> = ({ query, editor, ra
                                 .run()
                         }}
                     >
-                        <img src={account.avatar} alt={account.username} className="w-6 h-6 rounded-[8px] mr-2" />
+                        <Image src={account.avatar} alt={account.username} className="w-6 h-6 rounded-[8px] mr-2" />
                         <div>
                             <div className="font-bold">{account.username}</div>
                             <div className="text-sm text-gray-400">@{account.acct}</div>
@@ -59,7 +60,7 @@ const debouncedSearchAccounts = debounce(async (query: string, callback: (data: 
 }, 300);
 
 const suggestion = {
-    items: async ({ query }: { query: string }) => {
+    items: async () => {
         return [];
     },
 

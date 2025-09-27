@@ -6,12 +6,14 @@ import Channels from "@/components/molecules/home-feed/Channels";
 import { useCollectionChannelList } from "@/hooks/queries/useCollections.query";
 import { useGetChannelFeedListQuery } from "@/hooks/queries/useChannelList.query";
 import { DEFAULT_API_URL } from "@/utils/constant";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { useNewsmastCollections } from "@/hooks/queries/useNewsmastCollections";
 import { SearchX } from "lucide-react";
 import { ChannelsSearchResults } from "./ChannelsSearchResults";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import { useLocale } from "@/providers/localeProvider";
+import { ChannelList } from "@/types/patchwork";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { Instance_V2 } from "@/types/auth";
 
 interface ChannelViewProps {
   channelFeeds: ChannelList[];
@@ -73,7 +75,7 @@ const ChannelView: React.FC<ChannelViewProps> = ({
           ) : (
             !fromHome && (
               <Communities
-                collections={collectionList}
+                collections={collectionList ?? []}
                 loading={collectionLoading}
                 activeTab="channels"
               />
@@ -88,7 +90,7 @@ const ChannelView: React.FC<ChannelViewProps> = ({
           ) : (
             !fromHome && (
               <NewsMastChannels
-                lists={newsmastColletionlList}
+                lists={newsmastColletionlList ?? []}
                 loading={newsmastLoading}
                 activeTab="channels"
               />
@@ -99,7 +101,7 @@ const ChannelView: React.FC<ChannelViewProps> = ({
             <Channels
               lists={channelFeeds}
               loading={channelFeedLoading}
-              serverInfo={serverInfo}
+              serverInfo={serverInfo as Instance_V2}
               hideViewAll
               hideSpecialCard
               activeTab="channels"
@@ -107,9 +109,9 @@ const ChannelView: React.FC<ChannelViewProps> = ({
           ) : (
             !fromHome && (
               <Channels
-                lists={channelFeedList}
+                lists={channelFeedList ?? []}
                 loading={channelFeedLoading}
-                serverInfo={serverInfo}
+                serverInfo={serverInfo as Instance_V2}
                 activeTab="channels"
               />
             )

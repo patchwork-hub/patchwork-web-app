@@ -1,7 +1,7 @@
 "use client"
 import Header from "@/components/atoms/common/Header";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import MyInformation from "@/components/template/settings/MyInformation";
+import { useLocale } from "@/providers/localeProvider";
+import MyInformation from "@/components/templates/settings/MyInformation";
 import React from "react";
 
 const MyInformationPage: React.FC = () => {

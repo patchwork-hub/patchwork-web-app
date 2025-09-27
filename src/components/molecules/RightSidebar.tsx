@@ -6,13 +6,13 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { Button } from "../atoms/ui/button";
 import ExploreCard from "../organisms/search/ExploreCard";
 import { useDraftStore } from "../organisms/compose/store/useDraftStore";
-import { useLocale } from "./providers/localeProvider";
 import { useDebouncedCallback } from "use-debounce";
 import { useEffect, useState } from "react";
 import { getToken } from "@/stores/auth";
 import { LinkStatus } from "./common/LinkStatus";
 import SearchInput from "./common/Searchinput";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
+import { useLocale } from "@/providers/localeProvider";
 
 const RightSidebar = () => {
   const router = useRouter();

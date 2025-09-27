@@ -6,22 +6,15 @@ import {
   InputOTPSlot
 } from "@/components/atoms/ui/input-otp";
 import { useEffect, useState } from "react";
-import {
-  useChangeEmailMutation,
-  useChangeEmailVerificationMutation,
-  useChangeNewsmastEmailVerificationMutation,
-  useOTPVerificationMutation
-} from "@/hooks/auth/useOTPVerification";
 import { toast } from "sonner";
-import { useForgotPasswordMutation } from "@/hooks/auth/useForgotPassword";
 import { useRouter } from "next/navigation";
-import { useChangeNewsmastEmailMutation } from "@/hooks/auth/useChangeEmail";
-import { useAuthStore } from "@/store/auth/authStore";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
 import { getNewEmail, removeToken } from "@/lib/auth";
-import { DEFAULT_API_URL } from "@/utils/constant";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { queryClient } from "@/providers/queryProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
+import { useChangeEmailVerificationMutation, useChangeNewsmastEmailVerificationMutation } from "@/hooks/mutations/auth/useOTPVerification";
+import { useChangeEmailMutation, useChangeNewsmastEmailMutation } from "@/hooks/mutations/auth/useChangeEmail";
 
 const ChangeEmailVerificationForm = () => {
   const router = useRouter();
@@ -41,7 +34,7 @@ const ChangeEmailVerificationForm = () => {
   const [currentSecretToken, setCurrentSecretToken] = useState(newAccessToken);
 
   const { mutate } = useChangeEmailVerificationMutation({
-    onSuccess: async (response) => {
+    onSuccess: async () => {
       toast.success(
         t("toast.email_updated")
       );
@@ -78,7 +71,7 @@ const ChangeEmailVerificationForm = () => {
   });
 
   const { mutateAsync: changeNewsmastEmail } = useChangeNewsmastEmailMutation({
-    onSuccess: async (response, variables) => {
+    onSuccess: async () => {
       toast.success(t("toast.verification_sent"));
     },
     onError: (error) => {
@@ -130,7 +123,7 @@ const ChangeEmailVerificationForm = () => {
       <div className="text-center">
         <p>Verify your email</p>
         <p className="text-center">
-          We've sent a 4-digit verification code to your email.
+          We&apos;ve sent a 4-digit verification code to your email.
         </p>
       </div>
       <div className="flex flex-col items-center">

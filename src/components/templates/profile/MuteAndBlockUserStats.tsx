@@ -1,5 +1,5 @@
 import { Button } from "@/components/atoms/ui/button";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import InfoSection from "@/components/organisms/profile/InfoSection";
 import {
   useBlockUnBlockUserMutation,

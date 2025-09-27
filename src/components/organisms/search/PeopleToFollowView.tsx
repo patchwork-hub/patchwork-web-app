@@ -7,19 +7,19 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useUserRelationshipMutation } from "@/hooks/mutations/profile/useCheckRelationship";
 import { CheckRelationshipQueryKey } from "@/types/queries/profile.type";
-import { queryClient } from "../../molecules/providers/queryProvider";
 import { RelationShip } from "@/types/profile";
 import { toast } from "sonner";
-import { SuggestedPeople } from "@/services/search/fetchSuggestion";
 import Link from "next/link";
-import { useSearchStore } from "@/store/search/useSearchStore";
 import { SearchX } from "lucide-react";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { useGetSuggestedPeople } from "@/hooks/queries/search/useFetchSuggestion";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import { useSearchStore } from "@/stores/search/useSearchStore";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { Account } from "@/types/account";
+import { queryClient } from "@/providers/queryProvider";
 
 interface SuggestedPeopleBySearchProps {
   data: Account[];
@@ -86,7 +86,7 @@ const PeopleToFollowView: React.FC<SuggestedPeopleBySearchProps> = ({
         });
       }
     },
-    [mutate, isPending]
+    [mutate, isPending, relationships]
   );
 
   if (suggestedPeoplePending) {

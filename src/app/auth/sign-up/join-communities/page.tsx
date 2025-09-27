@@ -1,4 +1,4 @@
-import JoinCommunities from "@/components/template/auth/JoinCommunities";
+import JoinCommunities from "@/components/templates/auth/JoinCommunities";
 import React from "react";
 
 const JoinCommunitiesPage = () => {

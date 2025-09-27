@@ -9,6 +9,7 @@ import { useLocale } from "@/providers/localeProvider";
 import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { DisplayName } from "../common/DisplayName";
 import Status from "@/components/organisms/status/Status";
+import Image from "next/image";
 
 const MentionsNotifications = () => {
   const {
@@ -52,7 +53,7 @@ const MentionsNotifications = () => {
             <div className="flex-1">
               <div className="flex items-center">
                 <Link href={`/@${mention.account.acct}`}>
-                  <img
+                  <Image
                     src={mention.account.avatar}
                     alt={mention.account.username}
                     className="w-9 h-9 rounded-full mr-2"

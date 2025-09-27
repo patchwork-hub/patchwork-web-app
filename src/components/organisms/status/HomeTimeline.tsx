@@ -1,19 +1,20 @@
 "use client";
 
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import Status from "./Status";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { useHomeTimeline } from "@/hooks/queries/status/useHomeTimeline";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+
 import { cn } from "@/lib/utils";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
 import { getToken } from "@/lib/auth";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 export const HomeTimeline: React.FC<{
   excludeReplies?: boolean;

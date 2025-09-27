@@ -20,11 +20,13 @@ import { useModalAction } from "@/components/organisms/modal/modal.context";
 import { useScheduleStore } from "@/components/organisms/compose/store/useScheduleStore";
 import { useSearchStore } from "@/stores/search/useSearchStore";
 import useLoggedIn from "@/stores/auth/useLoggedIn";
-import { useLocale } from "../providers/localeProvider";
+
 import { useAuthStoreAction } from "@/stores/auth/authStore";
 import { getToken } from "@/stores/auth";
 import { Button } from "@/components/atoms/ui/button";
 import { NotificationGroup } from "@/types/notification";
+import { TabNavigator } from "@/types/patchwork";
+import { useLocale } from "@/providers/localeProvider";
 
 const NotificationIcon = ({
   pathname,
@@ -94,8 +96,6 @@ const BottomTabNavigator = () => {
 
   const {
     mutate: saveLastReadId,
-    isPending,
-    isError,
   } = useSaveLastReadIdNotification();
 
   const handleNotificationRead = (notificationId: string) => {

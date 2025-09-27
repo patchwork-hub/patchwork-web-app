@@ -1,16 +1,17 @@
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
 import { useAccountStatuses } from "@/hooks/queries/status/useAccountStatuses";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
 import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 export const AccountStatusList: React.FC<{
   id: string;
@@ -54,7 +55,7 @@ export const AccountStatusList: React.FC<{
   return !isLoadingEmojis && !isLoading ? (
     <>
       <>
-        {data?.pages?.length > 0 &&
+        {data && data?.pages?.length > 0 &&
         !data?.pages?.every((page) => page.statuses.length === 0) ? (
           data?.pages.map((page, index) =>
             page.statuses.map((status, idx) => {

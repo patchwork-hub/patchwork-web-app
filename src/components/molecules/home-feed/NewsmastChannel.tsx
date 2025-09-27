@@ -7,9 +7,10 @@ import CardSkeleton from "../skeletons/cardSkeleton";
 import { useRouter } from "next/navigation";
 import { isValidImageUrl } from "@/utils";
 import { FALLBACK_PREVIEW_NEWSMAST_URL } from "@/constants/url";
-import { useLocale } from "../providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { ThemeText } from "../common/ThemeText";
 import { formatNumber } from "@/utils/formatNumber";
+import { CollectionList } from "@/types/patchwork";
 
 type TNewsmastChannel = {
   lists: CollectionList[];
@@ -25,13 +26,13 @@ const NewsmastChannels = ({
   activeTab,
 }: TNewsmastChannel) => { 
 
+  const {t} = useLocale()
+  const router = useRouter();
+
+
   if (!loading && (!lists || lists.length === 0)) {
     return null;
   }
-
-  const {t} = useLocale()
-
-  const router = useRouter();
   const renderHeader = () => (
     <div className="mb-4 flex justify-between items-center px-4">
       <ThemeText size="lg_18" variant="textBold" className="justify-start">

@@ -13,16 +13,17 @@ import {
   InputOTPSlot,
 } from "@/components/atoms/ui/input-otp";
 import { useEffect, useState } from "react";
-import { useOTPVerificationMutation } from "@/hooks/auth/useOTPVerification";
 import { toast } from "sonner";
-import { useForgotPasswordMutation } from "@/hooks/auth/useForgotPassword";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { ErrorResponseData, useOTPVerificationMutation } from "@/hooks/mutations/auth/useOTPVerification";
+import { useForgotPasswordMutation } from "@/hooks/mutations/auth/useForgotPassword";
+import { AxiosError } from "axios";
 
-interface EmailVerificationProps extends React.ComponentPropsWithoutRef<"div"> {
+type EmailVerificationProps = React.ComponentPropsWithoutRef<"div"> & {
   resetToken: string;
   email: string;
   setResetToken: React.Dispatch<React.SetStateAction<string>>;
@@ -45,7 +46,7 @@ const EmailVerification = ({
         `/auth/reset-password?resetToken=${resetToken}&token=${res.message.access_token}`
       );
     },
-    onError: (err: any) => {
+    onError: (err: AxiosError<ErrorResponseData>) => {
       toast.error(err.response?.data?.message || t("toast.invalid_code"));
     },
   });

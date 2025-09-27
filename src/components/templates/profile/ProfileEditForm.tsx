@@ -9,7 +9,7 @@ import {
 } from "@/components/atoms/ui/form";
 import { Input } from "@/components/atoms/ui/input";
 import { Textarea } from "@/components/atoms/ui/textarea";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useProfileMutation } from "@/hooks/queries/profile/useProfile";
 import { createSchemas } from "@/lib/schema/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -27,9 +27,10 @@ import {
 } from "@/utils/constant";
 import Cookies from "js-cookie";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import z from "zod";
 import { useTString } from "@/lib/tString";
+
 
 interface ProfileEditFormProps {
   userId: string;

@@ -1,11 +1,13 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import SocialConnections from "@/components/template/profile/SocialConnections";
+
+import Header from "@/components/molecules/common/Header";
+import { useLocale } from "@/providers/localeProvider";
+import SocialConnections from "@/components/templates/profile/SocialConnections";
 import { useGetSuggestedPeople } from "@/hooks/queries/search/useFetchSuggestion";
 import { useSearchAllQueries } from "@/hooks/queries/search/useSearchAllQueries";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
-import { useSearchStore } from "@/store/search/useSearchStore";
+import { useSearchStore } from "@/stores/search/useSearchStore";
+
 import { useSearchParams } from "next/navigation";
 
 const SuggestedPeopleListPage = () => {
@@ -14,7 +16,6 @@ const SuggestedPeopleListPage = () => {
   const { search } = useSearchStore();
   const {t} = useLocale();
 
-  // queries
   const { data, isLoading } = useGetSuggestedPeople({ limit: 20 });
   const { data: searchAllRes } = useSearchAllQueries({
     q: q ? q : search,
@@ -23,14 +24,12 @@ const SuggestedPeopleListPage = () => {
     options: { enabled: q ? q.length > 0 : search.length > 0 },
   });
 
-  // data
   const accounts = data?.map((it) => it.account);
   const accountIds = accounts?.map((account) => account.id);
   const suggestedAccIds = searchAllRes?.accounts?.map((it) => it.id);
 
-  // mutations
   const { data: relationships } = useCheckRelationships({
-    accountIds: suggestedAccIds ? suggestedAccIds : accountIds,
+    accountIds: (suggestedAccIds ? suggestedAccIds : accountIds) ?? [],
     options: {
       enabled: accountIds && accountIds.length > 0,
     },
@@ -43,9 +42,9 @@ const SuggestedPeopleListPage = () => {
       <Header title={headerTitle} />
       <SocialConnections
         isLoading={isLoading}
-        data={suggestedAccIds ? searchAllRes?.accounts : accounts}
-        relationships={relationships}
-        followerIds={accountIds}
+        data={(suggestedAccIds ? searchAllRes?.accounts : accounts) ?? []}
+        relationships={relationships ?? []}
+        followerIds={accountIds ?? []}
       />
     </div>
   );

@@ -1,6 +1,5 @@
 "use client";
 import ContentTypeSwitch from "@/components/organisms/profile/ContentTypeSwitch";
-import Header from "@/components/atoms/common/Header";
 import {
   useGetChannelContentType,
   useGetChannelFilterKeyword,
@@ -11,13 +10,14 @@ import {
 import React, { useState } from "react";
 import HorizontalItemRenderer from "@/components/organisms/settings/HorizontalItemRenderer";
 import ContributorProfile from "@/components/organisms/settings/ContributorProfile";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import { Button } from "@/components/atoms/ui/button";
 import ContributorDialog from "@/components/organisms/settings/ContributorDialog";
 import HashtagItem from "@/components/organisms/settings/Hashtag";
 import SearchHashtagModal from "@/components/organisms/settings/SearchHashtagDialog";
 import FilterKeywordItem from "@/components/organisms/settings/FilterKeywordItem";
 import FilterInKeywordModal from "@/components/organisms/settings/FilterInKeywordDialog";
+import Header from "@/components/molecules/common/Header";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 type ModalProps = {
   isOpen: boolean;
@@ -38,10 +38,10 @@ const AddChannelContentPage = () => {
   const { data: contributors, isLoading: isLoadingContributorList } =
     useGetContributorList(channelId, !!channelId);
 
-  const { data: hashtagList, isLoading: isLoadingHashtagList } =
+  const { data: hashtagList } =
     useGetChannelHashtagList(channelId, !!channelId);
 
-  const { data: keywordList, isLoading: isLoadingKeywordList } =
+  const { data: keywordList } =
     useGetChannelFilterKeyword(channelId, !!channelId);
 
   const { data: channelContentType } = useGetChannelContentType(channelId);
@@ -65,7 +65,7 @@ const AddChannelContentPage = () => {
           <div className="space-y-2">
             <p className="text-lg font-bold">Content type</p>
             <p className="text-sm text-white">
-              First, choose whether you want your Channel to be open to anyone's
+              First, choose whether you want your Channel to be open to anyone&apos;s
               posts or closed to selected contributors when they use a specific
               hashtag.
             </p>
@@ -91,8 +91,8 @@ const AddChannelContentPage = () => {
               <p className="text-sm text-white flex flex-col gap-x-2">
                 <span>
                   Anyone can join the conversation by adding your Channel
-                  hashtag to their post. Here's the preset channel hashtag. If
-                  you'd like to change this or add an additional hashtag, email
+                  hashtag to their post. Here&apos;s the preset channel hashtag. If
+                  you&apos;d like to change this or add an additional hashtag, email
                 </span>
                 <a
                   href="mailto:support@newsmast.org"
@@ -118,18 +118,6 @@ const AddChannelContentPage = () => {
                   );
                 })}
             </div>
-            {/* <Button
-              variant="outline"
-              className="rounded-3xl mt-5 border-slate-400 w-full"
-              onClick={() => {
-                setModalState({
-                  isOpen: true,
-                  currentModalType: "hashtag"
-                });
-              }}
-            >
-              <ThemeText>Add another</ThemeText>
-            </Button> */}
           </div>
         )}
 

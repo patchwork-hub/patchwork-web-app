@@ -1,6 +1,7 @@
 "use client";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 import { cn } from "@/lib/utils";
+import { ChannelList } from "@/types/patchwork";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";

@@ -2,7 +2,6 @@
 import React, { useEffect, useMemo } from "react";
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogHeader,
   DialogTitle,
@@ -16,14 +15,14 @@ import {
   Reply,
   XIcon,
 } from "lucide-react";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { useAuthStoreAction } from "@/store/auth/authStore";
+import { useLocale } from "@/providers/localeProvider";
 import { Button } from "@/components/atoms/ui/button";
 import { useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { Status as StatusType } from "../../../types/status";
 import useLoggedIn from "@/lib/auth/useLoggedIn";
 import Cookies from "js-cookie";
+import { useAuthStoreAction } from "@/stores/auth/authStore";
 
 interface LoginDialogProps {
   status?: StatusType;
@@ -99,8 +98,8 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
 
   useEffect(() => {
     if (openDialog) {
-      Cookies.set("slug", status?.account?.acct);
-      Cookies.set("id", status?.id);
+      Cookies.set("slug", status?.account?.acct ?? "");
+      Cookies.set("id", status?.id ?? "");
     }
   }, [openDialog]);
 
@@ -138,7 +137,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
                   <Button
                     variant="outline"
                     onClick={() => {
-                      setSignInWithMastodon(false);
+                      setSignInWithMastodon?.(false);
                       router.push("/auth/sign-in");
                     }}
                     className={cn(
@@ -200,7 +199,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
                   <Button
                     variant="outline"
                     onClick={() => {
-                      setSignInWithMastodon(false);
+                      setSignInWithMastodon?.(false);
                       router.push("/auth/sign-in");
                     }}
                     className={cn(

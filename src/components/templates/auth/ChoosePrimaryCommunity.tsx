@@ -16,7 +16,7 @@ import { useGetNewsmastChannelList } from "@/hooks/queries/useNewsmastChannel.qu
 import { useSelectedDomain } from "@/store/auth/activeDomain";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { Circle, CircleCheck, User, UserPlus } from "lucide-react";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useJoinedCommunitiesList } from "@/hooks/queries/useFavouriteChannelList.query";
 import { useAuthStore } from "@/store/auth/authStore";
 import { DEFAULT_API_URL } from "@/utils/constant";

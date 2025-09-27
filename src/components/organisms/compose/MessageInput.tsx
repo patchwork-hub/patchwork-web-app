@@ -1,17 +1,19 @@
 "use client";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
 } from "@/components/atoms/ui/popover";
-import { useTipTapEditor } from "@/components/organisms/compose/hooks/useTipTapEditor";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import MastodonEmojiPicker from "@/components/organisms/compose/tools/Emoji";
 import { GifvModal } from "@/components/organisms/compose/tools/Gifv";
 import { cn } from "@/lib/utils";
 import { Media } from "@/types/status";
 import { isSystemDark } from "@/utils/helper/helper";
-import { Image, Send, X } from "lucide-react";
+import { BookImage, Send, X } from "lucide-react";
+import Image from "next/image";
 import { useTheme } from "next-themes";
 import { FC, useEffect, useState } from "react";
 
@@ -89,18 +91,17 @@ const MessageInput: FC<MessageInputProps> = ({
         editor.commands.insertContent(" ");
       }
 
-      mentions &&
-        mentions.forEach((mention) => {
-          editor.commands.insertContent({
-            type: "mention",
-            attrs: { label: `@${mention.acct}`, class: "text-orange-500" },
-          });
-          editor.commands.insertContent(" ");
+      mentions && mentions.forEach((mention) => {
+        editor.commands.insertContent({
+          type: "mention",
+          attrs: { label: `@${mention.acct}`, class: "text-orange-500" },
         });
+        editor.commands.insertContent(" ");
+      });
 
       editor.commands.focus("end");
     }
-  }, [editor, mentions]);
+  }, [editor, mentions, ownAcct]);
   return (
     <div className={cn("flex flex-col space-y-2", className)}>
       <div className="flex flex-wrap gap-2">
@@ -109,7 +110,7 @@ const MessageInput: FC<MessageInputProps> = ({
         ) : null}
         {uploadedMedias?.map((media) => (
           <div key={media.id} className="relative w-20 h-20">
-            <img
+            <Image
               src={media.preview_url}
               alt="attachment"
               className="w-full h-full object-cover rounded-lg"
@@ -137,7 +138,7 @@ const MessageInput: FC<MessageInputProps> = ({
             id="image-upload"
             value=""
           />
-          <Image className="w-5 h-5" />
+          <BookImage className="w-5 h-5" />
         </label>
         <Popover open={openEmojiPicker} onOpenChange={setOpenEmojiPicker}>
           <PopoverTrigger asChild>

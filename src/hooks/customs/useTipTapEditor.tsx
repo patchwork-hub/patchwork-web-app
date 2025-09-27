@@ -4,7 +4,7 @@ import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useRef, useState } from "react";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
 import { getCharCount } from "@/components/organisms/compose/utils/getCharCount";
@@ -53,7 +53,7 @@ export const useTipTapEditor = ({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ history: false }),
+      StarterKit.configure({}),
       Link.configure({
         HTMLAttributes: {
           class: "[&:not(.hashtag)]:text-orange-500 break-all text-lilac",

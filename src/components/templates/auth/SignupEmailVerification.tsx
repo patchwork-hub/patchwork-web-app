@@ -25,7 +25,7 @@ import { getToken, setToken } from "@/lib/auth";
 import { ErrorResponse } from "@/types/error";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
 
 const SignupEmailVerification = () => {

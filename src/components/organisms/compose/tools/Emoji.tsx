@@ -30,7 +30,7 @@ interface EmojiMartCategory {
 type CustomEmojis = EmojiMartCategory[];
 
 interface MastodonEmojiPickerProps {
-  onEmojiSelect?: (emoji: { id: string; native?: string;[key: string]: any }) => void;
+  onEmojiSelect?: (emoji: { id: string; native?: string; shortcodes: string }) => void;
 }
 
 const convertToEmojiMartCustomWithCategories = (mastodonEmojis: MastodonCustomEmoji[]): CustomEmojis => {

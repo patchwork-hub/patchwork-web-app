@@ -1,4 +1,4 @@
-import SignupForm from "@/components/template/auth/SignupForm";
+import SignupForm from "@/components/templates/auth/SignupForm";
 import React from "react";
 
 const Signup: React.FC = () => {

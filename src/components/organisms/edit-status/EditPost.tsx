@@ -10,7 +10,6 @@ import { useLinkStore } from "@/components/organisms/compose/store/useLinkStore"
 import { useLanguageStore } from "@/components/organisms/compose/store/useLanguageStore";
 import { useVisibilityStore } from "@/components/organisms/compose/store/useVisibilityStore";
 import { usePollStore } from "@/components/organisms/compose/store/usePollStore";
-import { useRouter } from "next/navigation";
 import { useQueryClient } from "@tanstack/react-query";
 import Link from "next/link";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
@@ -21,12 +20,10 @@ export default function EditPost() {
     enabled: true,
   });
   const {closeModal} = useModalAction();
-  const domain = Cookies.get("domain");
-  const router = useRouter();
   const queryClient = useQueryClient();
   const statusId = Cookies.get("statusId");
   const editStatusMutation = useEditStatus();
-  const { data, isFetching } = useGetStatus(statusId);
+  const { data, isFetching } = useGetStatus(statusId ?? "");
   const { setMediaLocalUrls, setAltTexts, setIsSensitive, setMedia } =
     useMediaStore();
   const { setPreview } = useLinkStore();
@@ -79,7 +76,7 @@ export default function EditPost() {
 
   const handleSubmit = async (formData: StatusComposeFormData) => {
     const data = await editStatusMutation.mutateAsync({
-      id: statusId,
+      id: statusId ?? "",
       formData,
     });
     if (data.id) {

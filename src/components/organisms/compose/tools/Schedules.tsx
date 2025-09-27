@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Trash2, Plus, CalendarSearch, ChevronRight } from "lucide-react";
+import { Trash2, Plus, ChevronRight } from "lucide-react";
 import {
   Dialog,
   DialogContent,
@@ -14,15 +14,12 @@ import { toast } from "sonner";
 import { useDeleteSchedule } from "@/hooks/mutations/schedule/useDeleteSchedule";
 import { useGetSchedules } from "@/hooks/queries/schedule/useGetSchedules";
 import { useScheduleStore } from "../store/useScheduleStore";
-import { TooltipContent } from "@/components/atoms/ui/tooltip";
 import { TooltipTrigger } from "@/components/atoms/ui/tooltip";
 import { Tooltip } from "@/components/atoms/ui/tooltip";
-import { useTheme } from "next-themes";
-import { cn } from "@/lib/utils";
-import { useRouter } from "next/navigation";
 import { useModalAction } from "../../modal/modal.context";
 import { useDateTimePickerStore } from "../store/useDateTimePickerStore";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import Image from "next/image";
 
 export const Schedules = () => {
   const [open, setOpen] = useState(false);
@@ -32,7 +29,6 @@ export const Schedules = () => {
   const deleteMutation = useDeleteSchedule();
   const [dataToDelete, setDataToDelete] = useState<string | null>(null);
   const { setSchedule, removeSchedule } = useScheduleStore();
-  const router = useRouter();
 
   const handleDeleteClick = (id: string) => {
     setDataToDelete(id);
@@ -88,9 +84,9 @@ export const Schedules = () => {
             <Button
               className="px-2 bg-orange-500 w-fit hover:text-white!"
               onClick={() => {
-                openModal("COMPOSE_FORM_VIEW"),
-                  setOpen(false),
-                  setIsDateOpen(true);
+                openModal("COMPOSE_FORM_VIEW");
+                setOpen(false);
+                setIsDateOpen(true);
               }}
             >
               <p>{t("compose.schedule.schedule_new_post")}</p>
@@ -104,9 +100,9 @@ export const Schedules = () => {
                   <div className="w-full flex justify-between items-start text-start">
                     <div
                       onClick={() => {
-                        setSchedule(schedule);
-                        setOpen(false);
-                        openModal("COMPOSE_FORM_VIEW");
+                          setSchedule(schedule);
+                          setOpen(false);
+                          openModal("COMPOSE_FORM_VIEW");
                       }}
                       className="flex-1"
                     >
@@ -123,7 +119,7 @@ export const Schedules = () => {
                       {schedule.media_attachments &&
                         schedule.media_attachments.length > 0 && (
                           <div className="relative mt-2">
-                            <img
+                            <Image
                               src={schedule.media_attachments[0].url}
                               alt="Schedule media"
                               className="w-full h-32 object-cover rounded"

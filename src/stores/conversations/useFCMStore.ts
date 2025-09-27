@@ -1,8 +1,8 @@
 import { create } from "zustand";
 
 export type FCMState = {
-    message: any;
-    setMessage: (message: any) => void;
+    message: unknown;
+    setMessage: (message: unknown) => void;
 }
 
 export const useFCMStore = create<FCMState>((set)=>({

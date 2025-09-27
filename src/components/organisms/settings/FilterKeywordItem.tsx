@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { toast } from "sonner";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+
 import { useRemoveOrUpdateFilterKeyword } from "@/hooks/mutations/profile/useChannelContent";
 import { cn } from "@/lib/utils";
 import { Check, PenIcon, TrashIcon, X } from "lucide-react";
@@ -15,6 +15,8 @@ import {
 } from "@/components/atoms/ui/dialog";
 import { Button } from "@/components/atoms/ui/button";
 import FilterOutKeywordModal from "./FilterOutKeywordDialog";
+import { queryClient } from "@/providers/queryProvider";
+import { ChannelFilterKeyword } from "@/types/patchwork";
 
 type Props = {
   keyword: ChannelFilterKeyword;
@@ -27,7 +29,7 @@ export const FilterKeywordItem = ({ keyword, channelId, itemType }: Props) => {
     message: "",
     isOpen: false,
   });
-  const { mutate, isPending } = useRemoveOrUpdateFilterKeyword({
+  const { mutate } = useRemoveOrUpdateFilterKeyword({
     onMutate(variables) {
       if (itemType == "filter-in") {
         const queryKey = ["channel-filter-keyword-list", { channelId }];
@@ -159,7 +161,7 @@ export const FilterKeywordItem = ({ keyword, channelId, itemType }: Props) => {
           <DialogTitle>Delete</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Are you sure you want to remove this contributor '{keyword.keyword}'
+          Are you sure you want to remove this contributor &apos;{keyword.keyword}&apos;
         </DialogDescription>
         <DialogFooter>
           <Button

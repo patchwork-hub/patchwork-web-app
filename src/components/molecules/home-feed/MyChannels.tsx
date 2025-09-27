@@ -11,10 +11,11 @@ import CardSkeleton from "../skeletons/cardSkeleton";
 import { PrimaryIcon } from "@/components/atoms/icons/Icons";
 import { cleanDomain } from "@/utils/helper/helper";
 import React from "react";
-import { useLocale } from "../providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { useSelectedDomain } from "@/stores/auth/activeDomain";
 import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 import { ThemeText } from "../common/ThemeText";
+import { ChannelList, MyChannel } from "@/types/patchwork";
 
 type TMyChannels = {
   myChannels?: MyChannel;

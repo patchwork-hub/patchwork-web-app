@@ -1,7 +1,8 @@
 "use client";
 import React from "react";
 import { ThemeText } from "./ThemeText";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+
 
 type Props = {
   channelAbout: {

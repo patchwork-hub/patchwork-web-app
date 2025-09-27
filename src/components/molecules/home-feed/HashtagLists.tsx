@@ -4,8 +4,9 @@
 import { ChevronRight, Hash } from "lucide-react";
 import { useRouter } from "next/navigation";
 import ListSkeleton from "../skeletons/listSkeleton";
-import { useLocale } from "../providers/localeProvider";
 import { ThemeText } from "../common/ThemeText";
+import { HashtagsFollowing } from "@/types/patchwork";
+import { useLocale } from "@/providers/localeProvider";
 
 type TLists = {
   data: HashtagsFollowing[];

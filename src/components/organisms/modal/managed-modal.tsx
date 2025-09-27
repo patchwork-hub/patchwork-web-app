@@ -8,10 +8,8 @@ import { useDraftStore } from "../compose/store/useDraftStore";
 import EditPost from "../edit-status/EditPost";
 
 const ManagedModal = () => {
-  const { isOpen, view, data } = useModalState();
+  const { isOpen, view } = useModalState();
   const { closeModal } = useModalAction();
-
-  const router = useRouter();
   const { mutateAsync, isPending } = useCreateStatus();
 
   const { isDirty, setSaveAsDraftModalOpen } = useDraftStore();

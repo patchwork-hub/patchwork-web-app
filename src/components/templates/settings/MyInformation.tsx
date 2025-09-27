@@ -1,26 +1,25 @@
 "use client";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import {
   useGetNewsmastAccountDetail,
   useVerifyAuthToken,
 } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
-import { useAuthStore } from "@/store/auth/authStore";
 import { PATCHWORK_INSTANCE } from "@/utils/constant";
 import { ChevronRight, Mail, Phone } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
 
 const MyInformation = () => {
   const router = useRouter();
-  const [isPending, startTransition] = useTransition();
+  const [_,startTransition] = useTransition();
   const {t} = useLocale()
 
   const { data: userInfo } = useVerifyAuthToken({ enabled: true });
   const { userOriginInstance } = useAuthStore();
   const { domain_name } = useActiveDomainStore();
-  const { data: newsmastAccountInfo, isLoading } = useGetNewsmastAccountDetail({
+  const { data: newsmastAccountInfo } = useGetNewsmastAccountDetail({
     domain_name: domain_name,
     options: {
       enabled: userOriginInstance !== PATCHWORK_INSTANCE,
@@ -36,8 +35,8 @@ const MyInformation = () => {
             localStorage.setItem(
               "oldEmail",
               userOriginInstance !== PATCHWORK_INSTANCE
-                ? newsmastAccountInfo?.email!
-                : userInfo?.source?.email!
+                ? newsmastAccountInfo?.email ?? '' 
+                : userInfo?.source?.email ?? ''
             );
           });
         }}

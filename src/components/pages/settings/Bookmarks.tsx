@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/atoms/common/Header";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { BookmarkList } from "@/components/organisms/status/BookmarkList";
 import React from "react";
 

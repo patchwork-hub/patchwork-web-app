@@ -1,4 +1,4 @@
-import SignupEmailVerification from "@/components/template/auth/SignupEmailVerification";
+import SignupEmailVerification from "@/components/templates/auth/SignupEmailVerification";
 import React from "react";
 
 const EmailVerify = () => {

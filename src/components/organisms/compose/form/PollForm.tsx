@@ -13,7 +13,7 @@ import { X } from "lucide-react";
 import { POLL_DURATION_OPTIONS, POLL_LIMITS, POLL_TYPES } from "../types";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 
 const PollFormWrapper: React.FC = () => {
   const {

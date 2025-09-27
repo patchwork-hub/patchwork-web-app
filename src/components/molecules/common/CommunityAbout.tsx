@@ -13,9 +13,56 @@ import { isSystemDark } from "@/utils/helper/helper";
 import Image from "next/image";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
+import { ChannelAbout, ChannelList } from "@/types/patchwork";
+import { useLocale } from "@/providers/localeProvider";
+
+type ContributorAccount = CommunityAccountResponse["contributors"][number];
+
+type ContributorCardProps = {
+  account: ContributorAccount;
+};
+
+const ContributorCard: React.FC<ContributorCardProps> = ({ account }) => {
+  const router = useRouter();
+  const { theme } = useTheme();
+
+  const { editorjsx: nameEditor } = useTipTapEditor({
+    editable: false,
+    className: "text-center",
+    content: account.attributes.display_name || account.attributes.username,
+  });
+
+  return (
+    <>
+      <Image
+        src={account?.attributes.avatar_url ?? FALLBACK_PREVIEW_IMAGE_URL}
+        alt={`${account?.attributes?.username} image`}
+        onClick={() => router.push(`/${account?.attributes?.acct}`)}
+        width={200}
+        height={200}
+        loading="lazy"
+        className="w-32 sm:w-30 h-32 sm:h-30 object-cover rounded-full transition-all duration-300 ease-in-out"
+      />
+      <div
+        onClick={() => router.push(`/${account?.attributes?.acct}`)}
+        className="absolute top-0 left-0 w-32 sm:w-30 h-32 sm:h-30 bg-gradient-to-b from-transparent to-black/70 rounded-full transition-all duration-300 ease-in-out"
+      />
+      <div
+        className={cn(
+          "text-center mt-2",
+          theme === "dark" || (theme === "system" && isSystemDark)
+            ? "text-white"
+            : "text-black"
+        )}
+        onClick={() => router.push(`/${account?.attributes?.acct}`)}
+      >
+        {nameEditor}
+      </div>
+    </>
+  );
+};
 
 type ChannelAdditionalInfo = {
   content: string;
@@ -56,7 +103,7 @@ const CommunityAbout: React.FC<Props> = ({
   const { t } = useLocale();
 
   const createdDate = dayjs(createdAt).format("YYYY-MM-DD");
-  const { theme } = useTheme();
+
   const orangeTextComponent = (chunks: React.ReactNode) => (
     <span key="orange-highlight" className="text-orange-500">
       {chunks}
@@ -195,14 +242,6 @@ const CommunityAbout: React.FC<Props> = ({
               {suggestedPeople?.contributors
                 ?.slice(0, 10)
                 .map((account, index) => {
-                  const { editorjsx: nameEditor } = useTipTapEditor({
-                    editable: false,
-                    className: "text-center",
-                    content:
-                      account.attributes.display_name ||
-                      account.attributes.username,
-                  });
-
                   return (
                     <div
                       key={index}
@@ -210,40 +249,7 @@ const CommunityAbout: React.FC<Props> = ({
                         index === 0 ? "ml-4" : ""
                       } ${index === 9 ? "mr-4" : ""}`}
                     >
-                      <Image
-                        src={
-                          account?.attributes.avatar_url ??
-                          FALLBACK_PREVIEW_IMAGE_URL
-                        }
-                        alt={`${account?.attributes?.username} image`}
-                        onClick={() =>
-                          router.push(`/${account?.attributes?.acct}`)
-                        }
-                        width={200}
-                        height={200}
-                        loading="lazy"
-                        className="w-32 sm:w-30 h-32 sm:h-30 object-cover rounded-full transition-all duration-300 ease-in-out"
-                      />
-                      <div
-                        onClick={() =>
-                          router.push(`/${account?.attributes?.acct}`)
-                        }
-                        className="absolute top-0 left-0 w-32 sm:w-30 h-32 sm:h-30 bg-gradient-to-b from-transparent to-black/70 rounded-full transition-all duration-300 ease-in-out"
-                      />
-                      <div
-                        className={cn(
-                          "text-center mt-2",
-                          theme === "dark" ||
-                            (theme === "system" && isSystemDark)
-                            ? "text-white"
-                            : "text-black"
-                        )}
-                        onClick={() =>
-                          router.push(`/${account?.attributes?.acct}`)
-                        }
-                      >
-                        {nameEditor}
-                      </div>
+                      <ContributorCard account={account} />
                     </div>
                   );
                 })}
