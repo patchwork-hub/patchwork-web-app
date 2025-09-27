@@ -21,7 +21,7 @@ export type StatusParams = {
     sensitive: boolean;
     text_count: number;
     visibility: Visibility;
-    idempotency: any;
+    idempotency: unknown;
     scheduled_at: null | string;
     spoiler_text: string;
     community_ids: null | string[];
@@ -30,7 +30,7 @@ export type StatusParams = {
     is_rss_content: boolean;
     is_meta_preview: boolean;
     with_rate_limit: boolean;
-    allowed_mentions: any;
+    allowed_mentions: unknown;
     is_only_for_followers: boolean;
 }
 

@@ -5,12 +5,12 @@ export type MODAL_VIEWS = "COMPOSE_FORM_VIEW" | "EDIT_COMPOSE_FORM_VIEW";
 
 interface State {
   view?: MODAL_VIEWS;
-  data?: any;
+  data?: unknown;
   isOpen: boolean;
 }
 type Action =
-  | { type: "open"; view?: MODAL_VIEWS; payload?: any }
-  | { type: "close"; payload?: any };
+  | { type: "open"; view?: MODAL_VIEWS; payload?: unknown }
+  | { type: "close"; payload?: unknown };
 
 const initialState: State = {
   view: undefined,

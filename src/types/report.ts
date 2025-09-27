@@ -66,6 +66,6 @@ export type TargetAccount = {
     following_count: number;
     statuses_count: number;
     last_status_at: string;
-    emojis: any[];
+    emojis: unknown[];
     fields: Field[];
 }

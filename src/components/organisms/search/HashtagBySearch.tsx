@@ -1,7 +1,7 @@
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
+import { useLocale } from "@/providers/localeProvider";
+import { HashtagDetail } from "@/types/patchwork";
 import { calculateHashTagCount } from "@/utils/helper/helper";
-import { ChevronRightIcon, Flame, Underline } from "lucide-react";
+import { ChevronRightIcon, Flame } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 

@@ -1,5 +1,5 @@
 import React from "react";
-import ResetPasswordForm from "../../template/auth/ResetPasswordForm";
+import ResetPasswordForm from "../../templates/auth/ResetPasswordForm";
 
 interface ResetPasswordPageProps {
   token: string;

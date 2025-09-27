@@ -4,7 +4,8 @@ import { useInfiniteQuery } from "@tanstack/react-query"
 export const useMentionsNotifications = () => {
     return useInfiniteQuery({
         queryKey: ["mention-notifications"],
-        queryFn: async ({ pageParam }) => getMentionNotifications(pageParam),
+        queryFn: (context: { pageParam?: string }) => 
+            getMentionNotifications(context.pageParam),
         initialPageParam: undefined,
         getNextPageParam: (lastPage) => lastPage.nextMaxId,
     })

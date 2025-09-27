@@ -1,4 +1,3 @@
-import GoBack from "@/components/atoms/common/GoBack";
 import { Button } from "@/components/atoms/ui/button";
 import {
   Popover,
@@ -38,10 +37,11 @@ import { isValidImageUrl, sanitizeInput } from "@/utils";
 import { MANDATORY_BIO } from "@/utils/constant";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import useLoggedIn from "@/lib/auth/useLoggedIn";
 import LoginDialog from "../status/LoginDialog";
+import GoBack from "@/components/molecules/common/GoBack";
 
 const BlockAndReportPopover: FC<{
   account: Account;
@@ -107,7 +107,7 @@ export const Profile: FC<{
   const { data: accountInfoData, isLoading: isFetchingAccInfo } =
     useAccountInfo(userId);
 
-  const { mutateAsync, isPending: profilePending } = useProfileMutation({
+  const { mutateAsync } = useProfileMutation({
     onError: (error) => {
       console.log("error => ", error);
     },
@@ -173,7 +173,7 @@ export const Profile: FC<{
               alt="Preview"
             />
             <div className="absolute top-4 left-4">
-              <GoBack className="bg-gray-500 opacity-80 text-[#fff]" />
+              <GoBack className="bg-gray-500 opacity-80 text-white" />
             </div>
             <div className="absolute start-0 w-full bottom-0 flex justify-between items-end px-4 translate-y-11 md:translate-y-18">
               <div
@@ -216,11 +216,11 @@ export const Profile: FC<{
                   )}
                   <FollowAction
                     asButton
-                    relationship={relationship}
+                    relationship={relationship ?? []}
                     accountId={accountInfoData.id}
                   />
                   <BlockAndReportPopover
-                    relationship={relationship}
+                    relationship={relationship ?? []}
                     account={accountInfoData as unknown as Account}
                   />
                 </div>
@@ -313,13 +313,15 @@ export const Profile: FC<{
         }}
         onPressAdd={(link, username, customCallback) => {
           handleSocialLinkChange(link, username, "edit");
-          customCallback && customCallback();
+          if(customCallback){
+            customCallback();
+          }
         }}
         onPressDelete={(link) => {
           handleSocialLinkChange(link, " ", "delete");
         }}
         formType={socialLinkAction.formType}
-        data={accountInfoData?.fields?.filter((v) => v.value)}
+        data={(accountInfoData?.fields?.filter((v) => v.value)) ?? []}
       />
       {isFetchingAccInfo && <ProfileSkeleton />}
       <LoginDialog

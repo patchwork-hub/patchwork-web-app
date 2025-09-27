@@ -1,10 +1,10 @@
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useRemoveOrUpdateHashtag } from "@/hooks/mutations/profile/useChannelContent";
-import { PenIcon, TrashIcon } from "lucide-react";
 import { useState } from "react";
 import { toast } from "sonner";
 import HashtagDeleteDialog from "./HashtagDeleteDialog";
 import SearchHashtagModal from "./SearchHashtagDialog";
+import { ChannelHashtag } from "@/types/patchwork";
 
 type Props = {
   hashtag: ChannelHashtag;
@@ -12,7 +12,7 @@ type Props = {
   isLastOne: boolean;
 };
 
-const HashtagItem = ({ hashtag, channelId, isLastOne }: Props) => {
+const HashtagItem = ({ hashtag, channelId }: Props) => {
   const [isEditModal, setEditModal] = useState(false);
   const [alertState, setAlert] = useState({
     message: "",
@@ -20,7 +20,7 @@ const HashtagItem = ({ hashtag, channelId, isLastOne }: Props) => {
     showCancel: true,
   });
 
-  const { mutate, isPending } = useRemoveOrUpdateHashtag({
+  const { mutate } = useRemoveOrUpdateHashtag({
     onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["channel-hashtag-list", { channelId }],
@@ -36,9 +36,6 @@ const HashtagItem = ({ hashtag, channelId, isLastOne }: Props) => {
     },
   });
 
-  const handleEditIconClick = () => {
-    setEditModal(true);
-  };
 
   const handleDeleteIcon = () => {
     mutate({
@@ -52,31 +49,8 @@ const HashtagItem = ({ hashtag, channelId, isLastOne }: Props) => {
   return (
     <div className="py-2 px-2 rounded-md bg-patchwork-dark-50 flex justify-between">
       <p>
-        {/* # {truncateStr(removeHashtagSign(hashtag?.name), 30)} */}#
         {hashtag?.name}
       </p>
-      {/* <div className="flex items-center">
-        <div
-          className="bg-orange-500 rounded-full p-1 mr-1 active:opacity-80"
-          onClick={handleEditIconClick}
-        >
-          <PenIcon width={14} height={14} className="m-[2]" />
-        </div>
-        <div
-          className="bg-orange-500 rounded-full p-1 mr-1 active:opacity-80"
-          onClick={() => {
-            setAlert({
-              isOpen: true,
-              message: isLastOne
-                ? "At least one hashtag is required"
-                : `Are you sure you want to delete this keyword '${hashtag.name}'`,
-              showCancel: isLastOne ? false : true
-            });
-          }}
-        >
-          <TrashIcon width={14} height={14} fill={"#fff"} className="m-[2]" />
-        </div>
-      </div> */}
       <SearchHashtagModal
         isOpen={isEditModal}
         onClose={() => setEditModal(false)}

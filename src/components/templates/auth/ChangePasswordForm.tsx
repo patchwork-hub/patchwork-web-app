@@ -17,7 +17,7 @@ import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../../atoms/ui/button";
 import { Card, CardContent } from "../../atoms/ui/card";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
 

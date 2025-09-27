@@ -4,7 +4,6 @@ import { cn } from "@/lib/utils";
 import {
   Card,
   CardContent,
-  CardDescription,
   CardHeader,
 } from "../../atoms/ui/card";
 import { Button } from "../../atoms/ui/button";
@@ -20,7 +19,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchemas } from "@/lib/schema/validations";
 import { useForm } from "react-hook-form";
 import { useState } from "react";
-import { useLoginEmailMutation } from "@/hooks/auth/useSignIn";
 import { removeToken, setToken } from "@/lib/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
@@ -32,7 +30,7 @@ import {
   useSignupMutation,
 } from "@/hooks/mutations/auth/useSignup";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import z from "zod";
 import { useTString } from "@/lib/tString";
 import { isSystemDark } from "@/utils/helper/helper";
@@ -64,8 +62,12 @@ const SignupForm = ({ className, ...props }: SignInFormProps) => {
 
   const { mutateAsync: signupMutate, isPending } = useSignupMutation({
     onError: (err) => {
+      if (err.response?.data) {
       const { error } = err.response.data as ErrorResponse;
       toast.error(error || "Invalid email or password!");
+    } else {
+      toast.error("Invalid email or password!");
+    }
     },
   });
 
@@ -92,8 +94,12 @@ const SignupForm = ({ className, ...props }: SignInFormProps) => {
               router.push(`/auth/sign-up/email-verify`);
             },
             onError: (err) => {
-              const { error } = err.response.data as ErrorResponse;
-              toast.error(error.split(":")[1] || error);
+              if (err.response?.data) {
+                const { error } = err.response.data as ErrorResponse;
+                toast.error(error?.split(":")[1] || error || "Invalid email or password!");
+              } else {
+                toast.error("Invalid email or password!");
+              }
               form.reset();
               removeToken();
             },
@@ -198,12 +204,7 @@ const SignupForm = ({ className, ...props }: SignInFormProps) => {
                         placeholder={
                           `${t("login.repeat_password_placeholder")}` as string
                         }
-                        className={cn(
-                          theme === "dark" ||
-                            (theme === "system" && isSystemDark)
-                            ? "bg-gray-700"
-                            : "bg-background"
-                        )}
+                         className="bg-background dark:bg-gray-700"
                         showTogglePassword={true}
                         {...field}
                       />
@@ -224,14 +225,14 @@ const SignupForm = ({ className, ...props }: SignInFormProps) => {
                     components: {
                       orangeText: (chunks) => (
                         <span key="terms-wrapper" className="text-orange-500">
-                          <a
+                          <Link
                             className="underline"
                             target="_blank"
                             href="http://newsmastfoundation.org/terms-conditions/"
                             rel="noopener noreferrer"
                           >
                             {chunks}
-                          </a>
+                          </Link>
                         </span>
                       ),
                     },
@@ -240,7 +241,7 @@ const SignupForm = ({ className, ...props }: SignInFormProps) => {
               </div>
               <Button
                 type="submit"
-                className="w-full bg-orange-900 mt-2"
+                className="w-full bg-orange-900 mt-2 text-foreground"
                 loading={isPending}
               >
                 {t("screen.sign_up")}

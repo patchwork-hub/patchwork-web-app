@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { HashtagDetail } from "@/types/patchwork";
 import { HashtagDetailQueryKey } from "@/types/queries/hashtag.type";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";

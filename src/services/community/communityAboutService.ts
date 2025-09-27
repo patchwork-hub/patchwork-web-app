@@ -4,18 +4,18 @@ import {
   CommunityBio,
   HashtagTimelineResponse,
 } from "@/types/community";
+import { ChannelAbout, ChannelAdditionalInfo, ChannelList } from "@/types/patchwork";
 import {
   GetChannelAboutQueryKey,
   GetChannelAdditionalInfoQueryKey,
   GetChannelDetailQueryKey,
-  GetCommunityDetailQueryKey,
 } from "@/types/queries/channel.type";
-import { CHANNEL_ORG_INSTANCE, DEFAULT_API_URL, DEFAULT_DASHBOARD_API_URL, MASTODON_INSTANCE, MOME_INSTANCE, userOriginInstanceDomain } from "@/utils/constant";
-import { cleanDomain, ensureHttp } from "@/utils/helper/helper";
+import { CHANNEL_ORG_INSTANCE, DEFAULT_DASHBOARD_API_URL, userOriginInstanceDomain } from "@/utils/constant";
+import { cleanDomain } from "@/utils/helper/helper";
 import { QueryFunctionContext } from "@tanstack/react-query";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import Cookies from "js-cookie";
-import { remove } from "lodash";
+
 
 export const fetchCommunityAbout = async (
   qfContext: QueryFunctionContext<GetChannelAboutQueryKey>
@@ -47,9 +47,8 @@ export const getChannelAdditionalInfo = async (
 export const getChannelDetail = async (
   qfContext: QueryFunctionContext<GetChannelDetailQueryKey>
 ) => {
-  const domain = Cookies.get("domain");
   const id = qfContext.queryKey[1].id;
-  const params: Record<string, any> = { 
+  const params: Record<string, unknown> = { 
     domain_name: process.env.DASHBOARD_API_URL || DEFAULT_DASHBOARD_API_URL, 
     isDynamicDomain: true ,
     id
@@ -81,7 +80,7 @@ export const getCommunityBioHashtags = async (
   slug: string,
   domain_name: string
 ) => {
-  const params: Record<string, any> = { 
+  const params: Record<string, unknown> = { 
       domain_name, 
       isDynamicDomain: true ,
     };
@@ -99,7 +98,7 @@ export const getCommunityPeopleToFollow = async (
   slug: string,
   domain_name: string
 ) => {
-  const params: Record<string, any> = { 
+  const params: Record<string, unknown> = { 
       domain_name, 
       isDynamicDomain: true ,
     };
@@ -117,7 +116,7 @@ export const getCommunityDetailProfile = async (
   id: string,
   domain_name: string
 ) => {
-  const params: Record<string, any> = { 
+  const params: Record<string, unknown> = { 
       domain_name, 
       isDynamicDomain: true ,
     };

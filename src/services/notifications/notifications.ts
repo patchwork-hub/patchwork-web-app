@@ -45,7 +45,7 @@ export const saveLastReadIdNotification = async (id: string) => {
   return res.data;
 };
 
-export const getNotifications = async (pageParam: any) => {
+export const getNotifications = async (pageParam: string | undefined | null) => {
   const res = await http.get<Notification[]>("/api/v1/notifications", {
     params: {
       types: ["favourite", "reblog", "follow"],
@@ -60,7 +60,7 @@ export const getNotifications = async (pageParam: any) => {
   } as PaginatedResponse<Notification[]>;
 };
 
-export const getMentionNotifications = async (pageParam: any) => {
+export const getMentionNotifications = async (pageParam: string | undefined | null) => {
   const res = await http.get<Notification[]>("/api/v1/notifications", {
     params: {
       grouped_types: ["favourite", "reblog", "follow"],
@@ -88,7 +88,7 @@ export const getMentionNotifications = async (pageParam: any) => {
   } as PaginatedResponse<Notification[]>;
 };
 
-export const getGroupedNotifications = async (pageParam: any) => {
+export const getGroupedNotifications = async (pageParam: string | undefined | null) => {
   const res = await http.get<GroupedNotificationResults>(
     "/api/v2/notifications",
     {
@@ -106,7 +106,7 @@ export const getGroupedNotifications = async (pageParam: any) => {
   } as PaginatedResponse<GroupedNotificationResults>;
 };
 
-export const getFollowRequestNotifications = async (pageParam: any) => {
+export const getFollowRequestNotifications = async (pageParam: string | undefined | null) => {
   const res = await http.get<Account[]>("/api/v1/follow_requests", {
     params: {
       max_id: pageParam,

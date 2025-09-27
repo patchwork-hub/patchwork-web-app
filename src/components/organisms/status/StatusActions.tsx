@@ -25,7 +25,6 @@ import { useUnfavouriteStatus } from "@/hooks/mutations/status/useUnfavouriteSta
 import { useUnfollowAccount } from "@/hooks/mutations/status/useUnfollowAccount";
 import { useUnmuteAccount } from "@/hooks/mutations/status/useUnmuteAccount";
 import { useCheckAccountRelationship } from "@/hooks/queries/status/useCheckAccountRelationship";
-import { useReportDialogStore } from "@/store/reportDialogStore";
 import Cookies from "js-cookie";
 import {
   Ban,
@@ -46,7 +45,6 @@ import {
   Trash2,
 } from "lucide-react";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 import {
@@ -57,10 +55,11 @@ import {
 import Status from "./Status";
 import { formatNumber } from "@/utils/formatNumber";
 import { useModalAction } from "../modal/modal.context";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import LoginDialog from "./LoginDialog";
 import { cn } from "@/lib/utils";
 import useLoggedIn from "@/lib/auth/useLoggedIn";
+import { useReportDialogStore } from "@/stores/reportDialogStore";
 
 type StatusActionsProps = {
   status: StatusType;
@@ -336,7 +335,7 @@ const DeleteAction: React.FC<{ deleteId: string }> = ({ deleteId }) => {
 const ReplyAction: React.FC<{
   status: StatusType;
   differentOrigin: boolean;
-}> = ({ status, differentOrigin }) => {
+}> = ({ status }) => {
   const [openDialog, setOpenDialog] = useState<boolean>(false);
   const isLoggedIn = useLoggedIn();
 
@@ -381,29 +380,39 @@ export const MuteAction: React.FC<{
   const { t } = useLocale();
 
   const handleMute = () => {
-    if (relationship && relationship.length > 0 && relationship[0].muting) {
-      unmuteMutation.mutate(
-        accountId
-          ? accountId
-          : status.reblog
-          ? status.reblog.account.id
-          : status.account.id
-      );
-    } else {
-      setShowMuteDialog(true);
-    }
-  };
+  if (!status) {
+    return; 
+  }
+
+  const idToMutate = accountId
+    ? accountId
+    : status.reblog
+    ? status.reblog.account.id
+    : status.account.id;
+
+  if (relationship && relationship.length > 0 && relationship[0].muting) {
+    unmuteMutation.mutate(idToMutate);
+  } else {
+    setShowMuteDialog(true);
+  }
+};
 
   const handleMuteSubmit = () => {
-    muteMutation.mutate({
-      id: accountId
-        ? accountId
-        : status.reblog
-        ? status.reblog.account.id
-        : status.account.id,
-    });
-    setShowMuteDialog(false);
-  };
+  if (!status) {
+    return;
+  }
+
+  const idToMutate = accountId
+    ? accountId
+    : status.reblog 
+    ? status.reblog.account.id
+    : status.account.id;
+
+  muteMutation.mutate({
+    id: idToMutate,
+  });
+  setShowMuteDialog(false);
+};
 
   return (
     <>
@@ -659,7 +668,11 @@ const ShareViaAction: React.FC<{ status: StatusType }> = ({ status }) => {
   );
 };
 
-const TranslateAction = ({ handleTranslate }) => {
+type TranslateActionProps = {
+  handleTranslate: () => void;
+};
+
+const TranslateAction: React.FC<TranslateActionProps> = ({ handleTranslate }) => {
   const { t } = useLocale();
   const translateStatus = async () => {
     handleTranslate();
@@ -684,7 +697,6 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
   showEdit,
   handleTranslate,
 }) => {
-  const router = useRouter();
   const { openModal } = useModalAction();
   const [showOptions, setShowOptions] = useState(false);
   const [openDialog, setOpenDialog] = useState<boolean>(false);
@@ -730,7 +742,8 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
               <ShareViaAction status={status} />
               <TranslateAction
                 handleTranslate={() => {
-                  handleTranslate(), setIsPopoverOpen(false);
+                  handleTranslate?.();
+                  setIsPopoverOpen(false);
                 }}
               />
               {ownStatus ? (
@@ -754,16 +767,16 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
                         ? status.reblog.account.id
                         : status.account.id
                     }
-                    relationship={relationship}
+                    relationship={relationship ?? []}
                   />
-                  <MuteAction status={status} relationship={relationship} />
+                  <MuteAction status={status} relationship={relationship ?? []} />
                   <BlockAction
                     accountId={
                       status.reblog
                         ? status.reblog.account.id
                         : status.account.id
                     }
-                    relationship={relationship}
+                    relationship={relationship ?? []}
                   />
                   <ReportAction status={status} />
                 </>

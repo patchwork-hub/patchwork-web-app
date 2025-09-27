@@ -26,15 +26,9 @@ import {
 } from "@/components/atoms/ui/popover";
 import { Button } from "@/components/atoms/ui/button";
 import { ChevronsUpDown } from "lucide-react";
-import {
-  useAuthorizeInstanceMutation,
-  useRequestPermissionToInstanceMutation,
-  useSearchServerInstance,
-} from "@/hooks/auth/useSearchInstance";
 import { formatNumber } from "@/utils/formatNumber";
 import { routeFilter } from "@/utils";
 import { setToken } from "@/lib/auth";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
 import { DEFAULT_REDIRECT_URI } from "@/utils/constant";
 import {
   Dialog,
@@ -46,7 +40,9 @@ import {
 } from "@/components/atoms/ui/dialog";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useAuthorizeInstanceMutation, useRequestPermissionToInstanceMutation, useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 
 interface SignInWithMastodonProps
   extends React.ComponentPropsWithoutRef<"div"> {
@@ -110,16 +106,11 @@ const SignInWithMastodon = ({
           localStorage.removeItem("client_secret");
           localStorage.removeItem("domain");
           toast.success(t("toast.signin_success"));
-
-          // refetch().then(() => {
-          //   refetchJoinedCommunitiesList();
-          // });
           router.refresh();
           router.replace("/");
         }
       },
       onError: (error) => {
-        console.log("error", error);
         const errorMessage =
           error &&
           typeof error === "object" &&
@@ -130,9 +121,8 @@ const SignInWithMastodon = ({
           error.response.data &&
           typeof error.response.data === "object" &&
           "error" in error.response.data
-            ? (error.response.data as any).error
+            ? (error.response.data as { error: string }).error
             : "Authorization failed.";
-        // toast.error(errorMessage);
         setErrorMessage(errorMessage);
         router.push("/auth/sign-in");
       },
@@ -151,19 +141,6 @@ const SignInWithMastodon = ({
       setIsLoading(true);
     }
   }, [instanceData, isRequesting, requestPermission]);
-
-  // useEffect(() => {
-  //   if (token) {
-  //     router.refresh();
-  //     if (favoriteChannelLists?.meta.total >= 5) {
-  //       Cookies.set("signup_step", "success");
-  //       router.push("/home");
-  //     } else {
-  //       Cookies.set("signup_step", "join-communities");
-  //       router.push("/auth/sign-up/join-communities");
-  //     }
-  //   }
-  // }, [favoriteChannelLists]);
 
   // Handle authorization on page load (callback from Mastodon)
   useEffect(() => {

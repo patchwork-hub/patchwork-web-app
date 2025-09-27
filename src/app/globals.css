@@ -2,6 +2,97 @@
 @import "tw-animate-css";
 
 @custom-variant dark (&:is(.dark *));
+@theme {
+  --font-sans: "Inter", ui-sans-serif, system-ui, sans-serif,
+    "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+
+  --color-white: #ffffff;
+  --color-primary-50: #f2f8ff;
+  --color-tab: #969696;
+  --color-secondary: #222222;
+
+  --color-primary: #0d0d0d;
+  --color-lilac: #c8a2c8;
+  --color-yellow-50: #fffbe9;
+  --color-yellow-100: #fff4ba;
+  --color-yellow-200: #ffe14e;
+  --color-yellow-300: #ffd60a;
+  --color-yellow-400: #ffcc00;
+  --color-yellow-500: #ffbf00;
+  --color-yellow-600: #ffad00;
+  --color-yellow-700: #ff9a00;
+  --color-yellow-800: #ff8500;
+  --color-yellow-900: #ff6f00;
+
+  --color-red-50: #ffe8e8;
+  --color-red-100: #ffcccc;
+  --color-red-200: #ff9696;
+  --color-red-300: #ff6666;
+  --color-red-400: #ff3333;
+  --color-red-500: #ff1a1a;
+  --color-red-600: #e81818;
+  --color-red-700: #e60000;
+  --color-red-800: #b30000;
+  --color-red-900: #990000;
+
+  --color-orange-50: #fff4e5;
+  --color-orange-100: #ffe0b3;
+  --color-orange-200: #ffcc80;
+  --color-orange-300: #ffb84d;
+  --color-orange-400: #ffa31a;
+  --color-orange-500: #e43d26;
+  --color-orange-600: #e67e00;
+  --color-orange-700: #cc7000;
+  --color-orange-800: #b36200;
+  --color-orange-900: #d24a34;
+  --color-light-orange: #FF7C64;
+  --color-mome-orange: #f97476;
+  
+
+  --color-gray-50: #f7f7f7;
+  --color-gray-100: #f2f6ff;
+  --color-gray-200: #e5e7eb;
+  --color-gray-300: #d2d6dc;
+  --color-gray-500: #3d474c;
+  --color-gray-600: #4b4b4b;
+  --color-gray-700: #3d3d3d;
+  --color-gray-800: #2e363b;
+  --color-gray-900: #1e1e1e;
+
+  --color-lime-50: #f7fee7;
+  --color-lime-100: #ecfccb;
+  --color-lime-200: #d9f99d;
+  --color-lime-300: #bef264;
+  --color-lime-400: #a3e635;
+  --color-lime-500: #84cc16;
+  --color-lime-600: #65a30d;
+  --color-lime-700: #4d7b0b;
+  --color-lime-800: #3f6212;
+  --color-lime-900: #365314;
+
+  --color-green-50: #ecfae6;
+  --color-green-100: #dcfce7;
+  --color-green-200: #bbf7d0;
+  --color-green-300: #86efac;
+  --color-green-400: #4ade80;
+  --color-green-500: #22c55e;
+  --color-green-600: #16a34a;
+  --color-green-700: #03B5AA;
+  --color-green-800: #3fbc00;
+  --color-green-900: #319300;
+
+  --color-blue-50: #e2eeff;
+  --color-blue-100: #b7ccff;
+  --color-blue-200: #95b3ff;
+  --color-blue-300: #8fc1ff;
+  --color-blue-400: #3c7aff;
+  --color-blue-500: #1859ff;
+  --color-blue-600: #0c4ecd;
+  --color-blue-700: #0838a6;
+  --color-blue-800: #052a84;
+  --color-blue-900: #031f67;
+}
+
 
 @theme inline {
   --color-background: var(--background);
@@ -112,11 +203,173 @@
   --sidebar-ring: oklch(0.556 0 0);
 }
 
+.dark {
+  --background: hsl(0 0% 9%);
+  --foreground: hsl(0 0% 98%);
+  --light-gray:#96A6C2
+}
+html .loaded {
+  transition: color 200ms, background-color 200ms !important;
+}
+html,
+body {
+  @apply bg-background transition-colors duration-200 ease-in-out;
+  transition-property: background-color;
+  transition-duration: 200ms;
+  transition-timing-function: ease-in-out;
+}
+
+
 @layer base {
   * {
     @apply border-border outline-ring/50;
   }
+
   body {
     @apply bg-background text-foreground;
+  }
+}
+
+@layer utilities {
+  .card-primary {
+    @apply bg-background text-foreground border-gray-700;
+  }
+}
+
+@layer components {
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    float: left;
+    @apply text-foreground pointer-events-none h-0 opacity-50;
+  }
+}
+
+.skeleton-loader {
+  width: 144px;
+  height: 152px;
+  border-radius: 8px;
+  background: linear-gradient(90deg, #e0e0e0 25%, #f0f0f0 50%, #e0e0e0 75%);
+  background-size: 200% 100%;
+  animation: shimmer 1.5s linear infinite;
+}
+
+@keyframes shimmer {
+  0% {
+    background-position: -200% 0;
+  }
+
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+@keyframes slide {
+  0% {
+    background-position: 200% 50%;
+  }
+
+  100% {
+    background-position: 0% 50%;
+  }
+}
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0;
+  }
+
+  100% {
+    opacity: 0.5;
+  }
+}
+
+.custom-slide {
+  background: linear-gradient(
+    to right,
+    #c0d2f0 20%,
+    #d8e4f7 40%,
+    #a8c4d9 60%,
+    #c0d2f0 80%
+  );
+  background-size: 200% 100%;
+  animation: slide 1.5s linear infinite, fadeIn 0.3s ease-in 0.1s forwards;
+}
+
+.scrollbar-hide {
+  -ms-overflow-style: none;  /* IE and Edge */
+  scrollbar-width: none;  /* Firefox */
+}
+
+.scrollbar-hide::-webkit-scrollbar {
+  display: none;  /* Chrome, Safari and Opera */
+}
+
+.CircularProgressbar-text {
+  fill: var(--color-orange-500) !important;
+}
+
+.CircularProgressbar .CircularProgressbar-path {
+  stroke: var(--color-orange-900) !important;
+}
+
+@supports (anchor-name: --tooltip-anchor) {
+  /* Wrapper for elements with tooltips */
+  [data-tooltip] {
+    position: relative;
+    anchor-name: --tooltip-anchor;
+    display: inline-block;
+    /* Ensures proper anchoring */
+  }
+
+  /* Tooltip content */
+  [data-tooltip]::after {
+    /* Content from data-tooltip attribute */
+    content: attr(data-tooltip);
+
+    /* Positioning relative to the anchor */
+    position: absolute;
+    position-anchor: --tooltip-anchor;
+    position-area: bottom center;
+    margin-top: 12px;
+    /* Gap between trigger and tooltip */
+
+    /* Styling */
+    background-color: #333;
+    color: #fff;
+    padding: 6px 12px;
+    border-radius: 4px;
+    font-size: 14px;
+    white-space: nowrap;
+    z-index: 1000;
+
+    /* Initial state: hidden */
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(calc(anchor-size(height)));
+    transition: opacity 0.2s ease, visibility 0.2s ease, transform 0.2s ease;
+
+    /* Delay for showing */
+    transition-delay: 0.3s;
+    /* 300ms delay, adjustable */
+  }
+
+  /* Show tooltip on hover */
+  [data-tooltip]:hover::after {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0);
+  }
+}
+
+/* Fallback for browsers without anchor-positioning support */
+@supports not (anchor-name: --tooltip-anchor) {
+  [data-tooltip]::after {
+    top: 100%;
+    left: 50%;
+    transform: translateX(-50%) translateY(4px);
+  }
+
+  [data-tooltip]:hover::after {
+    transform: translateX(-50%) translateY(0);
   }
 }

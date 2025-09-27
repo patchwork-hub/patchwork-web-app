@@ -1,8 +1,9 @@
-import { Switch } from "../atoms/ui/switch";
+
 import { useGetEmailStatus } from "@/hooks/queries/notifications/useGetEmailStatus";
 import { useUpdateEmail } from "@/hooks/mutations/notifications/useUpdateEmail";
-import { useAuthStore } from "@/store/auth/authStore";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useLocale } from "@/providers/localeProvider";
+import { Switch } from "@/components/atoms/ui/switch";
 
 export const ReceiveEmailNotification = () => {
   const { access_token } = useAuthStore();
@@ -14,7 +15,7 @@ export const ReceiveEmailNotification = () => {
       {t("setting.receive_email_notification")}
       <Switch
         checked={emailStatus?.data}
-        onCheckedChange={(checked) => updateEmailNoti(checked)}
+        onCheckedChange={(checked: boolean) => updateEmailNoti(checked)}
         className="data-[state=checked]:bg-orange-500 dark:data-[state=unchecked]:bg-gray-400/90"
         thumbClassName="dark:data-[state=checked]:bg-white"
       />

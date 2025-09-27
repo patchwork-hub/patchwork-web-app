@@ -18,6 +18,7 @@ import { UploadMediaMutation } from "@/hooks/mutations/status/useUploadMedia";
 import { cn } from "@/lib/utils";
 import { useTheme } from "next-themes";
 import { toast } from "sonner";
+import Image from "next/image";
 
 type MediaPreviewProps = {
   mediaAttachments: Media[];
@@ -79,7 +80,7 @@ export const MediaPreview: FC<MediaPreviewProps> = ({
   };
 
   const handleCropComplete = async () => {
-    if (!cropperRef.current) return;
+     if (!cropperRef.current || currentImageIndex === null) return;
 
     try {
       const canvas = cropperRef.current.getCroppedCanvas({
@@ -121,7 +122,7 @@ export const MediaPreview: FC<MediaPreviewProps> = ({
   };
 
   const handleRemoveImage = (index: number) => {
-    const filterFn = (_, i) => i !== index;
+    const filterFn: (value: unknown, i: number) => boolean = (_, i: number): boolean => i !== index;
     setMedia(media.filter(filterFn));
     setMediaLocalUrls(mediaLocalUrls.filter(filterFn));
     setAltTexts(altTexts.filter(filterFn));
@@ -154,7 +155,7 @@ export const MediaPreview: FC<MediaPreviewProps> = ({
       updateMedia({
         id: media[currentImageIndex!]?.id,
         description: altTexts[currentImageIndex!],
-      }).then((_) => setShowImageModal(false))
+      }).then(() => setShowImageModal(false))
       .catch((error) => {
         toast.error(error.response.data.error+"." || "Failed to update media description. Please try again.");
       });
@@ -183,7 +184,7 @@ export const MediaPreview: FC<MediaPreviewProps> = ({
                 ".png"
               )) && (
               <div className="relative w-full sm:w-[360px] aspect-video">
-                <img
+                <Image
                   src={localUrl}
                   alt={altTexts[index] || ""}
                   className="w-full sm:w-[360px] aspect-video object-cover border border-gray-300 rounded-md"
@@ -293,7 +294,7 @@ export const MediaPreview: FC<MediaPreviewProps> = ({
                   <div className="h-[24rem] w-full">
                     <div className="relative h-full w-full overflow-hidden">
                       {currentImageIndex !== null && (
-                        <img
+                        <Image
                           ref={imageRef}
                           src={
                             mediaLocalUrls[currentImageIndex]?.startsWith(

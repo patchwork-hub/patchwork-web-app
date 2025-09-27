@@ -1,4 +1,5 @@
-import { Locale } from "@/lib/i18n";
+import { Locale } from "@/lib/locale/i18n";
+
 
 export interface UserLocaleParams {
   lang: Locale;
@@ -15,7 +16,7 @@ export interface UserLocaleResponse {
 export interface ApiError {
   message: string;
   code?: number;
-  details?: any;
+  details?: unknown;
 }
 
 export interface AxiosErrorResponse {

@@ -1,13 +1,23 @@
 import { createNewPost, CreatePostParams } from '@/services/status/statuses';
 import { ErrorResponse } from '@/types/error';
 import { Context, Status } from '@/types/status';
-import { QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
+import { InfiniteData, QueryClient, useMutation, useQueryClient } from '@tanstack/react-query';
 import { AxiosError } from 'axios';
+
+type PaginatedStatuses ={
+  statuses: Status[];
+  [key: string]: unknown;
+}
+type SnapshotType = [
+  ReturnType<QueryClient['getQueriesData']>,
+  ReturnType<QueryClient['getQueriesData']>,
+  ReturnType<QueryClient['getQueriesData']>
+] | undefined;
 
 export const useCreateStatus = () => {
     const queryClient = useQueryClient();
 
-    return useMutation<Status, AxiosError<ErrorResponse>, CreatePostParams>({
+    return useMutation<Status, AxiosError<ErrorResponse>, CreatePostParams, SnapshotType>({
         mutationFn: createNewPost,
         mutationKey: ['newStatus'],
         onMutate: async ({ formData }) => {
@@ -42,7 +52,7 @@ export const useCreateStatus = () => {
                 previousContextData
             ];
         },
-        onError: (err, variables, snapshot: ReturnType<QueryClient['getQueriesData']>[]) => {
+        onError: (err, variables, snapshot) => {
             snapshot?.forEach((it) => {
                 it?.forEach(([key, data]) => {
                     queryClient.setQueryData(key, data);
@@ -57,12 +67,12 @@ export const useCreateStatus = () => {
     });
 };
 
-const getReplyStatusListUpdaterFn = (id: string) => (old: any) => {
-    if (!old || !old.pages) return old;
+const getReplyStatusListUpdaterFn = (id: string) => (old: InfiniteData<PaginatedStatuses> | undefined) => {
+     if (!old?.pages) return old;
 
-    const pages = old.pages.map((page: any) => ({
+    const pages = old.pages.map((page: PaginatedStatuses) => ({
         ...page,
-        statuses: page.statuses.map(getUpdater(id)),
+        statuses: page.statuses?.map(getUpdater(id)) || [],
     }));
 
     return {

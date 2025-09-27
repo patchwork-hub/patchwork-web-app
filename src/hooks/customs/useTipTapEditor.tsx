@@ -3,14 +3,14 @@ import Placeholder from "@tiptap/extension-placeholder";
 import { EditorContent, useEditor } from "@tiptap/react";
 import StarterKit from "@tiptap/starter-kit";
 import { useEffect, useRef, useState } from "react";
-import HashtagHighlight from "../extensions/HashTagHighlight";
-import { MastodonEmojiExtension } from "../extensions/MastodonEmojiExtension";
-import { MentionExtension } from "../extensions/MentionExtension";
-import { useCustomEmojiStore } from "../store/useCustomEmojiStore";
-import { MastodonCustomEmoji } from "../tools/Emoji";
-import { getCharCount } from "../utils/getCharCount";
 import { cn } from "@/lib/utils";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
+import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
+import { getCharCount } from "@/components/organisms/compose/utils/getCharCount";
+import HashtagHighlight from "@/components/organisms/compose/extensions/HashTagHighlight";
+import { MastodonEmojiExtension } from "@/components/organisms/compose/extensions/MastodonEmojiExtension";
+import { MentionExtension } from "@/components/organisms/compose/extensions/MentionExtension";
 
 type PropsType = {
   content?: string;
@@ -21,7 +21,7 @@ type PropsType = {
   placeholder?: string;
   disableMentions?: boolean;
   onPressEnter?: () => void;
-  onClick?: (e: any) => void;
+  onClick?: (e: React.MouseEvent) => void;
   maxLength?: number;
   hashtagClassName?: string;
   emojis?: MastodonCustomEmoji[];
@@ -45,7 +45,7 @@ export const useTipTapEditor = ({
   onClick,
 }: PropsType) => {
   const [shouldCollapse, setShouldCollapse] = useState(false);
-  const {t} = useLocale();
+  const { t } = useLocale();
   const { emojis: customEmojis = [] } = useCustomEmojiStore();
   const editorRef = useRef<HTMLDivElement>(null);
   const [expanded, setExpanded] = useState(false);
@@ -53,7 +53,7 @@ export const useTipTapEditor = ({
   const editor = useEditor({
     immediatelyRender: false,
     extensions: [
-      StarterKit.configure({ history: false }),
+      StarterKit.configure({}),
       Link.configure({
         HTMLAttributes: {
           class: "[&:not(.hashtag)]:text-orange-500 break-all text-lilac",
@@ -103,13 +103,17 @@ export const useTipTapEditor = ({
   useEffect(() => {
     if (editor && content) {
       const doc = new DOMParser().parseFromString(content, "text/html");
-      
+
       const links = doc.querySelectorAll("a");
       links.forEach((link) => {
         const href = link.getAttribute("href");
         const linkText = link.textContent?.trim();
-        
-        if (href && linkText && (linkText === href || linkText.startsWith("http"))) {
+
+        if (
+          href &&
+          linkText &&
+          (linkText === href || linkText.startsWith("http"))
+        ) {
           try {
             const url = new URL(href);
             let cleanText = url.hostname + url.pathname + url.search + url.hash;
@@ -118,17 +122,17 @@ export const useTipTapEditor = ({
             }
             link.textContent = cleanText;
           } catch (e) {
-            console.log(e)
+            console.log(e);
           }
         }
       });
-      
+
       const paragraphs = doc.querySelectorAll("p");
       paragraphs.forEach((p) => {
         const hasText = p.textContent?.trim() !== "";
         const hasElements = p.children.length > 0;
         const hasBreaks = p.innerHTML.includes("<br>");
-        
+
         if (!hasText && !hasElements && !hasBreaks) {
           p.remove();
         }

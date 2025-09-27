@@ -2,24 +2,24 @@
 import { ReportDialog } from "@/components/organisms/report/ReportDialog";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { getToken, removeToken } from "@/lib/auth";
-import { useAuthStoreAction } from "@/store/auth/authStore";
-import { useReportDialogStore } from "@/store/reportDialogStore";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
 import { useEffect } from "react";
-import BottomTabNavigator from "../atoms/common/BottomTabNavigator";
-import SidebarNavigator from "../molecules/sidebar-navigator";
+import SidebarNavigator from "../molecules/SidebarNavigator";
 import RightSidebar from "../molecules/RightSidebar";
-import { useCustomEmojis } from "../organisms/compose/hooks/useCustomEmojis";
 import { useTheme } from "next-themes";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { Locale } from "@/lib/locale/i18n";
 import { cn } from "@/lib/utils";
 import { isSystemDark } from "@/utils/helper/helper";
 import { useUserPreferences } from "@/hooks/mutations/locale/useUserPreferences";
-import { set } from "lodash";
 import useLoggedIn from "@/lib/auth/useLoggedIn";
+import { useAuthStoreAction } from "@/stores/auth/authStore";
+import { useReportDialogStore } from "@/stores/reportDialogStore";
+import BottomTabNavigator from "../molecules/common/BottomTabNavigator";
+import { useCustomEmojis } from "@/hooks/customs/useCustomEmojis";
+import { useLocale } from "@/providers/localeProvider";
 
 export default function LayoutContainer({
   children,
@@ -42,7 +42,7 @@ export default function LayoutContainer({
   const queryClient = useQueryClient();
 
   const handleLogout = async () => {
-    setAuthToken(null);
+    setAuthToken("");
     localStorage.removeItem("fcmToken");
     removeToken();
     queryClient.clear();
@@ -52,7 +52,7 @@ export default function LayoutContainer({
 
   useEffect(() => {
     if (!token || !domain) {
-      setAuthToken(null);
+      setAuthToken("");
       return;
     }
 
@@ -70,7 +70,11 @@ export default function LayoutContainer({
 
   useEffect(() => {
     if (preferences && !isPreferencesLoading) {
-      setLocale(preferences?.["posting:default:language"]);
+      setLocale(
+        (preferences as unknown as Record<string, unknown>)?.[
+          "posting:default:language"
+        ] as Locale
+      );
     }
   }, [preferences]);
 

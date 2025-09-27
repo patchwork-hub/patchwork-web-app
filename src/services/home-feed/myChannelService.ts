@@ -4,13 +4,14 @@ import { AxiosResponse } from "axios";
 import { cleanDomain, handleError } from "@/utils/helper/helper";
 import { GetMyChannelQueryKey } from "@/types/queries/channel.type";
 import { CHANNEL_ORG_INSTANCE, userOriginInstanceDomain } from "@/utils/constant";
+import { MyChannel } from "@/types/patchwork";
 
 export const getMyChannel = async (
   qfContext: QueryFunctionContext<GetMyChannelQueryKey>
 ) => {
   const { domain_name } = qfContext.queryKey[1];
   try {
-    const params: Record<string, any> = { 
+    const params: Record<string, unknown> = { 
       domain_name, 
       isDynamicDomain: true 
     };

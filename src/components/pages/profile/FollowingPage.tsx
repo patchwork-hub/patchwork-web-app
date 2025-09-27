@@ -1,6 +1,6 @@
 "use client";
 import Header from "@/components/atoms/common/Header";
-import SocialConnections from "@/components/template/profile/SocialConnections";
+import SocialConnections from "@/components/templates/profile/SocialConnections";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
 import { useFollowingAccountsQuery } from "@/hooks/queries/useFollowingAccount";
 import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";

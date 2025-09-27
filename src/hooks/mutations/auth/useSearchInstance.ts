@@ -43,7 +43,16 @@ export const useRequestPermissionToInstanceMutation = (
     }
   >
 ) => {
-  return useMutation({ mutationFn: requestInstance, ...options });
+  return useMutation({
+    mutationFn: async (args: { domain: string }) => {
+      const result = await requestInstance(args);
+      if (!result) {
+        throw new Error("No response from requestInstance");
+      }
+      return result;
+    },
+    ...options
+  });
 };
 
 export const useAuthorizeInstanceMutation = (

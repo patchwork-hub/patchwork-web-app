@@ -21,7 +21,7 @@ export const useFollowAccount = () => {
 
             return previousData;
         },
-        onError: (err, id, snapshot: any) => {
+        onError: (err, id, snapshot) => {
             if (snapshot) {
                 queryClient.setQueryData(['accountRelationship', id], snapshot);
             }

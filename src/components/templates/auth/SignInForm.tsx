@@ -21,20 +21,20 @@ import { createSchemas } from "@/lib/schema/validations";
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import SignInWithMastodon from "./SignInMastodonForm";
-import { useLoginEmailMutation } from "@/hooks/auth/useSignIn";
 import { removeToken, setToken } from "@/lib/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { ErrorResponse } from "@/types/error";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
-import { useTString } from "@/lib/tString";
-import { useAuthStore, useAuthStoreAction } from "@/store/auth/authStore";
 import { isSystemDark } from "@/utils/helper/helper";
 import { useQueryClient } from "@tanstack/react-query";
 import { Modal } from "@/components/atoms/ui/modal";
+import { useAuthStore, useAuthStoreAction } from "@/stores/auth/authStore";
+import { useTString } from "@/lib/tString";
+import { useLoginEmailMutation } from "@/hooks/mutations/auth/useSignIn";
+import { AxiosError } from "axios";
 
 interface SignInFormProps extends React.ComponentPropsWithoutRef<"div"> {
   className?: string;
@@ -69,7 +69,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
     });
 
   const handleLogout = async () => {
-    setAuthToken(null);
+    setAuthToken("");
     localStorage.removeItem("fcmToken");
     removeToken();
     queryClient.clear();
@@ -86,16 +86,20 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
           router.replace("/");
         } else if (result.error) {
           toast.error(
-            (result.error as any)?.message ||
+            (result.error as { message: string })?.message ||
               "Verification failed. Please confirm your email."
           );
           handleLogout();
         }
-      } catch (err: any) {
-        toast.error(err?.response?.data?.message || "Verification failed");
+      } catch (err) {
+        if (err instanceof AxiosError) {
+          toast.error(err.response?.data?.message || "Verification failed");
+        } else {
+          toast.error("An unknown error occurred during verification.");
+        }
       }
     },
-    onError: (err) => {
+    onError: () => {
       setIsOpen(true);
     },
   });
@@ -106,7 +110,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
 
   useEffect(() => {
     if (code) {
-      setSignInWithMastodon(true);
+      setSignInWithMastodon?.(true);
     }
   }, [code]);
 
@@ -145,12 +149,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
                             `${t("login.email_placeholder")}` as string
                           }
                           {...field}
-                          className={cn(
-                            theme === "dark" ||
-                              (theme === "system" && isSystemDark)
-                              ? "bg-gray-700"
-                              : "bg-background"
-                          )}
+                          className="bg-background dark:bg-gray-700"
                         />
                       </FormControl>
                     </FormItem>
@@ -185,7 +184,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
                 <div className="space-y-4">
                   <Button
                     type="submit"
-                    className="w-full bg-orange-900"
+                    className="w-full bg-orange-900 text-foreground"
                     loading={isPending || isVerifyAuthTokenFetching}
                   >
                     {t("login.sign_in")}
@@ -196,7 +195,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
                     className={cn(
                       "w-full bg-background text-foreground border hover:bg-background"
                     )}
-                    onClick={() => setSignInWithMastodon(true)}
+                    onClick={() => setSignInWithMastodon?.(true)}
                   >
                     {t("login.mastodon_login")}
                   </Button>

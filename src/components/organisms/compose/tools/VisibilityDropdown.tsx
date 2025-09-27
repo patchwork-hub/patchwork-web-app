@@ -13,8 +13,7 @@ import { TooltipContent } from "@/components/atoms/ui/tooltip";
 import { Tooltip } from "@/components/atoms/ui/tooltip";
 import { TooltipTrigger } from "@/components/atoms/ui/tooltip";
 import { cn } from "@/lib/utils";
-import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 
 export const visibilities: Record<Visibility, string> = {
   public: "Anyone",
@@ -37,10 +36,9 @@ export const VisibilityDropdown: FC<{
   const [selectedItem, setSelectedItem] = useState<Visibility>("public");
   const {t} = useLocale();
   const { setVisibility } = useVisibilityStore();
-  const { theme } = useTheme();
   useEffect(() => {
     setVisibility(defaultVisibility);
-  }, [defaultVisibility]);
+  }, [defaultVisibility, setVisibility]);
 
   const SelectedIcon = visibilityIcons[selectedItem];
 
@@ -64,19 +62,20 @@ export const VisibilityDropdown: FC<{
         </TooltipContent>
       </Tooltip>
       <DropdownMenuContent className="bg-background text-foreground shadow-md">
-        {Object.keys(visibilities).map((option: Visibility) => {
-          const Icon = visibilityIcons[option];
+        {Object.keys(visibilities).map((option) => {
+          const visibilityOption = option as Visibility;
+          const Icon = visibilityIcons[visibilityOption];
           return (
             <DropdownMenuItem
-              key={option}
+              key={visibilityOption}
               onClick={() => {
-                setVisibility(option);
-                setSelectedItem(option);
+                setVisibility(visibilityOption);
+                setSelectedItem(visibilityOption);
               }}
             >
               <Icon />
-               {t(`timeline.visibility.${option}`)}
-              {selectedItem === option && (
+               {t(`timeline.visibility.${visibilityOption}`)}
+              {selectedItem === visibilityOption && (
                 <CircleCheck className="text-orange-500 ml-2" />
               )}
             </DropdownMenuItem>

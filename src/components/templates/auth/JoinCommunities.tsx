@@ -12,12 +12,10 @@ import {
   useUnFavouriteCommunityChannel,
 } from "@/hooks/mutations/community/useToggleFavouriteChannel";
 import { useGetNewsmastChannelList } from "@/hooks/queries/useNewsmastChannel.query";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { User, UserPlus } from "lucide-react";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useJoinedCommunitiesList } from "@/hooks/queries/useFavouriteChannelList.query";
-import { useAuthStore } from "@/store/auth/authStore";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import ChoosePrimaryCommunity from "./ChoosePrimaryCommunity";
 import { cn } from "@/lib/utils";
@@ -26,6 +24,7 @@ import Cookies from "js-cookie";
 import { getToken } from "@/lib/auth";
 import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useAuthStore } from "@/stores/auth/authStore";
 
 const JoinCommunities: React.FC = () => {
   const domain_name = Cookies.get("domain") ?? DEFAULT_API_URL;

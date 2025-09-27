@@ -21,7 +21,7 @@ export const useUnfollowAccount = () => {
 
             return previousData;
         },
-        onError: (err, id, snapshot: any) => {
+        onError: (err, id, snapshot) => {
             if (snapshot) {
                 queryClient.setQueryData(['accountRelationship', id], snapshot);
             }

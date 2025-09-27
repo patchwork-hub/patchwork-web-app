@@ -19,7 +19,7 @@ import { setToken } from "@/lib/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { useResetPasswordMutation } from "@/hooks/auth/useResetPassword";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
 

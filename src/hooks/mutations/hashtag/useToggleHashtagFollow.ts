@@ -5,7 +5,7 @@ interface HashtagDetail {
   id: string;
   name: string;
   url: string;
-  history: any[];
+  history: unknown[];
   following: boolean;
 }
 

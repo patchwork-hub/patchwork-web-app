@@ -1,7 +1,7 @@
+import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
 import { getCustomEmojis } from "@/services/custom_emojis/emojis";
 import { useQuery } from "@tanstack/react-query";
 import { useEffect } from "react";
-import { useCustomEmojiStore } from "../store/useCustomEmojiStore";
 
 export function useCustomEmojis() {
 

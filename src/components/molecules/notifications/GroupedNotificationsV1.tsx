@@ -10,13 +10,14 @@ import {
 import Status from "@/components/organisms/status/Status";
 import TimeAgo from "@/utils/helper/timeAgo";
 import { useNotifications } from "@/hooks/queries/notifications/useNotifications";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { DisplayName } from "../atoms/common/DisplayName";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { DisplayName } from "../common/DisplayName";
+import Image from "next/image";
 
 const GroupedNotificationsV1 = () => {
   const {
@@ -66,7 +67,7 @@ const GroupedNotificationsV1 = () => {
             <div className="flex-1">
               <div className="flex items-center">
                 <Link href={`/@${notification.account.acct}`}>
-                  <img
+                  <Image
                     src={notification.account.avatar}
                     alt={notification.account.username}
                     className="w-9 h-9 rounded-full mr-2"

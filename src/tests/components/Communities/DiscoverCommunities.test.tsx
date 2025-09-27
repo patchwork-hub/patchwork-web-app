@@ -2,7 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
 import { useGetNewsmastChannelList } from "@/hooks/queries/useNewsmastChannel.query";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
+
 import { useSetPrimaryChannel } from "@/hooks/queries/useSetPrimary.query";
 import {
   useFavouriteCommunityChannel,
@@ -10,6 +10,7 @@ import {
 } from "@/hooks/mutations/community/useToggleFavouriteChannel";
 import { toast } from "sonner";
 import DiscoverCommunitiesLayout from "@/app/discover-communities/page";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 
 vi.mock("@/hooks/queries/useNewsmastChannel.query");
 vi.mock("@/hooks/auth/useSearchInstance");

@@ -1,8 +1,8 @@
 import React from "react";
 import AccountName from "./AccountName";
 import UserName from "./UserName";
-import { useTipTapEditor } from "../compose/hooks/useTipTapEditor";
 import { MastodonCustomEmoji } from "../compose/tools/Emoji";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 
 type VerticalInfoProps = {
   accountName: string;

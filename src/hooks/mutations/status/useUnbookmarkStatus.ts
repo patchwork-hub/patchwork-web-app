@@ -5,11 +5,38 @@ import {
 import { ErrorResponse } from "@/types/error";
 import { Status } from "@/types/status";
 import {
+  InfiniteData,
   QueryClient,
   useMutation,
   useQueryClient,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+
+type SnapshotType = [
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>
+];
+
+type PaginatedStatuses = {
+  statuses: Status[] | { data: Status[] };
+  [key: string]: unknown;
+}
+
+type ContextData = {
+  ancestors: Status[];
+  descendants: Status[];
+  [key: string]: unknown;
+}
+
+type SearchData = {
+  accounts: unknown[];
+  statuses: Status[];
+  hashtags: unknown[];
+  [key: string]: unknown;
+}
+
 
 export const useUnbookmarkStatus = () => {
   const queryClient = useQueryClient();
@@ -23,7 +50,7 @@ export const useUnbookmarkStatus = () => {
     },
   };
 
-  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams>({
+  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams, SnapshotType>({
     mutationFn: unbookmarkStatus,
     ...commonMutationConfig,
     onMutate: async ({ id }) => {
@@ -80,7 +107,7 @@ export const useUnbookmarkStatus = () => {
     onError: (
       err,
       { id },
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
+      snapshot
     ) => {
       snapshot?.forEach((it) => {
         it?.forEach(([key, data]) => {
@@ -91,10 +118,10 @@ export const useUnbookmarkStatus = () => {
   });
 };
 
-const getUnbookmarkUpdaterFn = (id: string) => (old: any) => {
+const getUnbookmarkUpdaterFn = (id: string) => (old: InfiniteData<PaginatedStatuses> | undefined) => {
   if (!old || !old.pages) return old;
 
-  const pages = old.pages.map((page: any) => {
+  const pages = old.pages.map((page: PaginatedStatuses) => {
     const statusesArray = Array.isArray(page.statuses)
       ? page.statuses
       : page.statuses?.data;
@@ -116,7 +143,7 @@ const getUnbookmarkUpdaterFn = (id: string) => (old: any) => {
     pageParams: old.pageParams,
   };
 };
-const getUnbookmarkContextUpdaterFn = (id: string) => (old: any) => {
+const getUnbookmarkContextUpdaterFn = (id: string) => (old: ContextData | undefined) => {
   if (!old) return old;
   return {
     ancestors: old.ancestors.map(getUpdater(id)),
@@ -126,7 +153,7 @@ const getUnbookmarkContextUpdaterFn = (id: string) => (old: any) => {
 
 const getBookmarkSearchUpdaterFn =
   (id: string) =>
-  (old: { accounts: any[]; statuses: Status[]; hashtags: any[] }) => {
+  (old: SearchData | undefined)  => {
     if (!old) return old;
     return {
       ...old,

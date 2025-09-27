@@ -5,15 +5,11 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/atoms/ui/dialog";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/atoms/ui/popover";
 import { cn } from "@/lib/utils";
 import { Media } from "@/types/status";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
+import Image from "next/image";
 import React, { useState } from "react";
 
 type MediaAttachmentPreviewProps = {
@@ -44,15 +40,16 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
   return (
     <div className={cn("relative w-full bg-background rounded-md", className)}>
       {media.type === "image" ? (
-        <img
-          src={media.preview_url}
-          alt={media.description}
-          aria-label={media.description}
-          className={cn(
-            "w-full h-full object-cover max-h-[350px] rounded-md cursor-pointer"
-          )}
-          onClick={handleImageClick}
-        />
+        <div className={cn("relative w-full h-[350px] bg-background rounded-md", className)}>
+          <Image
+            src={media.preview_url}
+            alt={media.description??"media preview"}
+            aria-label={media.description}
+            fill
+            className="object-cover rounded-md cursor-pointer"
+            onClick={handleImageClick}
+          />
+        </div>
       ) : (
         <video
           aria-label={media.description}
@@ -100,7 +97,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
         <div className="absolute inset-0 rounded-md backdrop-blur-lg flex items-center justify-center">
           <button
             onClick={() => setViewSensitive(false)}
-            className="bg-gray-800 text-[#fff] px-4 py-2 rounded-md hover:bg-gray-700 focus:outline-none"
+            className="bg-gray-800 text-white px-4 py-2 rounded-md hover:bg-gray-700 focus:outline-none"
           >
             <strong>Sensitive content</strong>
             <br />
@@ -116,7 +113,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
           onClick={closeImageViewer}
         >
           <div className="max-w-[90vw] max-h-[90vh]">
-            <img
+            <Image
               src={media.url || media.preview_url}
               alt={media.description}
               aria-label={media.description}
@@ -125,7 +122,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
           </div>
           <button
             onClick={closeImageViewer}
-            className="fixed top-4 right-4 bg-gray-800 text-[#fff] px-2 py-1 rounded-md hover:bg-gray-700 focus:outline-none"
+            className="fixed top-4 right-4 bg-gray-800 text-white px-2 py-1 rounded-md hover:bg-gray-700 focus:outline-none"
             aria-label="Close image viewer"
           >
             ✕

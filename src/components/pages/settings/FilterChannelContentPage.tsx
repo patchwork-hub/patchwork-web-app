@@ -2,7 +2,7 @@
 import Header from "@/components/atoms/common/Header";
 import { Button } from "@/components/atoms/ui/button";
 import { Checkbox } from "@/components/atoms/ui/checkbox";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import ContributorProfile from "@/components/organisms/settings/ContributorProfile";
 import HorizontalItemRenderer from "@/components/organisms/settings/HorizontalItemRenderer";
 import { useChangeChannelPostsType } from "@/hooks/mutations/profile/useChannelContent";
@@ -15,7 +15,7 @@ import {
 import React, { useState } from "react";
 import { toast } from "sonner";
 import ContributorDialog from "@/components/organisms/settings/ContributorDialog";
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 import FilterKeywordItem from "@/components/organisms/settings/FilterKeywordItem";
 import FilterOutKeywordModal from "@/components/organisms/settings/FilterOutKeywordDialog";
 

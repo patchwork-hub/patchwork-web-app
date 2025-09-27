@@ -3,16 +3,24 @@ import { UseQueryOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import { DEFAULT_API_URL } from "../constant";
 import { formatNumber } from "../formatNumber";
+import { HashtagHistory } from "@/types/community";
 
-export const handleError = (error: any) => {
+export const handleError = (error: unknown) => {
+  const axiosError = error as {
+    response?: {
+      status?: number;
+      data?: { error?: string; message?: string; errors?: string[] };
+      message?: string;
+    };
+  };
   return Promise.reject({
-    status: error?.response?.status,
+    status: axiosError?.response?.status,
     message:
-      error?.response?.data?.error ||
-      error?.response?.data?.message ||
-      error?.response?.message ||
-      error?.response?.data?.errors[0] ||
-      "Unknown error"
+      axiosError?.response?.data?.error ||
+      axiosError?.response?.data?.message ||
+      axiosError?.response?.message ||
+      axiosError?.response?.data?.errors?.[0] ||
+      "Unknown error",
   });
 };
 
@@ -23,16 +31,17 @@ export type QueryOptionHelper<
 > = Omit<UseQueryOptions<TQueryFnData, TError, TData>, "queryKey" | "queryFn">;
 
 export const truncateLongUrls = (desc: string) => {
-    return desc.replace(/https?:\/\/[^\s]+/g, (url) => {
-        if (url.length > 30) {
-            return url.substring(0, 20) + '...';
-        }
-        return url;
-    });
+  return desc.replace(/https?:\/\/[^\s]+/g, (url) => {
+    if (url.length > 30) {
+      return url.substring(0, 20) + "...";
+    }
+    return url;
+  });
 };
-export const isSystemDark = typeof window !== 'undefined' 
-  ? window.matchMedia("(prefers-color-scheme: dark)").matches
-  : false; 
+export const isSystemDark =
+  typeof window !== "undefined"
+    ? window.matchMedia("(prefers-color-scheme: dark)").matches
+    : false;
 
 export const ensureHttp = (url: string) => {
   if (url && !url.startsWith("https://")) {
@@ -82,8 +91,8 @@ export const formatSlug = (str: string): string => {
 };
 
 export const getUnreadNotificationCount = (
-  notificationGroups: any[] = [],
-  lastReadId: string | undefined | {}
+  notificationGroups: { most_recent_notification_id: string }[] = [],
+  lastReadId: string | undefined | object
 ): number => {
   if (
     lastReadId &&
@@ -102,7 +111,9 @@ export const getUnreadNotificationCount = (
   ).length;
 };
 
-export const shouldShowMessageBadge = (message: any): boolean => {
+export const shouldShowMessageBadge = (
+  message: { data?: { noti_type?: string; visibility?: string } } | null
+): boolean => {
   return Boolean(
     message &&
       message?.data?.noti_type !== "mention" &&

@@ -1,8 +1,7 @@
 "use client";
 import { PatchworkWhiteLogo } from "@/components/atoms/icons/patchwork-white-logo";
 import { Button } from "@/components/atoms/ui/button";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-// import HorizontalScrollCards from "@/components/splash/HorizontalScrollCards";
+import { useLocale } from "@/providers/localeProvider";
 import { cn } from "@/lib/utils";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -23,12 +22,7 @@ const SplashScreen = () => {
           <span className="text-xl">elcome</span>
           <span className="text-2xl">!</span>
         </h3>
-        {/* <p className="text-base">{t("invitation.message")}</p> */}
       </div>
-
-      {/* <div className="mt-auto">
-        <HorizontalScrollCards />
-      </div> */}
 
       <div className="px-4">
         <div className="flex justify-center items-center mb-4">

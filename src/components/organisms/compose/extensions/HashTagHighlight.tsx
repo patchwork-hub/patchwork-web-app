@@ -16,7 +16,7 @@ const HashtagHighlight = Extension.create({
         key: new PluginKey('hashtagHighlight'),
         props: {
           decorations(state) {
-            const decorations = [];
+            const decorations: Decoration[] = [];
             const doc = state.doc;
 
             doc.descendants((node, pos) => {

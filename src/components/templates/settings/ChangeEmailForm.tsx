@@ -16,16 +16,15 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../../atoms/ui/button";
-import {
-  useChangeEmailMutation,
-  useChangeNewsmastEmailMutation
-} from "@/hooks/auth/useChangeEmail";
-import { useAuthStore } from "@/store/auth/authStore";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
 import { setNewEmail, setToken } from "@/lib/auth";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
+import { ChangeEmailErrorData, useChangeEmailMutation, useChangeNewsmastEmailMutation } from "@/hooks/mutations/auth/useChangeEmail";
+import { AxiosError } from "axios";
+
 
 const ChangeEmailForm = ({
   className,
@@ -37,7 +36,7 @@ const ChangeEmailForm = ({
   const schemas = createSchemas(tString);
   const { userOriginInstance } = useAuthStore();
   const { domain_name } = useActiveDomainStore();
-  const oldEmail = localStorage.getItem("oldEmail");
+  const oldEmail = localStorage.getItem("oldEmail") ?? "";
 
   const form = useForm({
     mode: "onChange",
@@ -55,7 +54,7 @@ const ChangeEmailForm = ({
       });
       router.push("/settings/info/change-email/verification");
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ChangeEmailErrorData>) => { 
       toast.error(error?.response?.data?.message || "Something went wrong.");
       console.error("Change email error:", error);
     }
@@ -69,7 +68,7 @@ const ChangeEmailForm = ({
       });
       router.push("/settings/info/change-email/verification");
     },
-    onError: (error: any) => {
+    onError: (error: AxiosError<ChangeEmailErrorData>) => { 
       toast.error(error?.response?.data?.message || "Something went wrong.");
     }
   });

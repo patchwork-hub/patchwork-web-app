@@ -12,7 +12,7 @@ export const useUpdateMute = () => {
 
             const previousMuteStatus = queryClient.getQueryData(["muteStatus"]);
 
-            queryClient.setQueryData(["muteStatus"], (old: any) => ({
+            queryClient.setQueryData(["muteStatus"], (old: {mute: boolean}) => ({
                 ...old,
                 mute,
             }));

@@ -30,14 +30,14 @@ export type Status = {
   bookmarked: boolean;
   pinned: boolean;
   content: string;
-  filtered: any[];
+  filtered: unknown[];
   reblog: null | Status;
   application: Application;
   account: Account;
   media_attachments: Media[];
   mentions: Mention[];
   tags: Tag[];
-  emojis: any[];
+  emojis: unknown[];
   card: Card;
   poll: Poll;
 };
@@ -79,10 +79,10 @@ export type Account = {
   following_count: number;
   statuses_count: number;
   last_status_at: string;
-  hide_collections: any;
+  hide_collections: unknown;
   noindex: boolean;
-  emojis: any[];
-  roles: any[];
+  emojis: unknown[];
+  roles: unknown[];
   fields: Field[];
 };
 
@@ -115,7 +115,7 @@ export type Card = {
   embed_url: string;
   blurhash: string;
   published_at: null | string;
-  authors: any[];
+  authors: unknown[];
 };
 
 export type Meta = {
@@ -147,7 +147,7 @@ export type Poll = {
   voted: boolean;
   own_votes: number[];
   options: Option[];
-  emojis: any[];
+  emojis: unknown[];
 };
 
 export type Option = {

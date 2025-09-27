@@ -1,6 +1,6 @@
 "use client";
 
-import { ThemeText } from "@/components/atoms/common/ThemeText";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
 import { useHomeTimeline } from "@/hooks/queries/status/useHomeTimeline";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
@@ -11,7 +11,7 @@ import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
 
 export const CommunityTimeline: React.FC<{

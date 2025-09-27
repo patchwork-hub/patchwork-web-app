@@ -8,7 +8,7 @@ import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
 import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";

@@ -4,8 +4,9 @@ import { ErrorResponse } from "@/types/error";
 import { AxiosError } from "axios";
 import { getBookmarkList } from "@/services/profile/bookmark";
 
+
 export const useBookmarkList = () => {
-  return useInfiniteQuery<StatusListResponse | any, AxiosError<ErrorResponse>>({
+  return useInfiniteQuery<StatusListResponse, AxiosError<ErrorResponse>>({
     queryKey: ["statusList"],
     queryFn: async ({ pageParam }) => getBookmarkList(pageParam as string),
     getNextPageParam: (lastPage) => lastPage.nextMaxId,

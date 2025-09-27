@@ -1,13 +1,14 @@
 "use client";
-import SearchInput from "@/components/atoms/common/Searchinput";
-import HomeHeader from "@/components/atoms/home-feed/HomeHeader";
+
 import {
   Tabs,
   TabsContent,
   TabsList,
   TabsTrigger,
 } from "@/components/atoms/ui/tabs";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import SearchInput from "@/components/molecules/common/Searchinput";
+import HomeHeader from "@/components/molecules/HomeHeader";
+import { useLocale } from "@/providers/localeProvider";
 import ChannelBySearch from "@/components/organisms/search/ChannelsTab";
 import HashtagBySearch from "@/components/organisms/search/HashtagBySearch";
 import SuggestedPeopleBySearch from "@/components/organisms/search/People&PostsTab";
@@ -15,8 +16,7 @@ import {
   useSearchAllQueries,
   useSearchChannelAndCommunity,
 } from "@/hooks/queries/search/useSearchAllQueries";
-import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useSearchStore } from "@/store/search/useSearchStore";
+import { useSearchStore } from "@/stores/search/useSearchStore";
 import { Account } from "@/types/account";
 import { Status as StatusType } from "@/types/status";
 import { isSystemDark } from "@/utils/helper/helper";
@@ -120,7 +120,7 @@ const SearchList = () => {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="people-posts">
-          <HashtagBySearch hashtagsSearchResult={searchAllRes?.hashtags} />
+          <HashtagBySearch hashtagsSearchResult={searchAllRes?.hashtags??[]} />
           <SuggestedPeopleBySearch
             searchData={transformedAccounts}
             statusData={searchAllRes?.statuses as unknown as StatusType[]}
@@ -128,7 +128,7 @@ const SearchList = () => {
           />
         </TabsContent>
         <TabsContent value="channels">
-          <ChannelBySearch searchData={searchChannelRes} />
+          <ChannelBySearch searchData={searchChannelRes as ChannelAndCollectionSearch} />
         </TabsContent>
       </Tabs>
     </div>

@@ -6,8 +6,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/atoms/ui/popover";
-import { DateTimePicker } from "@/components/molecules/common/datePicker";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { useCreateDraft } from "@/hooks/mutations/drafts/useCreateDraft";
 import { useDeleteDraft } from "@/hooks/mutations/drafts/useDeleteDraft";
 import { useUpdateDraft } from "@/hooks/mutations/drafts/useUpdateDraft";
@@ -18,22 +16,13 @@ import { fetchFile } from "@/services/media/fetchMediaFiles";
 import { DraftComposeFormData } from "@/types/draft";
 import { Media } from "@/types/status";
 import { format, parseISO } from "date-fns";
-import {
-  ArrowLeft,
-  ChevronDown,
-  ImageIcon,
-  ListIcon,
-  Square,
-  SquareCheck,
-  X,
-} from "lucide-react";
+import { ImageIcon, ListIcon, Square, SquareCheck, X } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useReducer, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { IoWarningOutline } from "react-icons/io5";
 import { toast } from "sonner";
-import { useTipTapEditor } from "../hooks/useTipTapEditor";
 import { initialState, reducer } from "../reducer";
 import { useDraftStore } from "../store/useDraftStore";
 import { useLanguageStore } from "../store/useLanguageStore";
@@ -48,7 +37,6 @@ import { LanguageModal } from "../tools/LanguageModal";
 import { LinkPreviewer } from "../tools/LinkPreview";
 import { MediaPreview } from "../tools/MediaPreview";
 import { SaveAsDraftModal } from "../tools/SaveAsDraftModal";
-import { Schedules } from "../tools/Schedules";
 import { VisibilityDropdown } from "../tools/VisibilityDropdown";
 import {
   LinkPreview,
@@ -63,8 +51,6 @@ import PollForm from "./PollForm";
 import { Modal } from "@/components/atoms/ui/modal";
 import { useFavouriteChannelLists } from "@/hooks/queries/useFavouriteChannelList.query";
 import { DEFAULT_API_URL } from "@/utils/constant";
-import { useAuthStore } from "@/store/auth/authStore";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
 import { TooltipContent } from "@/components/atoms/ui/tooltip";
 import { TooltipTrigger } from "@/components/atoms/ui/tooltip";
 import { Tooltip } from "@/components/atoms/ui/tooltip";
@@ -72,8 +58,14 @@ import Cookies from "js-cookie";
 import { useTheme } from "next-themes";
 import { debounce } from "lodash";
 import { useModalAction } from "../../modal/modal.context";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { DateTimePicker } from "@/components/molecules/common/datePicker";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
+import { useAuthStore } from "@/stores/auth/authStore";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
+import { useLocale } from "@/providers/localeProvider";
+import Image from "next/image";
 
 type ComposeFormProps = {
   defaultContent?: string;
@@ -86,7 +78,14 @@ type ComposeFormProps = {
   disbledDraft?: boolean;
   hideSchedule?: boolean;
 };
+type CommunityHashtag = {
+  hashtag: string;
+};
 
+type HashtagWithCommunity = {
+  hashtag: string;
+  communityId: string;
+};
 const ComposeForm: React.FC<ComposeFormProps> = ({
   onSubmit,
   defaultContent,
@@ -100,7 +99,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
 }) => {
   const domain_name = Cookies.get("domain");
   const { closeModal } = useModalAction();
-  const {t} = useLocale();
+  const { t } = useLocale();
   const { data: server } = useSearchServerInstance({
     enabled: true,
     domain: domain_name,
@@ -113,9 +112,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
   const { theme } = useTheme();
   const [showCommuityList, setShowCommunityList] = useState(false);
   const [selectedCommunities, setSelectedCommunities] = useState([]);
-  const [prevSelectedHashtags, setPrevSelectedHashtags] = useState<
-    typeof selectedHashtags
-  >([]);
   const max_characters = server?.configuration?.statuses?.max_characters;
 
   const [totalCharCount, setTotalCharCount] = useState(
@@ -228,7 +224,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     setPollChoiceType(POLL_INITIAL.multiple ? "multiple" : "single");
     setPollDuration(POLL_INITIAL.expires_in);
     dispatch({ type: "TOGGLE_POLL_FORM", payload: false });
-    setPreview(null);
+    setPreview(undefined);
   };
 
   const handleSave = async () => {
@@ -258,7 +254,9 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       media_ids: media.map((m) => m.id),
       media_attributes: mediaAttributes,
       sensitive: isSensitive,
-      scheduled_at: date ? format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSX") : null,
+      scheduled_at: date
+        ? format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+        : undefined,
     };
     if (
       pollOptions.length >= POLL_LIMITS.MIN_OPTIONS &&
@@ -288,19 +286,21 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       const hashtagText = selectedHashtags
         .map((h) => `#${h.hashtag}`)
         .join(" ");
-      const currentEditorText = editor.getText().trim();
+      const currentEditorText = editor?.getText().trim();
       const statusContent = hashtagText
         ? `${currentEditorText}\n\n${hashtagText}`.trim()
         : currentEditorText;
 
       const formData: StatusComposeFormData = {
-        status: statusContent,
+        status: statusContent ?? "",
         visibility,
         language,
         media_ids: media.map((m) => m.id),
         media_attributes: mediaAttributes,
         sensitive: isSensitive,
-        scheduled_at: format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSX"),
+        scheduled_at: date
+          ? format(date, "yyyy-MM-dd'T'HH:mm:ss.SSSX")
+          : undefined,
       };
       if (
         pollOptions.length >= POLL_LIMITS.MIN_OPTIONS &&
@@ -318,7 +318,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
           resetForm();
           removeSchedule();
           router.push("/home");
-          closeModal()
+          closeModal();
         }
       });
     } else {
@@ -343,7 +343,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
 
   const handleSaveDraft = () => {
     const hashtagText = selectedHashtags.map((h) => `#${h.hashtag}`).join(" ");
-    const currentEditorText = editor.getText().trim();
+    const currentEditorText = editor?.getText().trim();
     const statusContent = hashtagText
       ? `${currentEditorText}\n\n${hashtagText}`.trim()
       : currentEditorText;
@@ -357,8 +357,8 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
               multiple: pollChoiceType === "multiple",
               expires_in: pollDuration,
             }
-          : null,
-      status: statusContent,
+          : undefined,
+      status: statusContent ?? "",
       visibility,
       language,
       media_ids: media.map((m) => m.id),
@@ -430,7 +430,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
   }, [draft, isDirty]);
 
   const debouncedExtractPreview = debounce(
-    (text: string, callback: (preview: LinkPreview) => void) => {
+    (text: string, callback: (preview: LinkPreview | undefined) => void) => {
       extractLinkPreview(text, callback);
     },
     500
@@ -494,7 +494,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     setProgressValue((state.charCount / newTotalCharCount) * 100);
   }, [longPost, max_characters, state.charCount]);
 
-
   useEffect(() => {
     if (editor) {
       const text = editor.getText();
@@ -524,7 +523,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       }
 
       if (preview?.url && !currentUrls.includes(preview.url)) {
-        setPreview(null);
+        setPreview(undefined);
         return;
       }
       if ((!preview || preview.url !== lastUrl) && lastUrl) {
@@ -613,10 +612,12 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
         prev.filter((h) => h.communityId !== communityId)
       );
     } else {
-      const newHashtags = communityHashtags.map((h) => ({
-        hashtag: h.hashtag,
-        communityId,
-      }));
+      const newHashtags: HashtagWithCommunity[] = communityHashtags.map(
+        (h: CommunityHashtag) => ({
+          hashtag: h.hashtag,
+          communityId,
+        })
+      );
       setSelectedHashtags((prev) => [...prev, ...newHashtags]);
     }
   };
@@ -637,14 +638,22 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     ) {
       setSelectedHashtags([]);
     } else {
-      const allHashtags =
-        favouriteChannelLists?.flatMap((community) =>
-          (community.attributes.patchwork_community_hashtags || []).map(
-            (h) => ({
-              hashtag: h.hashtag,
-              communityId: community.id,
-            })
-          )
+      type Community = {
+        id: string;
+        attributes: {
+          patchwork_community_hashtags?: CommunityHashtag[];
+        };
+      };
+
+      const allHashtags: HashtagWithCommunity[] =
+        (favouriteChannelLists as Community[])?.flatMap(
+          (community: Community) =>
+            (community.attributes.patchwork_community_hashtags || []).map(
+              (h: CommunityHashtag) => ({
+                hashtag: h.hashtag,
+                communityId: community.id,
+              })
+            )
         ) || [];
       setSelectedHashtags(allHashtags);
     }
@@ -710,7 +719,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     const contentToParse = draft?.params?.text || defaultContent;
     if (!contentToParse || !favouriteChannelLists) return;
 
-    let extractedHashtags: Array<{ hashtag: string; communityId: string }> = [];
+    let extractedHashtags: HashtagWithCommunity[] = [];
     let mainContent = contentToParse;
 
     if (draft?.params?.text) {
@@ -720,15 +729,27 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
         extractedHashtags =
           hashtagsPart.match(/#(\w+)/g)?.map((match) => {
             const hashtag = match.replace("#", "");
+            type ExtractedHashtag = {
+              hashtag: string;
+              communityId: string;
+            };
+
+            type Community = {
+              id: string;
+              attributes: {
+                patchwork_community_hashtags?: Array<{ hashtag: string }>;
+              };
+            };
+
             return {
               hashtag,
               communityId:
-                favouriteChannelLists.find((community) =>
+                favouriteChannelLists.find((community: Community) =>
                   community.attributes.patchwork_community_hashtags?.some(
-                    (h) => h.hashtag === hashtag
+                    (h: { hashtag: string }) => h.hashtag === hashtag
                   )
                 )?.id || "default",
-            };
+            } as ExtractedHashtag;
           }) || [];
       }
     } else {
@@ -747,10 +768,16 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
           extractedHashtags.push({
             hashtag,
             communityId:
-              favouriteChannelLists.find((community) =>
-                community.attributes.patchwork_community_hashtags?.some(
-                  (h) => h.hashtag === hashtag
-                )
+              favouriteChannelLists.find(
+                (community: {
+                  id: string;
+                  attributes: {
+                    patchwork_community_hashtags?: Array<{ hashtag: string }>;
+                  };
+                }) =>
+                  community.attributes.patchwork_community_hashtags?.some(
+                    (h: { hashtag: string }) => h.hashtag === hashtag
+                  )
               )?.id || "default",
           });
         });
@@ -765,7 +792,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       setSelectedHashtags(extractedHashtags);
     }
   }, [draft, defaultContent, favouriteChannelLists, isEditMode, editor]);
-  function arraysEqual(a: any[], b: any[]) {
+  function arraysEqual(a: HashtagWithCommunity[], b: HashtagWithCommunity[]) {
     return (
       a.length === b.length &&
       a.every(
@@ -865,7 +892,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
           {mediaLocalUrls.length > 0 && (
             <MediaPreview
               uploadMedia={uploadMedia}
-              mediaAttachments={mediaAttachments}
+              mediaAttachments={mediaAttachments ?? []}
             />
           )}
           {preview && <LinkPreviewer />}
@@ -891,8 +918,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
                   {favouriteChannelLists &&
                     favouriteChannelLists.length > 0 &&
                     favouriteChannelLists.map((community) => {
-                      const communityHashtags =
-                        community.attributes.patchwork_community_hashtags || [];
                       const isSelected = selectedHashtags.some(
                         (h) => h.communityId === community.id
                       );
@@ -913,7 +938,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
                           ) : (
                             <Square className="w-5 h-5" />
                           )}
-                          <img
+                          <Image
                             src={community.attributes.avatar_image_url}
                             alt={`${community.attributes.name} avatar`}
                             className="w-10 h-10 rounded-full object-cover"
@@ -1122,7 +1147,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
               handleSaveDraft().then((_) => {
                 toast.success(t("toast.saved_draft"));
                 router.push("/home");
-                closeModal()
+                closeModal();
               });
             }}
           >

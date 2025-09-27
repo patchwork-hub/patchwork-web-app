@@ -14,19 +14,20 @@ import {
   FormItem
 } from "@/components/atoms/ui/form";
 import { Input } from "@/components/atoms/ui/input";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useRemoveOrUpdateHashtag } from "@/hooks/mutations/profile/useChannelContent";
 import {
   useCreateChannelHashtagMutation,
   useGetMyTotalChannelList
 } from "@/hooks/queries/useChannelContent";
 import { createSchemas } from "@/lib/schema/validations";
-import { useTString } from "@/lib/tString";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { z } from "zod";
+import { ChannelHashtag } from "@/types/patchwork";
+import { useTString } from "@/lib/tString";
 
 type Props = {
   isOpen: boolean;
@@ -34,7 +35,9 @@ type Props = {
   editModalState?: { item: ChannelHashtag };
   channelId: string;
 };
-
+type ErrorResponseData = {
+  error: string;
+}
 const SearchHashtagModal = ({
   isOpen,
   onClose,
@@ -66,7 +69,7 @@ const SearchHashtagModal = ({
       });
     },
     onError: (error) => {
-      const data = error?.response?.data as any;
+      const data = error?.response?.data as ErrorResponseData;
       if (data?.error) {
         toast.error(data?.error);
       }

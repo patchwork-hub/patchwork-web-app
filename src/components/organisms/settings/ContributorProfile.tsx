@@ -1,4 +1,3 @@
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import { Button } from "@/components/atoms/ui/button";
 import {
   Dialog,
@@ -8,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/ui/dialog";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { queryClient } from "@/providers/queryProvider";
 import { useUserRelationshipMutation } from "@/hooks/mutations/profile/useCheckRelationship";
 import { useMuteUnmuteUserMutation } from "@/hooks/mutations/profile/useMuteUnmuteUser";
 import { truncateUsername } from "@/lib/utils";
@@ -16,6 +15,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useState } from "react";
 import { toast } from "sonner";
+import { ContributorList } from "@/types/patchwork";
+import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 interface ContributorProfileProps {
   account: ContributorList;
@@ -44,13 +45,13 @@ const ContributorProfile: React.FC<ContributorProfileProps> = ({
         queryClient.setQueryData(queryKey, updatedData);
       }
     },
-    onSuccess: (newRelationship) => {},
+    onSuccess: () => {},
     onError: (err) => {
       toast.error(err?.message || "Something went wrong!");
     },
   });
 
-  const { mutate: toggleMute, isPending: isMuteInProgress } =
+  const { mutate: toggleMute } =
     useMuteUnmuteUserMutation({
       onMutate: ({ accountId }) => {
         const queryKey = ["muted-contributor-list", { channelId }];
@@ -63,7 +64,7 @@ const ContributorProfile: React.FC<ContributorProfileProps> = ({
           queryClient.setQueryData(queryKey, updatedData);
         }
       },
-      onSuccess: (response) => {},
+      onSuccess: () => {},
     });
 
   const handleUnFollow = (id: string) => {
@@ -122,8 +123,8 @@ const ContributorProfile: React.FC<ContributorProfileProps> = ({
           <DialogTitle>Delete</DialogTitle>
         </DialogHeader>
         <DialogDescription>
-          Are you sure you want to remove this contributor '
-          {account?.attributes?.username}'
+          Are you sure you want to remove this contributor &apos;
+          {account?.attributes?.username}&apos;
         </DialogDescription>
         <DialogFooter>
           <Button
@@ -136,12 +137,14 @@ const ContributorProfile: React.FC<ContributorProfileProps> = ({
             variant="destructive"
             onClick={() => {
               setAlert({ isOpen: false, message: "" });
-              operationType == "follow"
-                ? handleUnFollow(account.attributes.id)
-                : handleMute(
-                    account.attributes.id,
-                    account.attributes.is_muted
+              if (operationType === "follow") {
+                  handleUnFollow(account.attributes.id);
+              } else {
+                  handleMute(
+                      account.attributes.id,
+                      account.attributes.is_muted
                   );
+              }
             }}
           >
             Delete

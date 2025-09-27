@@ -3,6 +3,7 @@ import {
   favouriteCommunityChannelMutationFn,
   unfavoriteCommunityBySlugMutationFn
 } from "@/services/community/toggleFavouriteChannelService";
+import { ChannelList } from "@/types/patchwork";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
 export const useFavouriteCommunityChannel = () => {
@@ -29,8 +30,8 @@ export const useFavouriteCommunityChannel = () => {
             "newsmast-channel-list",
             { instance_domain: variables.instance_domain }
           ],
-          (old: any) =>
-            old?.map((channel: any) => {
+          (old: ChannelList[]) =>
+            old?.map((channel: ChannelList) => {
               if (channel.attributes.slug === variables.id) {
                 return {
                   ...channel,
@@ -47,7 +48,7 @@ export const useFavouriteCommunityChannel = () => {
 
       return { previousChannels };
     },
-    onError: (error, variables, context) => {
+    onError: (_, variables, context) => {
       if (context?.previousChannels) {
         queryClient.setQueryData(
           [
@@ -58,7 +59,7 @@ export const useFavouriteCommunityChannel = () => {
         );
       }
     },
-    onSettled: (data, error, variables) => {
+    onSettled: (_, error, variables) => {
       queryClient.invalidateQueries({
         queryKey: [
           "newsmast-channel-list",
@@ -88,8 +89,8 @@ export const useUnFavouriteCommunityChannel = () => {
       const previousChannels = queryClient.getQueryData(queryKey);
 
       if (previousChannels) {
-        queryClient.setQueryData(queryKey, (old: any) =>
-          old?.map((channel: any) =>
+        queryClient.setQueryData(queryKey, (old: ChannelList[]) =>
+          old?.map((channel: ChannelList) =>
             channel.attributes.slug === variables.id
               ? {
                   ...channel,

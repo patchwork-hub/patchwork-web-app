@@ -1,13 +1,13 @@
 import { useBookmarkList } from "@/hooks/queries/useBookmarkList";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
 import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
 import { cleanDomain } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
+import { Status as StatusType } from "@/types/status";
 export const BookmarkList: React.FC = () => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useBookmarkList();
@@ -25,17 +25,17 @@ export const BookmarkList: React.FC = () => {
   return !isLoadingEmojis && !isLoading ? (
     <>
       <>
-        {(("newsmast.social" === cleanDomain(domain_name)
+        {(("newsmast.social" === cleanDomain(domain_name??"")
           ? data?.pages[0]?.statuses?.data
           : data?.pages[0]?.statuses
         )?.length ?? 0) > 0 ? (
           data?.pages?.map((page, index) => {
             const statusesArray =
-              "newsmast.social" === cleanDomain(domain_name)
+              "newsmast.social" === cleanDomain(domain_name??"")
                 ? page?.statuses?.data
                 : page?.statuses;
 
-            return statusesArray?.map((status, idx) => {
+            return statusesArray?.map((status: StatusType, idx: number) => {
               const uniqueKey = `status-${status.id}-${status.content.length}-${
                 status.reblog ? status.reblog.content.length : ""
               }`;

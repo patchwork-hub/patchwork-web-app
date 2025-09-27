@@ -14,20 +14,21 @@ import {
   FormItem
 } from "@/components/atoms/ui/form";
 import { Input } from "@/components/atoms/ui/input";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { queryClient } from "@/providers/queryProvider";
 import {
   useFilterInOutMutation,
   useRemoveOrUpdateFilterKeyword
 } from "@/hooks/mutations/profile/useChannelContent";
 import { useGetMyTotalChannelList } from "@/hooks/queries/useChannelContent";
 import { createSchemas} from "@/lib/schema/validations";
-import { useTString } from "@/lib/tString";
+
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import z from "zod";
+import { ChannelFilterKeyword } from "@/types/patchwork";
+import { useTString } from "@/lib/tString";
 
 type Props = {
   isOpen: boolean;
@@ -42,7 +43,6 @@ export const FilterInKeywordModal = ({
   editModalState,
   channelId
 }: Props) => {
-  const [infoMenu, setInfoMenu] = useState(false);
   const { t } = useLocale();
   const tString = useTString();
   const schemas = createSchemas(tString);

@@ -1,4 +1,5 @@
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useSearchQuery } from "@/hooks/queries/search/useSearchQuery";
 import { useLookupAccount } from "@/hooks/queries/status/useLookupAccount";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
@@ -15,7 +16,7 @@ interface AccountWrapperProps {
     acct: string;
     isRemoteUser: boolean;
     uri?: string;
-    data?: any;
+    data?: unknown;
   }) => JSX.Element;
   isChannel?: boolean;
 }
@@ -28,7 +29,7 @@ export const AccountWrapper = ({
 }: AccountWrapperProps) => {
   const { acct: acctParam } = use(params);
   const searchParams = useSearchParams();
-  const uri = searchParams.get("q");
+  const uri = searchParams.get("q") ?? undefined;
   const acct = decodeURIComponent(acctParam);
   const isLoggedIn = useLoggedIn();
 
@@ -62,7 +63,7 @@ export const AccountWrapper = ({
 
   if (!isLoggedIn) {
     return render({
-      accountId: data?.id,
+      accountId: data?.id ?? "",
       isOwnProfile: currentAccount?.acct === username,
       acct: username,
       uri,

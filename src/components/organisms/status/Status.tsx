@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Status as StatusType } from "../../../types/status";
-import { useTipTapEditor } from "../compose/hooks/useTipTapEditor";
 import { LinkPreview } from "../compose/tools/LinkPreview";
 import Poll from "../poll/Poll";
 import { StatusActions } from "./StatusActions";
@@ -15,11 +14,14 @@ import { useTranslate } from "@/hooks/queries/translate/translate";
 import { languages } from "@/constants/languages";
 import { AtSign, Repeat } from "lucide-react";
 import { visibilityIcons } from "../compose/tools/VisibilityDropdown";
-import { DisplayName } from "@/components/atoms/common/DisplayName";
 import { useTheme } from "next-themes";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
 import { cleanDomain, isSystemDark } from "@/utils/helper/helper";
 import { DEFAULT_API_URL } from "@/utils/constant";
+import { DisplayName } from "@/components/molecules/common/DisplayName";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
+import Image from "next/image";
+import { MastodonCustomEmoji } from "../compose/tools/Emoji";
 
 type StatusProps = {
   status: StatusType;
@@ -75,12 +77,15 @@ const Status: React.FC<StatusProps> = ({
     setStatusToTranslate(status);
   };
 
-  const handleClick = (e) => {
-    if (e.target.tagName === "A" || window.getSelection()?.toString() !== "") {
-      return;
+  type TiptapClickEvent = React.MouseEvent<Element, MouseEvent>;
+
+  const handleClick = (e: TiptapClickEvent) => {
+    const targetElement = e.target as HTMLElement;
+    if (targetElement.tagName === "A" || window.getSelection()?.toString() !== "") {
+        return;
     }
     handleGoToDetail();
-  };
+};
   const parseContent = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
@@ -128,7 +133,7 @@ const Status: React.FC<StatusProps> = ({
       ? translationResult?.content
       : data?.content ?? mainContent,
     editable: false,
-    emojis: data?.emojis,
+    emojis: data?.emojis as MastodonCustomEmoji[],
     className: cn("mb-2 max-w-full overflow-hidden px-4", {
       "ml-12": !preview && !detail,
     }),
@@ -162,7 +167,7 @@ const Status: React.FC<StatusProps> = ({
         <h1 className="flex gap-2 items-center px-4 mb-2 text-gray-400">
           <Repeat className="w-4 h-4" />{" "}
           <DisplayName
-            emojis={status.account.emojis || status.reblog.account.emojis}
+            emojis={status.account.emojis as MastodonCustomEmoji[] || status.reblog.account.emojis as MastodonCustomEmoji[]}
             acct={status.account.acct}
             displayName={status.account.display_name || status.account.username}
             className="inline text-lilac"
@@ -180,13 +185,15 @@ const Status: React.FC<StatusProps> = ({
           className="w-full flex items-center mb-2 px-4 gap-4"
         >
           <div className="relative">
-            <img
+            <Image
               src={data.account.avatar}
               alt="avatar photo"
+              width={40}
+              height={40}
               className="w-10 aspect-square rounded-full bg-background"
             />
             {status.reblog && (
-              <img
+              <Image
                 className="w-6 aspect-square rounded-full absolute bottom-0 end-0 translate-2"
                 src={status?.account?.avatar}
                 alt="avatar photo"
@@ -198,7 +205,7 @@ const Status: React.FC<StatusProps> = ({
               <strong className="flex items-center text-sm font-semibold">
                 <DisplayName
                   notLink
-                  emojis={data.account.emojis}
+                  emojis={data.account.emojis as MastodonCustomEmoji[]}
                   acct={data.account.acct}
                   displayName={
                     data.account.display_name || data.account.username

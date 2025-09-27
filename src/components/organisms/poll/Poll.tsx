@@ -12,7 +12,7 @@ import { cn } from "@/lib/utils";
 import { useQueryClient } from "@tanstack/react-query";
 import { StatusListResponse } from "@/services/status/fetchAccountStatuses";
 import { motion } from "framer-motion";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 
 type PollProps = {
   poll: Poll;
@@ -198,7 +198,7 @@ const Poll: React.FC<PollProps> = ({ poll }) => {
 };
 
 const getPollStatusListUpdaterFn =
-  (poll: Poll) => (old: { pages: StatusListResponse[]; pageParams: any[] }) => {
+  (poll: Poll) => (old: { pages: StatusListResponse[]; pageParams: unknown }) => {
     if (!old) return old;
     const pages = old.pages?.map((page) => ({
       ...page,

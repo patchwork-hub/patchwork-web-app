@@ -1,17 +1,17 @@
-import { ThemeText } from "@/components/atoms/common/ThemeText";
 import { Badge } from "@/components/atoms/ui/badge";
 import { Button } from "@/components/atoms/ui/button";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { cn } from "@/lib/utils";
-import { useAuthStore } from "@/store/auth/authStore";
 import { Field } from "@/types/auth";
 import { Icons } from "@/utils/constant";
 import { isAccFromChannelOrg } from "@/utils/helper/helper";
-import { cleanText, extractUserName } from "@/utils/helper/socialLink";
+import { cleanText } from "@/utils/helper/socialLink";
 import { GlobeIcon, Link, PenIcon, PlusIcon } from "lucide-react";
 import { useTheme } from "next-themes";
 import React from "react";
 import { toast } from "sonner";
+import { Account } from "@/types/account";
+import { useAuthStore } from "@/stores/auth/authStore";
 
 type SocialSectionProps = {
   accountInfo: Account;
@@ -29,7 +29,6 @@ const SocialSection = ({
   isMyAccount,
   onEditSocialLink,
   onAddSocialLink,
-  onClickLinkByOtherInstanceUser,
 }: SocialSectionProps) => {
   const linkCount = accountInfo?.fields?.filter((field) => field.value).length;
   const { userOriginInstance } = useAuthStore();
@@ -50,7 +49,6 @@ const SocialSection = ({
     ) : (
       Icons[name] || <GlobeIcon className="w-5 h-5" />
     );
-    const link = extractUserName(cleanText(value));
 
     return (
       <Badge
@@ -85,11 +83,13 @@ const SocialSection = ({
               className="w-8 h-8 rounded-full"
               onClick={() => {
                 if (!isUserFromChannelOrg && linkCount === 4) {
-                  toast.error(
-                    "Mastodon users can only have up to 4 field attributes."
-                  );
+                    toast.error(
+                        "Mastodon users can only have up to 4 field attributes."
+                    );
                 } else {
-                  onAddSocialLink && onAddSocialLink();
+                    if (onAddSocialLink) {
+                        onAddSocialLink();
+                    }
                 }
               }}
             >

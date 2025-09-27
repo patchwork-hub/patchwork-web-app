@@ -16,7 +16,7 @@ import { Account, Status } from "@/types/status";
 import { reportOptions } from "@/types/report";
 import { useFileReport } from "@/hooks/mutations/report/useFileReport";
 import { useFetchRules } from "@/hooks/queries/report/useFetchRules";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 
 interface ReportDialogProps {
   isOpen: boolean;
@@ -106,7 +106,7 @@ export const ReportDialog: React.FC<ReportDialogProps> = ({
                 className="divide-y divide-gray-700 gap-0"
               >
                 {Object.entries(reportOptions).map(
-                  ([key, { title, description }], index, arr) => (
+                  ([key, _]) => (
                     <div key={key} className="flex items-center space-x-2 py-2">
                       <RadioGroupItem value={key} id={key} />
                       <Label

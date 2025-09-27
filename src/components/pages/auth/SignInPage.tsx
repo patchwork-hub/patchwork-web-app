@@ -1,6 +1,6 @@
 "use client";
+import SignInForm from "@/components/templates/auth/SignInForm";
 import React from "react";
-import SignInForm from "../../template/auth/SignInForm";
 
 interface SignInPageProps {
   code: string;

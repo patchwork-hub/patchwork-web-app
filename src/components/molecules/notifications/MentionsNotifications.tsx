@@ -1,14 +1,15 @@
 import { useMentionsNotifications } from "@/hooks/queries/notifications/useMentionsNotifications";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import { cn } from "@/lib/utils";
 import TimeAgo from "@/utils/helper/timeAgo";
 import { AtSign, MessageSquareText } from "lucide-react";
 import Link from "next/link";
-import { DisplayName } from "../atoms/common/DisplayName";
-import Status from "../organisms/status/Status";
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
-import { useLocale } from "../molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { DisplayName } from "../common/DisplayName";
+import Status from "@/components/organisms/status/Status";
+import Image from "next/image";
 
 const MentionsNotifications = () => {
   const {
@@ -52,7 +53,7 @@ const MentionsNotifications = () => {
             <div className="flex-1">
               <div className="flex items-center">
                 <Link href={`/@${mention.account.acct}`}>
-                  <img
+                  <Image
                     src={mention.account.avatar}
                     alt={mention.account.username}
                     className="w-9 h-9 rounded-full mr-2"

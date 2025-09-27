@@ -12,7 +12,7 @@ import { useRouter } from "next/navigation";
 
 import { useSearchChannelAndCommunity } from "@/hooks/queries/search/useSearchAllQueries";
 import ChannelBySearch from "@/components/organisms/search/ChannelsTab";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 
 const ExploreSearchListPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");

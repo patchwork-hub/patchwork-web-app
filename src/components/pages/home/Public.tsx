@@ -1,11 +1,6 @@
 "use client";
 
-import LayoutContainer from "@/components/template/LayoutContainer";
 import { useEffect, useState } from "react";
-import {
-  useActiveDomainStore,
-  useSelectedDomain,
-} from "@/store/auth/activeDomain";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import {
   Accordion,
@@ -14,10 +9,9 @@ import {
   AccordionTrigger,
 } from "@/components/atoms/ui/accordion";
 import Cookies from "js-cookie";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
 import { HomeTimeline } from "@/components/organisms/status/HomeTimeline";
 import { useRouter, useSearchParams } from "next/navigation";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { useGetCommunityAbout } from "@/hooks/queries/useGetChannelAbout.query";
 import PatchworkLogo from "@/components/atoms/icons/patchwork-logo";
 import ExploreCard from "@/components/organisms/search/ExploreCard";
@@ -25,9 +19,12 @@ import { useChannelFeedCollection } from "@/hooks/queries/useChannelFeedCollecti
 import { useDraftStore } from "@/components/organisms/compose/store/useDraftStore";
 import { useNewsmastCollections } from "@/hooks/queries/useNewsmastCollections";
 import { useCollectionChannelList } from "@/hooks/queries/useCollections.query";
-import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import ChannelBySearch from "@/components/organisms/search/ChannelsTab";
 import { useSearchChannelAndCommunity } from "@/hooks/queries/search/useSearchAllQueries";
+import Link from "next/link";
+import { useActiveDomainStore, useSelectedDomain } from "@/stores/auth/activeDomain";
+import LayoutContainer from "@/components/templates/LayoutContainer";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
 
 const PublicHome = () => {
   const router = useRouter();
@@ -38,7 +35,6 @@ const PublicHome = () => {
   const { isDirty, setSaveAsDraftModalOpen, setNavigateAction } =
     useDraftStore();
   const [searchKeyword, setSearchKeyword] = useState("");
-  const { data: userInfo } = useVerifyAuthToken({ enabled: true });
 
   const [activeTab, setActiveTab] = useState<string>("posts");
   const [isMobile, setIsMobile] = useState<boolean>(false);
@@ -137,14 +133,6 @@ const PublicHome = () => {
               <p className="text-2xl font-bold">patchwork.io</p>
               <p>
                 Your social media
-                {/* Decentralised social media powered by{" "}
-                <a
-                  href="https://joinmastodon.org/"
-                  target="_blank"
-                  className="text-lg font-bold cursor-pointer hover:underline underline-offset-2"
-                >
-                  Mastodon
-                </a> */}
               </p>
             </div>
 
@@ -240,7 +228,7 @@ const PublicHome = () => {
                   Server rules
                 </AccordionTrigger>
                 <AccordionContent className="p-4">
-                  {channelAbout?.rules?.map((rule, index) => (
+                  {channelAbout?.rules?.map((rule, index: number) => (
                     <div
                       key={index}
                       className="flex justify-between items-start gap-2"
@@ -254,9 +242,9 @@ const PublicHome = () => {
                         <p className="font-bold text-base">{rule?.text}</p>
 
                         {rule?.hint?.includes("https://") ? (
-                          <a href={rule?.hint} target="_blank">
+                          <Link href={rule?.hint} target="_blank">
                             {rule?.hint}
-                          </a>
+                          </Link>
                         ) : (
                           <p>{rule?.hint}</p>
                         )}
@@ -289,12 +277,12 @@ const PublicHome = () => {
                     <p className="w-px h-full bg-gray-400 dark:bg-gray-50 dark:opacity-15 md:block hidden"></p>
                     <div className="space-y-2">
                       <p className="font-medium">Contact:</p>
-                      <a
+                      <Link
                         href={`mailto:${channelAbout?.contact?.email}`}
                         className="hover:underline underline-offset-2"
                       >
                         {channelAbout?.contact?.email}
-                      </a>
+                      </Link>
                     </div>
                   </div>
                 </div>
@@ -304,19 +292,19 @@ const PublicHome = () => {
           <div className="text-sm text-gray-400 space-y-2 flex flex-col items-center">
             <div className="flex justify-start items-center gap-3">
               <p>Patchwork:</p>
-              <a href="/" className="underline underline-offset-3">
+              <Link href="/" className="underline underline-offset-3">
                 View source code
-              </a>
+              </Link>
             </div>
 
             <div className="flex justify-start items-center gap-3">
               <p>Mastodon:</p>
-              <a
+              <Link
                 href="https://github.com/mastodon/mastodon"
                 className="underline underline-offset-3"
               >
                 View source code
-              </a>
+              </Link>
             </div>
 
             <div>

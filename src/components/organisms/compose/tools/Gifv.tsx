@@ -1,6 +1,5 @@
 import { Input } from "@/components/atoms/ui/input";
 import { useGifv } from "@/hooks/queries/gifv/useGifv";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import { useEffect, useState } from "react";
 import { useDebounceValue } from "usehooks-ts";
 import {
@@ -16,7 +15,9 @@ import { cn } from "@/lib/utils";
 import { TooltipTrigger } from "@/components/atoms/ui/tooltip";
 import { Tooltip } from "@/components/atoms/ui/tooltip";
 import { TooltipContent } from "@/components/atoms/ui/tooltip";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import { useLocale } from "@/providers/localeProvider";
+import Image from "next/image";
 
 export type GifvProps = {
   onSelect: (url: string) => void;
@@ -104,7 +105,7 @@ export const GifvModal = ({
             <div className="grid grid-cols-2 md:grid-cols-3 gap-2">
               {data?.pages?.flatMap((page) =>
                 page?.results?.map((result) => (
-                  <img
+                  <Image
                     onClick={() => {
                       onSelect(result.media_formats.gif.url);
                       setOpen(false);

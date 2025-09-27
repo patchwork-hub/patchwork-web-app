@@ -2,11 +2,37 @@ import {
   useMutation,
   useQueryClient,
   QueryClient,
+  InfiniteData,
 } from "@tanstack/react-query";
 import { bookmarkStatus, StatusActionParams } from "@/services/status/statuses";
 import { Status } from "@/types/status";
 import { ErrorResponse } from "@/types/error";
 import { AxiosError } from "axios";
+
+type SnapshotType = [
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>,
+  ReturnType<QueryClient["getQueriesData"]>
+];
+
+type PaginatedStatuses = {
+  statuses: Status[] | { data: Status[] };
+  [key: string]: unknown;
+}
+
+type ContextData = {
+  ancestors: Status[];
+  descendants: Status[];
+  [key: string]: unknown;
+}
+
+type SearchData = {
+  accounts: unknown[];
+  statuses: Status[];
+  hashtags: unknown[];
+  [key: string]: unknown;
+}
 
 export const useBookmarkStatus = () => {
   const queryClient = useQueryClient();
@@ -18,7 +44,8 @@ export const useBookmarkStatus = () => {
       queryClient.invalidateQueries({ queryKey: ["search-all"] });
     },
   };
-  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams>({
+  
+  return useMutation<Status, AxiosError<ErrorResponse>, StatusActionParams, SnapshotType>({
     mutationFn: bookmarkStatus,
     ...commonMutationConfig,
     onMutate: async ({ id }) => {
@@ -32,36 +59,27 @@ export const useBookmarkStatus = () => {
         getBookmarkStatusListUpdaterFn(id)
       );
 
-      const previousStatusData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["status"],
-        });
+      const previousStatusData = queryClient.getQueriesData({
+        queryKey: ["status"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["status"],
-        },
+        { queryKey: ["status"] },
         getUpdater(id)
       );
 
-      const previousContextData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["context"],
-        });
+      const previousContextData = queryClient.getQueriesData({
+        queryKey: ["context"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["context"],
-        },
+        { queryKey: ["context"] },
         getBookmarkContextUpdaterFn(id)
       );
 
-      const previousSearchData: ReturnType<QueryClient["getQueriesData"]> =
-        queryClient.getQueriesData({
-          queryKey: ["search-all"],
-        });
+      const previousSearchData = queryClient.getQueriesData({
+        queryKey: ["search-all"],
+      });
       queryClient.setQueriesData(
-        {
-          queryKey: ["search-all"],
-        },
+        { queryKey: ["search-all"] },
         getBookmarkSearchUpdaterFn(id)
       );
 
@@ -72,27 +90,24 @@ export const useBookmarkStatus = () => {
         previousSearchData,
       ];
     },
-    onError: (
-      err,
-      { id },
-      snapshot: ReturnType<QueryClient["getQueriesData"]>[]
-    ) => {
-      snapshot?.forEach((it) => {
-        it?.forEach(([key, data]) => {
-          queryClient.setQueryData(key, data);
+    onError: (err, { id }, snapshot) => {
+      if (!snapshot) return;
+      snapshot.forEach((queryData) => {
+        queryData?.forEach(([queryKey, data]) => {
+          queryClient.setQueryData(queryKey, data);
         });
       });
     },
   });
 };
 
-const getBookmarkStatusListUpdaterFn = (id: string) => (old: any) => {
+const getBookmarkStatusListUpdaterFn = (id: string) => (old: InfiniteData<PaginatedStatuses> | undefined) => {
   if (!old || !old.pages) return old;
 
-  const pages = old.pages.map((page: any) => {
+  const pages = old.pages.map((page: PaginatedStatuses) => {
     const statusesArray = Array.isArray(page.statuses)
       ? page.statuses
-      : page.statuses?.data;
+      : (page.statuses as { data: Status[] })?.data;
 
     if (!statusesArray) return page;
 
@@ -102,7 +117,7 @@ const getBookmarkStatusListUpdaterFn = (id: string) => (old: any) => {
       ...page,
       statuses: Array.isArray(page.statuses)
         ? updatedStatuses
-        : { ...page.statuses, data: updatedStatuses },
+        : { ...(page.statuses as object), data: updatedStatuses },
     };
   });
 
@@ -112,26 +127,26 @@ const getBookmarkStatusListUpdaterFn = (id: string) => (old: any) => {
   };
 };
 
-const getBookmarkContextUpdaterFn = (id: string) => (old: any) => {
+const getBookmarkContextUpdaterFn = (id: string) => (old: ContextData | undefined) => {
   if (!old) return old;
   return {
-    ancestors: old.ancestors.map(getUpdater(id)),
-    descendants: old.descendants.map(getUpdater(id)),
+    ...old,
+    ancestors: old.ancestors?.map(getUpdater(id)) || [],
+    descendants: old.descendants?.map(getUpdater(id)) || [],
   };
 };
 
-const getBookmarkSearchUpdaterFn =
-  (id: string) =>
-  (old: { accounts: any[]; statuses: Status[]; hashtags: any[] }) => {
-    if (!old) return old;
-    return {
-      ...old,
-      statuses: old.statuses.map(getUpdater(id)),
-    };
+const getBookmarkSearchUpdaterFn = (id: string) => (old: SearchData | undefined) => {
+  if (!old) return old;
+  return {
+    ...old,
+    statuses: old.statuses.map(getUpdater(id)),
   };
+};
 
-const getUpdater = (id: string) => (status: Status) => {
+const getUpdater = (id: string) => (status: Status): Status => {
   if (!status) return status;
+  
   if (status.id === id) {
     return {
       ...status,

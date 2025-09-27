@@ -1,6 +1,5 @@
 import {
   emailNotifications,
-  muteNotifications,
 } from "@/services/notifications/notifications";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
@@ -15,7 +14,7 @@ export const useUpdateEmail = () => {
 
       const previousEmailStatus = queryClient.getQueryData(["emailStatus"]);
 
-      queryClient.setQueryData(["emailStatus"], (old: any) => ({
+      queryClient.setQueryData(["emailStatus"], (old: {data: boolean}) => ({
         ...old,
         data,
       }));

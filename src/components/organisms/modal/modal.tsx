@@ -1,15 +1,14 @@
-import { X } from "lucide-react";
 import { AnimatePresence, motion } from "framer-motion";
-import { ComponentType, useEffect } from "react";
+import { useEffect } from "react";
 
 interface ModalProps {
   open: boolean;
-   onClose: (payload?: any) => void;
+  onClose: (payload?: unknown) => void;
   children: React.ReactNode;
   onBackdropClick?: () => void; 
 }
 
-const AnimatePresenceFixedType = AnimatePresence as ComponentType<any>;
+const AnimatePresenceFixedType = AnimatePresence as React.ComponentType<React.ComponentProps<typeof AnimatePresence>>;
 
 export default function Modal({ open, onClose, children, onBackdropClick }: ModalProps) {
 
@@ -60,12 +59,6 @@ export default function Modal({ open, onClose, children, onBackdropClick }: Moda
               exit={{ opacity: 0, scale: 0.9 }}
               transition={{ duration: 0.2, ease: "easeInOut" }}
             >
-              {/* <button
-                onClick={onClose}
-                className="absolute right-3 top-3 z-10 rounded-full bg-gray-200 p-2 hover:bg-gray-300"
-              >
-                <X className="h-4 w-4" />
-              </button> */}
               <div className="no-scrollbar">{children}</div>
             </motion.div>
           </motion.div>
