@@ -1,6 +1,6 @@
 "use client"
 import React from "react";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import ChangeEmailForm from "@/components/templates/settings/ChangeEmailForm";
 import { useLocale } from "@/providers/localeProvider";
 

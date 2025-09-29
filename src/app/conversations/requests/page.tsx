@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import { useAcceptNotificationRequest } from "@/hooks/mutations/conversations/useAcceptNotificationRequest";
 import { useDismissNotificationRequest } from "@/hooks/mutations/conversations/useDismissNotificationRequest";
 import { useNotificationRequests } from "@/hooks/queries/conversations/useGetNotificationRequests";
@@ -7,11 +8,14 @@ import { FC } from "react";
 import { Button } from "@/components/atoms/ui/button";
 import { getRawText } from "@/lib/utils";
 import TimeAgo from "@/utils/helper/timeAgo";
-import { DisplayName } from "@/components/atoms/common/DisplayName";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { DisplayName } from "@/components/molecules/common/DisplayName";
+import { NotificationRequest } from "@/types/conversation";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
+
 
 const RequestListItem: React.FC<{
-  request: any;
+  request: NotificationRequest;
   onAccept: (id: string) => void;
   onDismiss: (id: string) => void;
 }> = ({ request, onAccept, onDismiss }) => {
@@ -19,16 +23,19 @@ const RequestListItem: React.FC<{
   return (
     <li className="flex gap-5 items-start rounded-md p-[10px] bg-white/10">
       <div className="w-12 h-12 aspect-square">
-        <img
+        <Image
           className="w-12 h-12 aspect-square rounded-2xl"
           src={request.account.avatar}
+          alt={request.account.display_name || request.account.username}
+          width={48}
+          height={48}
         />
       </div>
       <div className="flex flex-col flex-1 gap-4">
         <div className="flex flex-col">
           <DisplayName
             className="text-[15px]"
-            emojis={request.account.emojis}
+            emojis={request.account.emojis as MastodonCustomEmoji[]}
             acct={request.account.acct}
             displayName={
               request.account.display_name || request.account.username

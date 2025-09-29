@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import {
   Tabs,
   TabsContent,
@@ -12,9 +12,9 @@ import {
   useGetBlockedUserList,
   useGetMutedUserList,
 } from "@/hooks/queries/settings/useMuteAndBlock";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
 import { isSystemDark } from "@/utils/helper/helper";
 import { useTheme } from "next-themes";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 
 const MuteAndBlockPage = () => {
   const {

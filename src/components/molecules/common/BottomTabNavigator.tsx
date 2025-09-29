@@ -28,6 +28,15 @@ import { NotificationGroup } from "@/types/notification";
 import { TabNavigator } from "@/types/patchwork";
 import { useLocale } from "@/providers/localeProvider";
 
+type FCMessageData = {
+  noti_type?: string;
+  visibility?: string;
+};
+
+type FCMessage = {
+  data?: FCMessageData;
+};
+
 const NotificationIcon = ({
   pathname,
   lastReadId,
@@ -37,7 +46,7 @@ const NotificationIcon = ({
   pathname: string;
   lastReadId?: string | object;
   notificationGroups?: NotificationGroup[];
-  message?: { data?: { noti_type?: string; visibility?: string } } | null;
+  message?: FCMessage | null;
 }) => {
   const unreadCount = getUnreadNotificationCount(
     notificationGroups,
@@ -94,9 +103,7 @@ const BottomTabNavigator = () => {
     enabled: !isNewsmast && !!token,
   });
 
-  const {
-    mutate: saveLastReadId,
-  } = useSaveLastReadIdNotification();
+  const { mutate: saveLastReadId } = useSaveLastReadIdNotification();
 
   const handleNotificationRead = (notificationId: string) => {
     saveLastReadId(notificationId as string);
@@ -121,7 +128,7 @@ const BottomTabNavigator = () => {
           pathname={pathname}
           lastReadId={lastReadId}
           notificationGroups={notificationGroups}
-          message={message}
+          message={message as FCMessage | null}
         />
       ),
       label: "Notifications",
@@ -137,12 +144,14 @@ const BottomTabNavigator = () => {
               pathname === "/notifications" ? "stroke-[2.5]" : "stroke-2"
             }`}
           />
-          {pathname !== "/notifications" &&
-            message &&
-            message?.data?.noti_type === "mention" &&
-            message?.data?.visibility === "direct" && (
-              <span className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full" />
-            )}
+          {Boolean(
+            pathname !== "/notifications" &&
+              message &&
+              (message as FCMessage)?.data?.noti_type === "mention" &&
+              (message as FCMessage)?.data?.visibility === "direct"
+          ) && (
+            <span className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full" />
+          )}
         </div>
       ),
       label: "Messages",

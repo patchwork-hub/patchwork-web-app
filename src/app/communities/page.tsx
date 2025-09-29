@@ -1,8 +1,8 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { useCollectionChannelList } from "@/hooks/queries/useCollections.query";
 import { AnimatePresence, motion } from "framer-motion";
@@ -45,8 +45,8 @@ export default function Communities() {
               variants={itemVariants}
               onClick={() =>
                 router.push(
-                  `/communities/${collections[0].attributes.name.toLowerCase()}?slug=${
-                    collections[0].attributes.slug
+                  `/communities/${collections?.[0].attributes.name.toLowerCase()}?slug=${
+                    collections?.[0].attributes.slug
                   }`
                 )
               }
@@ -73,7 +73,7 @@ export default function Communities() {
               <div className="absolute bottom-0 left-0 p-2 md:p-4 flex items-center justify-between w-full">
                 <ThemeText className="text-[#fff] text-sm sm:text-lg space-x-1">
                   {collections?.[0]?.attributes.name}
-                  {`(${collections[0].attributes?.community_count})`}
+                  {`(${collections?.[0].attributes?.community_count})`}
                 </ThemeText>
                 <ChevronRight className="text-[#fff]" />
               </div>

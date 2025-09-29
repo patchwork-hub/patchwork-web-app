@@ -1,11 +1,10 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useCommunityBioHashtags } from "@/hooks/queries/useGetChannelAbout.query";
-import { DEFAULT_DASHBOARD_API_URL, isDevelopment, STAGING_DASHBOARD_API_URL } from "@/utils/constant";
-import { calculateHashTagCount } from "@/utils/helper/helper";
+import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
 import { AnimatePresence, motion } from "framer-motion";
-import { ChevronRightIcon, Menu, PlusIcon, Trash2 } from "lucide-react";
+import { ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { use } from "react";
 export default function HashtagLists({

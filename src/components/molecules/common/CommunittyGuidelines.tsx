@@ -2,15 +2,11 @@
 import React from "react";
 import { ThemeText } from "./ThemeText";
 import { useLocale } from "@/providers/localeProvider";
+import { ChannelAbout, ChannelDetail } from "@/types/patchwork";
 
 
 type Props = {
-  channelAbout: {
-    rules?: { text: string }[];
-    attributes?: {
-      patchwork_community_rules?: string[] | string;
-    };
-  } | null;
+  channelAbout: ChannelDetail;
 };
 
 const ChannelGuidelines: React.FC<Props> = ({ channelAbout }) => {

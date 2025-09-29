@@ -24,6 +24,7 @@ import { useLocale } from "@/providers/localeProvider";
 import { useConversationStore } from "@/stores/conversations/conversation";
 import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { DisplayName } from "@/components/molecules/common/DisplayName";
+import Image from "next/image";
 
 const ConversationPage = () => {
   const queryClient = useQueryClient();
@@ -155,7 +156,7 @@ const ConversationPage = () => {
             {isGroupChat ? (
               <div className="w-10 h-10 aspect-square relative">
                 {accounts?.slice(0, 2)?.map((account, index) => (
-                  <img
+                  <Image
                     key={index}
                     className={cn(
                       "w-8 aspect-square rounded-full absolute bg-gray-300 border border-white",
@@ -164,6 +165,8 @@ const ConversationPage = () => {
                         "bottom-0 start-0": index !== 0,
                       }
                     )}
+                    width={32}
+                    height={32}
                     src={account.avatar}
                     alt={account.display_name}
                   />
@@ -172,7 +175,8 @@ const ConversationPage = () => {
             ) : (
               accounts &&
               accounts.length > 0 && (
-                <img
+                <Image
+                  alt={accounts[0].display_name || accounts[0].username}
                   width={40}
                   height={40}
                   className="min-w-10 aspect-square rounded-2xl"
@@ -326,9 +330,12 @@ const MessageBubble: React.FC<{
       {!isCurrentUser &&
         (showAvatar ? (
           <Link href={`/@${message.account?.acct}`}>
-            <img
+            <Image
+              alt={message.account.display_name || message.account.username}
               src={message.account.avatar}
               className="w-8 aspect-square rounded-full"
+              width={32}
+              height={32}
             />
           </Link>
         ) : (

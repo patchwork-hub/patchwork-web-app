@@ -1,5 +1,5 @@
 import React from "react";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import ChangeEmailVerificationForm from "@/components/templates/settings/ChangeEmailVerificationForm";
 
 const ChangeEmailVerification: React.FC = () => {

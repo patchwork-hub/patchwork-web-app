@@ -146,23 +146,9 @@ const ConversationListItem: React.FC<{
   const { mutate: markConversationAsRead } = useMarkConversationAsRead();
   const [isPopoverOpen, setIsPopoverOpen] = useState(false);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const account = conversation.accounts.length > 0 && conversation.accounts[0];
-  if (!account) {
-    return null;
-  }
   const { theme } = useTheme();
-
-  const handleDelete = () => {
-    removeConversation(conversation.id);
-    setIsDialogOpen(false);
-    setIsPopoverOpen(false);
-  };
-
-  const handleMarkAsRead = () => {
-    markConversationAsRead(conversation.id);
-    setIsPopoverOpen(false);
-  };
-
+  const account = conversation.accounts.length > 0 && conversation.accounts[0];
+  
   const { editorjsx } = useTipTapEditor({
     editable: false,
     className: "",
@@ -176,9 +162,25 @@ const ConversationListItem: React.FC<{
     editable: false,
     className: "line-clamp-1",
     content: getRawText(conversation?.last_status?.content ?? "")
-      .replace(`@${account?.acct}`, "")
-      .replace(currentUser && (getExactUsername(currentUser.url) ?? ""), ""),
+      .replace(`@${account ? account?.acct : ''}`, "")
+      .replace(currentUser ? (getExactUsername(currentUser.url) || "") : "", ""),
   });
+
+  if (!account) {
+    return null;
+  }
+
+   const handleDelete = () => {
+    removeConversation(conversation.id);
+    setIsDialogOpen(false);
+    setIsPopoverOpen(false);
+  };
+
+  const handleMarkAsRead = () => {
+    markConversationAsRead(conversation.id);
+    setIsPopoverOpen(false);
+  };
+
 
   return conversation && conversation.accounts.length > 0 ? (
     <li
@@ -196,7 +198,7 @@ const ConversationListItem: React.FC<{
             {conversation.accounts
               .map((it) => it.avatar)
               .map((avatar, index) => (
-                <img
+                <Image
                   key={index}
                   className={cn(
                     "w-9 h-9 aspect-square rounded-full absolute bg-[#96a6c2] border border-white",
@@ -205,7 +207,10 @@ const ConversationListItem: React.FC<{
                       "bottom-0 start-0": index !== 0,
                     }
                   )}
+                  width={36}
+                  height={36}
                   src={avatar}
+                  alt={avatar + index}
                 />
               ))}
           </div>

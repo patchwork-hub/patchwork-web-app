@@ -1,21 +1,21 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { FALLBACK_MOME_IMAGE_URL } from "@/constants/url";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { useFavouriteChannelLists } from "@/hooks/queries/useFavouriteChannelList.query";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
-import { useAuthStore } from "@/store/auth/authStore";
-import { DEFAULT_API_URL, DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
+import { DEFAULT_API_URL } from "@/utils/constant";
 import { cleanDomain, formatSlug } from "@/utils/helper/helper";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useSelectedDomain } from "@/stores/auth/activeDomain";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 
 export default function MyChannelsPage() {
   const { userOriginInstance } = useAuthStore();

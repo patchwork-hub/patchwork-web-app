@@ -2,7 +2,6 @@
 
 import { AnimatePresence } from "framer-motion";
 import { use, useState } from "react";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
 import { CommunityTimeline } from "@/components/organisms/status/CommunityTimeline";
 import { ensureHttp } from "@/utils/helper/helper";
 import {
@@ -10,26 +9,13 @@ import {
   useGetCommunityAbout,
   useGetCommunityInfo,
 } from "@/hooks/queries/useGetChannelAbout.query";
-import ChannelGuidelines from "@/components/atoms/common/CommunittyGuidelines";
-import CommunityAbout from "@/components/atoms/common/CommunityAbout";
 import { useSearchParams } from "next/navigation";
+import { useLocale } from "@/providers/localeProvider";
 import CommunityBanner from "@/components/molecules/common/CommunityBanner";
-import {
-  useDeleteFavouriteChannelMutation,
-  useFavouriteChannelMutation,
-} from "@/hooks/mutations/community/useToggleCommunity";
-import {
-  GetChannelDetailQueryKey,
-  GetFavouriteChannelListsQueryKey,
-} from "@/types/queries/channel.type";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
-import {
-  CHANNEL_ORG_INSTANCE,
-  DEFAULT_API_URL,
-  MOME_INSTANCE,
-} from "@/utils/constant";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
+import ChannelGuidelines from "@/components/molecules/common/CommunittyGuidelines";
+import CommunityAbout from "@/components/molecules/common/CommunityAbout";
+import { ChannelDetail } from "@/types/patchwork";
 
 export default function Following({
   params,
@@ -38,10 +24,8 @@ export default function Following({
 }) {
   const { domain } = use(params);
 
-  const domain_name = useSelectedDomain();
-
   const searchParams = useSearchParams();
-  const slug = searchParams.get("slug");
+  const slug = searchParams.get("slug") ?? "";
   const ensuDomain = ensureHttp(domain);
   const hasSlug = Boolean(slug);
   const {t} = useLocale();
@@ -54,79 +38,7 @@ export default function Following({
   const { data: channelAbout } = useGetCommunityAbout(ensuDomain);
   const { data: channelAdditionalInfo } = useGetCommunityInfo(ensuDomain);
   const { data: channelDetail } = useChannelDetail({ id: slug });
-  const isChannel = channelDetail?.type === "channel";
-  const isNewsmast = domain_name === MOME_INSTANCE;
-  const { mutate: favouriteChannelMutate } = useFavouriteChannelMutation({
-    onSuccess(data) {
-      const channelDetailQueryKey: GetChannelDetailQueryKey = [
-        "channel-detail",
-        { id: isChannel ? channelDetail?.attributes.slug ?? "" : "" },
-      ];
-      queryClient.setQueryData<ChannelList>(channelDetailQueryKey, (old) => {
-        if (!old) return;
-        return {
-          ...old,
-          attributes: {
-            ...old.attributes,
-            favourited: !old.attributes.favourited,
-          },
-        };
-      });
-
-      const favouriteChannelListsQueryKey: GetFavouriteChannelListsQueryKey = [
-        "favourite-channel-lists",
-      ];
-      queryClient.invalidateQueries({
-        queryKey: favouriteChannelListsQueryKey,
-      });
-    },
-    onError(error) {
-      console.error(error);
-    },
-  });
-
-  const { mutate: deleteFavouriteChannelMutate } =
-    useDeleteFavouriteChannelMutation({
-      onSuccess(data, variables) {
-        const channelDetailQueryKey: GetChannelDetailQueryKey = [
-          "channel-detail",
-          { id: isChannel ? channelDetail?.attributes.slug ?? "" : "" },
-        ];
-        queryClient.setQueryData<ChannelList>(channelDetailQueryKey, (old) => {
-          if (!old) return;
-          return {
-            ...old,
-            attributes: {
-              ...old.attributes,
-              favourited: !old.attributes.favourited,
-            },
-          };
-        });
-
-        const favouriteChannelListsQueryKey: GetFavouriteChannelListsQueryKey =
-          ["favourite-channel-lists"];
-
-        queryClient.setQueryData<ChannelList[]>(
-          favouriteChannelListsQueryKey,
-          (oldList) => {
-            if (!oldList) return;
-            return oldList.filter(
-              (item) => item.attributes.slug !== variables.id
-            );
-          }
-        );
-      },
-      onError(error) {
-        console.error(error);
-      },
-    });
-  const toggleChannel = (isFav: boolean) => {
-    isFav
-      ? deleteFavouriteChannelMutate({
-          id: channelDetail?.attributes.slug!,
-        })
-      : favouriteChannelMutate({ id: channelDetail?.attributes.slug! });
-  };
+  
   const handleTabChange = (tab: { name: string; value: string }) => {
     setActiveTab(tab.value);
   };
@@ -135,9 +47,8 @@ export default function Following({
     <div className="relative">
       <CommunityBanner
         newsmastInstance={slug === null ? channelAbout : undefined}
-        channelDetail={channelDetail}
+        channelDetail={channelDetail as ChannelDetail}
         showButton={false}
-        // isNewsmast={isNewsmast}
       />
       <div>
         <AnimatePresence mode="wait">
@@ -151,7 +62,7 @@ export default function Following({
             </div>
             {activeTab === "about" && (
               <>
-                <ChannelGuidelines channelAbout={channelAbout} />
+                <ChannelGuidelines channelAbout={channelAbout as unknown as ChannelDetail} />
                 <CommunityAbout
                   channelAdditionalInfo={channelAdditionalInfo}
                   channelAbout={channelAbout ?? channelAbout}

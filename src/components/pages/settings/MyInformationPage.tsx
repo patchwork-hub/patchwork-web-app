@@ -1,5 +1,5 @@
 "use client"
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { useLocale } from "@/providers/localeProvider";
 import MyInformation from "@/components/templates/settings/MyInformation";
 import React from "react";

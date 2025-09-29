@@ -1,7 +1,7 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import { useLocale } from "@/providers/localeProvider";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { FALLBACK_PREVIEW_NEWSMAST_URL } from "@/constants/url";
 import { useDetailCollectionChannelList } from "@/hooks/queries/useCommunityChannels.query";
@@ -12,6 +12,7 @@ import { ChevronRight, SearchX } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { use } from "react";
+import { ChannelList } from "@/types/patchwork";
 
 export default function NewsmastChannelsPage({
   params,
@@ -23,7 +24,6 @@ export default function NewsmastChannelsPage({
   const {
     data: collectionChannelsList,
     isLoading,
-    isSuccess,
   } = useDetailCollectionChannelList({ slug, type: "newsmast" });
   const router = useRouter();
 

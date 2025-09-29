@@ -1,6 +1,6 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { FALLBACK_PREVIEW_NEWSMAST_URL } from "@/constants/url";
 import { useNewsmastCollections } from "@/hooks/queries/useNewsmastCollections";

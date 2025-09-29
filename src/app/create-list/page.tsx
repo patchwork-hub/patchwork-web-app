@@ -1,6 +1,5 @@
 "use client";
-import PrimaryButton from "@/components/atoms/common/PrimaryButton";
-import Toggle from "@/components/atoms/common/ToggleButton";
+
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -13,19 +12,22 @@ import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { Input } from "@/components/atoms/ui/input";
 import z from "zod";
 import { useTString } from "@/lib/tString";
+import PrimaryButton from "@/components/molecules/common/PrimaryButton";
+import Toggle from "@/components/molecules/common/ToggleButton";
 
 export default function ListCreateForm() {
   const { theme } = useTheme();
   const {t} = useLocale();
   const tString = useTString();
   const schemas = createSchemas(tString);
+  const [isMounted, setIsMounted] = useState(false);
   const {
     register,
     handleSubmit,
@@ -50,6 +52,7 @@ export default function ListCreateForm() {
   const [formData, setFormData] = useState({
     acceptTerms: false,
   });
+  console.log('Rendering options:', options)
   const handleToggle = (newState: boolean) => {
     setFormData((prev) => ({ ...prev, acceptTerms: newState }));
   };
@@ -73,6 +76,9 @@ export default function ListCreateForm() {
       });
     }
   };
+  useEffect(() => {
+  setIsMounted(true);
+}, []);
 
   return (
     <form onSubmit={handleSubmit(onSubmit)} className="h-full p-4">
@@ -96,19 +102,17 @@ export default function ListCreateForm() {
         </label>
         <DropdownMenu>
           <DropdownMenuTrigger asChild>
-            <p className="w-fit flex items-center space-x-3 text-orange-500">
+            <p className="w-fit flex items-center space-x-3 text-orange-500 cursor-pointer">
               <span>{selected.title}</span> <ChevronDown />
             </p>
           </DropdownMenuTrigger>
           <DropdownMenuContent
             align="start"
-            className={cn("w-full bg-black", {
-              "bg-white": theme === "light",
-            })}
+            className={cn("w-full bg-background")}
           >
-            {options.map((option) => (
+            {isMounted && options.map((option, idx) => (
               <DropdownMenuItem
-                key={option.value}
+                key={`${option.value}-${idx}`}
                 onClick={() => setSelected(option)}
                 className="cursor-pointer "
               >
@@ -128,7 +132,7 @@ export default function ListCreateForm() {
             {t("list.list_only_member_desc")}
           </span>
         </div>
-        <Toggle initialState={formData.acceptTerms} onToggle={handleToggle} />
+        <Toggle initialState={formData.acceptTerms} onToggle={handleToggle}/>
       </div>
 
       <PrimaryButton isPending={isPending} text={t("list.create_list")} type="submit" />

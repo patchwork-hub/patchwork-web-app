@@ -1,24 +1,34 @@
 "use client";
 
-import ChannelGuidelines from "@/components/atoms/common/CommunittyGuidelines";
-import CommunityAbout from "@/components/atoms/common/CommunityAbout";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
-import CommunityBanner from "@/components/molecules/common/CommunityBanner";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { AccountStatusList } from "@/components/organisms/status/AccountStatusList";
 import { useSearchQuery } from "@/hooks/queries/search/useSearchQuery";
 import { useCheckAccountRelationship } from "@/hooks/queries/status/useCheckAccountRelationship";
 import { useNewsmastDetail } from "@/hooks/queries/status/useNewsmastDetail";
 import {
-  useCommunityBio,
   useCommunityBioHashtags,
   useCommunityDetailProfile,
   useCommunityPeopleToFollow,
 } from "@/hooks/queries/useGetChannelAbout.query";
-import { DEFAULT_DASHBOARD_API_URL, isDevelopment, STAGING_DASHBOARD_API_URL } from "@/utils/constant";
+import { DEFAULT_DASHBOARD_API_URL} from "@/utils/constant";
 import { AnimatePresence } from "framer-motion";
 import { useSearchParams } from "next/navigation";
 import { use, useState } from "react";
+import { Account } from "@/types/account";
+import CommunityBanner from "@/components/molecules/common/CommunityBanner";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
+import ChannelGuidelines from "@/components/molecules/common/CommunittyGuidelines";
+import CommunityAbout from "@/components/molecules/common/CommunityAbout";
+import { ChannelAbout, ChannelDetail } from "@/types/patchwork";
+
+type PeopleSearchResult = {
+  url: string;
+  data: {
+    accounts: Account[];
+  };
+  isLoading: boolean;
+  error: Error | null;
+}
 
 export default function Following({
   params,
@@ -28,16 +38,14 @@ export default function Following({
   const { slug: routeSlug } = use(params); // From route
   const searchParams = useSearchParams();
   const {t} = useLocale();
-  const querySlug = searchParams.get("slug"); // From ?slug=...
+  const querySlug = searchParams.get("slug") ?? ""; // From ?slug=...
 
   const finalUsername = querySlug.startsWith("@")
     ? querySlug.slice(1)
     : querySlug;
 
   const { data: newsmastChannelDetail } = useNewsmastDetail(querySlug);
-  const [peopleSearchResults, setPeopleSearchResults] = useState<
-    { url: string; data: any; isLoading: boolean; error: any }[]
-  >([]);
+  const [peopleSearchResults] = useState<PeopleSearchResult[]>([]);
 
   const [activeTab, setActiveTab] = useState<string>("posts");
   const tabs = [
@@ -64,7 +72,7 @@ export default function Following({
 
   const accountIds = peopleSearchResults
     .filter((result) => result.data && !result.error)
-    .flatMap((result) => result.data.accounts.map((account) => account.id))
+    .flatMap((result) => result.data.accounts.map((account: Account) => account.id))
     .filter(Boolean);
 
   const queryString = accountIds
@@ -93,7 +101,7 @@ export default function Following({
   return (
     <div className="relative">
       <CommunityBanner
-        newsmastChannelDetail={communityDetail}
+        newsmastChannelDetail={communityDetail as ChannelDetail}
         acct={finalUsername}
         showButton={false}
         isNewsmast
@@ -102,7 +110,7 @@ export default function Following({
       <div>
         <AnimatePresence mode="wait">
           <>
-            <div className="sticky top-0 z-10 bg-background">
+            <div className="sticky top-0 z-10 bgb-background">
               <MappedTabs
                 activeTab={activeTab}
                 onTabChange={handleTabChange}
@@ -111,10 +119,10 @@ export default function Following({
             </div>
             {activeTab === "about" && (
               <>
-                <ChannelGuidelines channelAbout={communityDetail} />
+                <ChannelGuidelines channelAbout={communityDetail as ChannelDetail} />
                 <CommunityAbout
                   communityHashtag={communityHashtag}
-                  channelAbout={newsmastChannelDetail}
+                  channelAbout={newsmastChannelDetail as unknown as ChannelAbout}
                   isCommunity
                   channelDetail={communityDetail}
                   suggestedPeople={communityPeopleToFollow}

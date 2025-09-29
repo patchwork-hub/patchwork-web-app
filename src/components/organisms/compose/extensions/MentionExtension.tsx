@@ -1,7 +1,7 @@
 import Mention from '@tiptap/extension-mention';
 import { Editor } from '@tiptap/core';
 import { ReactRenderer } from '@tiptap/react';
-import tippy from 'tippy.js';
+import tippy, { Instance, Props } from 'tippy.js';
 import { Account } from '@/types/status';
 import { debounce } from 'lodash';
 import { searchAccounts } from '@/services/status/account';
@@ -59,17 +59,26 @@ const debouncedSearchAccounts = debounce(async (query: string, callback: (data: 
     callback(data);
 }, 300);
 
+interface TiptapSuggestionProps {
+    query: string;
+    editor: Editor;
+    range: { from: number; to: number };
+    clientRect?: (() => DOMRect | null) | null;
+    command: (props: { editor: Editor; range: { from: number; to: number }; attrs: Record<string, unknown> }) => void;
+}
+
 const suggestion = {
     items: async () => {
         return [];
     },
 
     render: () => {
-        let component: any;
-        let popup: any;
+        let component: ReactRenderer | null = null;
+        let popup: Instance<Props>[] | null = null;
 
         return {
-            onStart: (props: any) => {
+
+            onStart: (props: TiptapSuggestionProps) => {
                 const { query } = props;
                 debouncedSearchAccounts(query, (data) => {
                     if (!component) {
@@ -81,9 +90,12 @@ const suggestion = {
                         component.updateProps({ ...props, items: data, isFetching: false });
                     }
 
-                    if (!popup) {
+                     if (!popup) {
                         popup = tippy('body', {
-                            getReferenceClientRect: props.clientRect,
+                            getReferenceClientRect: () => {
+                                const rect = props.clientRect?.();
+                                return rect || new DOMRect(0, 0, 0, 0);
+                            },
                             appendTo: () => document.body,
                             content: component.element,
                             showOnCreate: true,
@@ -95,24 +107,29 @@ const suggestion = {
                             }
                         });
                     } else {
-                        popup.setContent(component.element);
+                        popup[0].setContent(component.element);
                     }
                 });
             },
 
-            onUpdate: (props: any) => {
+            onUpdate: (props: TiptapSuggestionProps) => {
                 const { query } = props;
                 debouncedSearchAccounts(query, (data) => {
                     if (component) {
                         component.updateProps({ ...props, items: data, isFetching: false });
                     }
                     if (popup && popup[0]) {
-                        popup[0].setProps({ getReferenceClientRect: props.clientRect });
+                        popup[0].setProps({
+                            getReferenceClientRect: () => {
+                                const rect = props.clientRect?.();
+                                return rect || new DOMRect(0, 0, 0, 0);
+                            },
+                        });
                     }
                 });
             },
 
-            onKeyDown(props: any) {
+            onKeyDown(props: { event: KeyboardEvent }) {
                 if (props.event.key === 'Escape' && popup && popup[0]) {
                     popup[0].hide();
                     return true;

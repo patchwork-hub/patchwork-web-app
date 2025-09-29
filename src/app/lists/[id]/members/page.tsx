@@ -1,12 +1,11 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
-import PrimaryButton from "@/components/atoms/common/PrimaryButton";
-import SearchInput from "@/components/atoms/common/Searchinput";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
+import PrimaryButton from "@/components/molecules/common/PrimaryButton";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
 import { Modal } from "@/components/atoms/ui/modal";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import {
   useAddAccountToList,
@@ -18,13 +17,15 @@ import { useAccountsInList } from "@/hooks/queries/useAccountsInList.query";
 import { useSearchAccounts } from "@/hooks/queries/useSearchMembers";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { cn } from "@/lib/utils";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
 import { isSystemDark } from "@/utils/helper/helper";
 import { useTheme } from "next-themes";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { use, useState } from "react";
 import { toast } from "sonner";
+import SearchInput from "@/components/molecules/common/Searchinput";
+import { Account } from "@/types/account";
 
 export default function ListMember({
   params,
@@ -74,16 +75,7 @@ export default function ListMember({
     id: queryString,
     enabled: accountIds.length > 0,
   });
-
-  const relationshipMap = relationships
-    ? relationships.reduce((acc, rel) => {
-        acc[rel.id] = {
-          following: rel.following,
-          requested: rel.requested,
-        };
-        return acc;
-      }, {})
-    : {};
+  
   const handleToggleListMember = (acc: Account, type: string) => {
     if (type === "add") {
       setSelectedAccountId(acc.id);
@@ -107,7 +99,7 @@ export default function ListMember({
             onSuccess: () => {
               setShowAddToList(false);
             },
-            onError: (error: any) => {
+            onError: (error) => {
               console.error("Failed to add to list:", error);
             },
           }
@@ -164,10 +156,6 @@ export default function ListMember({
           <div className="mb-auto">
             {searchList.accounts.map((acc, index) => {
               const isInList = memberIds.has(acc.id);
-              const status = relationshipMap[acc.id] ?? {
-                following: false,
-                requested: false,
-              };
 
               return (
                 <React.Fragment key={index}>

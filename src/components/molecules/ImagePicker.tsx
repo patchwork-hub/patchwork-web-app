@@ -8,6 +8,7 @@ import {
   DialogTitle
 } from "@/components/atoms/ui/dialog";
 import { Button } from "../atoms/ui/button";
+import Image from "next/image";
 
 const ASPECT_RATIOS = {
   "1:1": { width: 1, height: 1, label: "Avatar" },
@@ -143,7 +144,7 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
             <div className="relative h-full w-full overflow-hidden">
               {image && (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img
+                <Image
                   ref={imageRef}
                   src={image}
                   alt="Upload preview"

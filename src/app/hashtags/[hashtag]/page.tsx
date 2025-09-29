@@ -1,20 +1,20 @@
 "use client";
 
 import React, { use } from "react";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { HashtagTimeline } from "@/components/organisms/status/HashtagTimeline";
-
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
 import { calculateHashTagCount } from "@/utils/helper/helper";
 import { useHashTagDetailQuery } from "@/hooks/queries/useHashtagDetail";
 import { useToggleHashtagFollow } from "@/hooks/mutations/hashtag/useToggleHashtagFollow";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { HashtagHistory } from "@/types/patchwork";
 
 interface HashtagDetail {
   id: string;
   name: string;
   url: string;
-  history: any[];
+  history: HashtagHistory[];
   following: boolean;
 }
 
@@ -37,14 +37,10 @@ export default function HashtagDetail({
     hashtag
   });
 
-  const handleToggleFollow = () => {
-    toggleFollow({ shouldFollow: !hashtagDetail.following });
-  };
-
   return (
     <>
       <Header title={`#${hashtag}`} />
-      {isLoading ? (
+      {isLoading || !hashtagDetail ? (
         <div className="flex items-center justify-between p-4">
           <div className="w-20 h-10 rounded-md bg-gray-600 animate-pulse [animation-delay:-0.3s]" />
           <div className="w-20 h-10 rounded-md bg-gray-600 animate-pulse [animation-delay:-0.3s]" />
@@ -63,7 +59,7 @@ export default function HashtagDetail({
           </div>
           <button
             className="border border-gray-600 rounded-md p-2 disabled:opacity-50 disabled:cursor-not-allowed"
-            onClick={handleToggleFollow}
+            onClick={() => toggleFollow({ shouldFollow: !hashtagDetail.following })}
           >
             {hashtagDetail.following ? `${t("timeline.unfollow")}` : `${t("timeline.follow")}`}
           </button>

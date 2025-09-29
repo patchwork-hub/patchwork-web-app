@@ -1,6 +1,5 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import { ThemeSwitcher } from "@/components/atoms/common/ThemeSwitcher";
+
 import { Button } from "@/components/atoms/ui/button";
 import {
   Dialog,
@@ -13,34 +12,32 @@ import {
 } from "@/components/atoms/ui/dialog";
 import { useLocale } from "@/providers/localeProvider";
 import { queryClient } from "@/providers/queryProvider";
-import { ReceiveEmailNotification } from "@/components/notifications/ReceiveEmailNotification";
-import { ReceivePushNotification } from "@/components/notifications/ReceivePushNotification";
 import { Schedules } from "@/components/organisms/compose/tools/Schedules";
 import LanguageSwitcher from "@/components/organisms/locale/LanguageSwitcher";
 import { useDeleteAccount } from "@/hooks/mutations/auth/useDeleteAccount";
 import { useRevokeFCMToken } from "@/hooks/mutations/fcm/useRevokeFCMToken";
 import { removeToken } from "@/lib/auth";
 import { cn } from "@/lib/utils";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
-import { useAuthStore } from "@/store/auth/authStore";
 import { CHANNEL_ORG_INSTANCE, DEFAULT_API_URL } from "@/utils/constant";
 import { cleanDomain, isSystemDark } from "@/utils/helper/helper";
 import Cookies from "js-cookie";
 import { ChevronRight, LogOut, UserRound } from "lucide-react";
 import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
 import { useState, useTransition } from "react";
-import { toast } from "sonner";
+import Header from "@/components/molecules/common/Header";
+import { ThemeSwitcher } from "@/components/molecules/common/ThemeSwitcher";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { ReceivePushNotification } from "@/components/molecules/notifications/ReceivePushNotification";
+import { ReceiveEmailNotification } from "@/components/molecules/notifications/ReceiveEmailNotification";
 
 const SettingPage = () => {
   const {
     actions: { clearAuthState },
   } = useAuthStore();
   const domain = Cookies.get("domain") ?? DEFAULT_API_URL;
-  const { theme, setTheme } = useTheme();
+  const { theme } = useTheme();
 
-  const router = useRouter();
   const [isPending, startTransition] = useTransition();
 
   const { mutateAsync: revokeFCMToken } = useRevokeFCMToken();
@@ -57,7 +54,7 @@ const SettingPage = () => {
   const handleConfirmLogout = async () => {
     startTransition(async () => {
       try {
-        const fcmToken = localStorage.getItem("fcmToken");
+        const fcmToken = localStorage.getItem("fcmToken") ?? "";
         await revokeFCMToken(fcmToken);
       } catch (e) {
         console.error("Error revoking FCM token:", e);
@@ -66,24 +63,21 @@ const SettingPage = () => {
         localStorage.removeItem("fcmToken");
         removeToken();
         queryClient.clear();
-        // router.refresh();
-        // router.push("/auth/sign-in");
         window.location.reload();
-        // setTheme("system");
       }
     });
   };
 
-  const handleDeleteAccount = async () => {
-    await deleteAccount(null, {
-      onSuccess({ message }, variables, context) {
-        toast.success(message);
-      },
-    });
-    removeToken();
-    queryClient.clear();
-    router.push("/auth/sign-in");
-  };
+  // const handleDeleteAccount = async () => {
+  //   await deleteAccount(null, {
+  //     onSuccess({ message }, variables, context) {
+  //       toast.success(message);
+  //     },
+  //   });
+  //   removeToken();
+  //   queryClient.clear();
+  //   router.push("/auth/sign-in");
+  // };
 
   const itemShown =
     domain === cleanDomain(CHANNEL_ORG_INSTANCE) || domain === DEFAULT_API_URL;
@@ -196,32 +190,31 @@ const SettingPage = () => {
           </div>
         </div>
         <div>
-          {/* Add Terms & Conditions, Privacy Policy, and Community Guidelines links */}
           <div className="my-5">
             <p className="text-orange-500 text-center text-xs sm:text-sm">
-              <a
+              <Link
                 href="https://www.newsmastfoundation.org/terms-conditions/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {t("setting.terms_and_conditions")}
-              </a>
+              </Link>
               ,{" "}
-              <a
+              <Link
                 href="https://mo-me.social/privacy-policy"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {t("setting.privacy_policy")}
-              </a>
+              </Link>
               ,{" "}
-              <a
+              <Link
                 href="https://www.newsmastfoundation.org/community-guidelines/"
                 target="_blank"
                 rel="noopener noreferrer"
               >
                 {t("setting.community_guidelines")}
-              </a>
+              </Link>
             </p>
           </div>
           <Dialog open={openLogoutDialog} onOpenChange={setOpenLogoutDialog}>

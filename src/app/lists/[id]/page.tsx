@@ -1,9 +1,9 @@
 "use client";
 import React, { use, useState } from "react";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { ListTimeline } from "@/components/organisms/status/ListTimeline";
 import { useSingleList } from "@/hooks/queries/useSingleList";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
 import { useDeleteListMutation } from "@/hooks/mutations/lists/useDeleteList";
 import { useRouter } from "next/navigation";
 import { Modal } from "@/components/atoms/ui/modal";

@@ -1,19 +1,19 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { Button } from "@/components/atoms/ui/button";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { useGetNewsmastChannelList } from "@/hooks/queries/useNewsmastChannel.query";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
-import { Check, Circle, CircleCheck, User, UserPlus } from "lucide-react";
+import {  Circle, CircleCheck, User, UserPlus } from "lucide-react";
 import Image from "next/image";
 import { useSetPrimaryChannel } from "@/hooks/queries/useSetPrimary.query";
 import {
   useFavouriteCommunityChannel,
   useUnFavouriteCommunityChannel,
 } from "@/hooks/mutations/community/useToggleFavouriteChannel";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { toast } from "sonner";
+import { useSelectedDomain } from "@/stores/auth/activeDomain";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 
 export default function DiscoverCommunitiesLayout() {
   const domain_name = useSelectedDomain();
@@ -57,7 +57,7 @@ export default function DiscoverCommunitiesLayout() {
   };
 
   const handleUnfavorite = (slug: string) => {
-    if (lists?.length >= 6) {
+    if (lists && lists?.length >= 6) {
       unfavorite({
         id: slug,
         instance_domain: domain_name,
@@ -70,7 +70,7 @@ export default function DiscoverCommunitiesLayout() {
     <section className="dvh">
       <Header title="My channels" />
 
-      <img
+      <Image
         src={serverInfo?.thumbnail?.url ?? FALLBACK_PREVIEW_IMAGE_URL}
         width={700}
         height={200}

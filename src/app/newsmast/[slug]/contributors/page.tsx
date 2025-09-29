@@ -1,8 +1,8 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useCommunityPeopleToFollow } from "@/hooks/queries/useGetChannelAbout.query";
-import { DEFAULT_DASHBOARD_API_URL, isDevelopment, STAGING_DASHBOARD_API_URL } from "@/utils/constant";
+import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
 import Image from "next/image";
 import { AnimatePresence, motion } from "framer-motion";
 import { useRouter } from "next/navigation";
@@ -10,9 +10,6 @@ import { use } from "react";
 import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
-import PeopleToFollowView from "@/components/organisms/search/PeopleToFollowView";
-import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
-import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import { isSystemDark } from "@/utils/helper/helper";
 export default function ContributorLists({
     params,

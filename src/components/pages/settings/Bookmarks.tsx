@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { useLocale } from "@/providers/localeProvider";
 import { BookmarkList } from "@/components/organisms/status/BookmarkList";
 import React from "react";

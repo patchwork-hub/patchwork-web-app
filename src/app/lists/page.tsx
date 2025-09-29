@@ -1,12 +1,12 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import {
   Dialog,
   DialogTrigger,
 } from "@/components/atoms/ui/dialog";
 import { Modal } from "@/components/atoms/ui/modal";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { useDeleteListMutation } from "@/hooks/mutations/lists/useDeleteList";
 import { useListsQueries } from "@/hooks/queries/useLists.query";
 import { AnimatePresence, motion } from "framer-motion";
@@ -18,8 +18,8 @@ import { toast } from "sonner";
 export default function ListsPage() {
   const [isOpen, setIsOpen] = useState<boolean>(false);
   const {t} = useLocale();
-  const [deleteListId, setDeleteListId] = useState<number | string | null>(
-    null
+  const [deleteListId, setDeleteListId] = useState<string | number>(
+    ""
   );
   const { data: myLists, isLoading: myListsLoading } = useListsQueries();
   const { mutate: deleteList } = useDeleteListMutation();
@@ -60,7 +60,7 @@ export default function ListsPage() {
               transition={{ duration: 0.3 }}
               className="grid grid-cols-1 gap-4 justify-start w-full max-w-full mb-auto mt-4"
             >
-              {sortingLists?.length > 0 ? (
+              {sortingLists && sortingLists?.length > 0 ? (
                 sortingLists?.map((item, index) => (
                   <motion.div
                     key={index}

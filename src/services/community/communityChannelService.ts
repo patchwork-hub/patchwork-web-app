@@ -28,8 +28,8 @@ export const fetchCommunityChannel = async (
       const typedResp = resp as AxiosResponse<ChannelList[] | unknown>;
       return typedResp.data;
     } else {
-      const typedResp = resp as AxiosResponse<unknown>;
-      return typedResp.data;
+      const typedResp = resp as AxiosResponse<{data: ChannelList[]} | unknown>;
+      return typedResp.data ;
     }
   } catch (error) {
     console.error("Failed to fetch community channels:", error);

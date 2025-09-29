@@ -197,6 +197,8 @@ const Status: React.FC<StatusProps> = ({
                 className="w-6 aspect-square rounded-full absolute bottom-0 end-0 translate-2"
                 src={status?.account?.avatar}
                 alt="avatar photo"
+                width={24}
+                height={24}
               />
             )}
           </div>

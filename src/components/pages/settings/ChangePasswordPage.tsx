@@ -1,6 +1,6 @@
 import React from "react";
 import ChangePasswordForm from "@/components/templates/auth/ChangePasswordForm";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 
 const ChangePasswordPage: React.FC = () => {
   return (

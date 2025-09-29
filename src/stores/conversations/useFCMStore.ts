@@ -1,3 +1,4 @@
+import { unknown } from "zod";
 import { create } from "zustand";
 
 export type FCMState = {
@@ -6,6 +7,6 @@ export type FCMState = {
 }
 
 export const useFCMStore = create<FCMState>((set)=>({
-    message: undefined,
+    message: unknown,
     setMessage: (message) => set({message})
 }))
