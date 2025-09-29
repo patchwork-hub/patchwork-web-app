@@ -1,23 +1,29 @@
 "use client";
-import { DisplayName } from "@/components/atoms/common/DisplayName";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
+
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
-import HomeHeader from "@/components/atoms/home-feed/HomeHeader";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 import { HomeTimeline } from "@/components/organisms/status/HomeTimeline";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { useFollowingAccountsQuery } from "@/hooks/queries/useFollowingAccount";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import { truncateUsername } from "@/lib/utils";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
-import { CHANNEL_ORG_INSTANCE } from "@/utils/constant";
 import { AnimatePresence, motion } from "framer-motion";
 import { ListIcon } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
+import { useSelectedDomain } from "@/stores/auth/activeDomain";
+import { Account } from "@/types/account";
+import { DisplayName } from "@/components/molecules/common/DisplayName";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
+import HomeHeader from "@/components/molecules/HomeHeader";
+
+type FollowingAccountsResponse = {
+  data: Account[];
+}
+
 
 export default function Following() {
   const { data: userInfo } = useVerifyAuthToken({ enabled: true });
@@ -32,14 +38,11 @@ export default function Following() {
 
   const { data: peopleFollowing, isLoading: peopleFollowingLoading } =
     useFollowingAccountsQuery({
-      accountId: userInfo?.id!,
-      enabled: !!userInfo?.id,
+      accountId: userInfo?.id ?? "",
+      enabled: Boolean(userInfo?.id),
     });
-console.log("peopleFollowing", peopleFollowing);
-  const modifiedData = true
-    ? // domain_name === DEFAULT_API_URL // client might want to change this later, set true for now
-      peopleFollowing?.pages[0].data
-    : [{ id: "icon" } as Account, ...(peopleFollowing?.pages[0]?.data ?? [])];
+
+  const modifiedData = peopleFollowing?.pages?.[0] as FollowingAccountsResponse | undefined;
 
   const handleTabChange = (tab: { name: string; value: string }) => {
     setActiveTab(tab.value);
@@ -81,7 +84,7 @@ console.log("peopleFollowing", peopleFollowing);
               ) : (
                 <>
                   <div className="grid grid-cols-3 gap-4 px-4 justify-start place-content-center place-items-center w-full max-w-full mb-auto mt-4">
-                    {modifiedData?.map((account, index) => (
+                    {modifiedData?.data.map((account: Account, index: number) => (
                       <motion.div
                         key={index}
                         className="relative cursor-pointer"

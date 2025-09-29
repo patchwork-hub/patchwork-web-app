@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import SocialConnections from "@/components/templates/profile/SocialConnections";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
 import { useFollowerAccountsQuery } from "@/hooks/queries/useFollowerAccount";

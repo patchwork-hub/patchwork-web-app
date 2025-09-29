@@ -1,14 +1,14 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { ChevronRightIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useGetHashtagsFollowing } from "@/hooks/queries/useHashtag.query";
-import { useAuthStore } from "@/store/auth/authStore";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
 import { calculateHashTagCount } from "@/utils/helper/helper";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useSelectedDomain } from "@/stores/auth/activeDomain";
+import { useAuthStore } from "@/stores/auth/authStore";
 
 export default function HashtagsPage() {
   const domain_name = useSelectedDomain();

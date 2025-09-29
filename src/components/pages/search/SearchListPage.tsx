@@ -51,7 +51,7 @@ const SearchList = () => {
     enabled: searchKeyword.length > 0,
   });
 
-  const transformedAccounts = searchAllRes?.accounts?.map((account) => ({
+  const transformedAccounts = searchAllRes?.accounts?.map((account: Account) => ({
     ...account,
     tags: [],
     account_id: account.id,
@@ -128,7 +128,7 @@ const SearchList = () => {
           />
         </TabsContent>
         <TabsContent value="channels">
-          <ChannelBySearch searchData={searchChannelRes as ChannelAndCollectionSearch} />
+          <ChannelBySearch searchData={searchChannelRes} />
         </TabsContent>
       </Tabs>
     </div>

@@ -5,7 +5,6 @@ import {
   PopoverTrigger,
 } from "@/components/atoms/ui/popover";
 import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
-import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import MastodonEmojiPicker from "@/components/organisms/compose/tools/Emoji";
 import { GifvModal } from "@/components/organisms/compose/tools/Gifv";
@@ -114,6 +113,7 @@ const MessageInput: FC<MessageInputProps> = ({
               src={media.preview_url}
               alt="attachment"
               className="w-full h-full object-cover rounded-lg"
+              fill
             />
             <button
               onClick={() => onRemoveMedia(media.id)}

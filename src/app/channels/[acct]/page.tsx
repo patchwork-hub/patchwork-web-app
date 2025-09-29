@@ -1,11 +1,6 @@
 "use client";
 
-import ChannelGuidelines from "@/components/atoms/common/CommunittyGuidelines";
-import CommunityAbout from "@/components/atoms/common/CommunityAbout";
-import MappedTabs from "@/components/atoms/common/MappedTabs";
-import CommunityBanner from "@/components/molecules/common/CommunityBanner";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { queryClient } from "@/components/molecules/providers/queryProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { AccountStatusList } from "@/components/organisms/status/AccountStatusList";
 import { AccountWrapper } from "@/components/pages/account/AccountWrapper";
 import {
@@ -24,7 +19,18 @@ import {
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { AnimatePresence } from "framer-motion";
 import { use, useState } from "react";
+import { queryClient } from "@/providers/queryProvider";
+import { ChannelDetail, ChannelList } from "@/types/patchwork";
+import CommunityBanner from "@/components/molecules/common/CommunityBanner";
+import MappedTabs from "@/components/molecules/common/MappedTabs";
+import ChannelGuidelines from "@/components/molecules/common/CommunittyGuidelines";
+import CommunityAbout from "@/components/molecules/common/CommunityAbout";
 
+type ChannelProfileProps = {
+  acct: string;
+  accountId: string;
+  data: unknown;
+}
 export default function Page({
   params,
 }: {
@@ -46,11 +52,7 @@ function ChannelProfile({
   acct,
   accountId,
   data,
-}: {
-  acct: string;
-  accountId: string;
-  data: any;
-}) {
+}: ChannelProfileProps) {
   const domain = DEFAULT_API_URL;
   const {t} = useLocale();
   const [activeTab, setActiveTab] = useState<string>("posts");
@@ -127,11 +129,14 @@ function ChannelProfile({
       },
     });
   const toggleChannel = (isFav: boolean) => {
-    isFav
-      ? deleteFavouriteChannelMutate({
-          id: channelDetail?.attributes.slug!,
-        })
-      : favouriteChannelMutate({ id: channelDetail?.attributes.slug! });
+    const slug = channelDetail?.attributes?.slug;
+    if (!slug) return;
+
+    if (isFav) {
+      deleteFavouriteChannelMutate({ id: slug });
+    } else {
+      favouriteChannelMutate({ id: slug });
+    }
   };
   const handleTabChange = (tab: { name: string; value: string }) => {
     setActiveTab(tab.value);
@@ -141,7 +146,7 @@ function ChannelProfile({
     <div className="relative">
       <CommunityBanner
         showButton={false}
-        channelDetail={data ? data : channelDetail}
+        channelDetail={data as unknown as ChannelDetail}
         toggleChannel={toggleChannel}
         showBio
         isChannel
@@ -158,7 +163,7 @@ function ChannelProfile({
             </div>
             {activeTab === "about" && (
               <>
-                <ChannelGuidelines channelAbout={channelAbout} />
+                <ChannelGuidelines channelAbout={channelAbout as unknown as ChannelDetail} />
                 <CommunityAbout
                   channelAdditionalInfo={channelAdditionalInfo}
                   channelAbout={channelAbout ?? channelAbout}

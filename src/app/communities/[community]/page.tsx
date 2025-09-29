@@ -1,25 +1,25 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter, useSearchParams } from "next/navigation";
 import { motion, AnimatePresence } from "framer-motion";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
-import { use } from "react";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useDetailCollectionChannelList } from "@/hooks/queries/useCommunityChannels.query";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { ChannelList } from "@/types/patchwork";
 
-export default function Communities({
-  params
-}: {
-  params: Promise<{ community: string }>;
-}) {
-  const { community } = use(params);
+interface CollectionChannelsResponse {
+  data: ChannelList[];
+}
+
+
+export default function Communities() {
   const { t } = useLocale();
   const searchParams = useSearchParams();
-  const slug = searchParams.get("slug");
+  const slug = searchParams.get("slug") ?? "";
   const tab = searchParams.get("tab");
   const {
     data: collectionChannelsList,
@@ -27,8 +27,6 @@ export default function Communities({
   } = useDetailCollectionChannelList({ slug });
 
   const router = useRouter();
-  const capitalizeFirstLetter = (str: string) =>
-    str.charAt(0).toUpperCase() + str.slice(1);
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
@@ -53,9 +51,9 @@ export default function Communities({
             transition={{ duration: 0.3 }}
             className="grid grid-cols-2 gap-4 px-4 pb-4 justify-start w-full max-w-full mb-auto mt-4"
           >
-            {collectionChannelsList?.data.map((collection, index) => (
+            {(collectionChannelsList as CollectionChannelsResponse)?.data?.map((collection: ChannelList, index: number) => (
               <motion.div
-                key={index}
+                key={collection.id || index}
                 className="relative cursor-pointer hover:opacity-80 transition-opacity duration-300"
                 custom={index}
                 initial="hidden"

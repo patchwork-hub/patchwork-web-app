@@ -29,7 +29,7 @@ const Toggle: React.FC<ToggleProps> = ({
   return (
     <button
       onClick={handleToggle}
-      className={`relative w-full max-w-12 h-6 rounded-full transition-colors duration-300 ${
+      className={`relative w-full max-w-12 h-6 rounded-full transition-colors duration-300 cursor-pointer ${
         currentState ? "bg-orange-500" : "bg-gray-300"
       }`}
       aria-pressed={currentState}

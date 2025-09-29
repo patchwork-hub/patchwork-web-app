@@ -1,25 +1,25 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import Header from "@/components/molecules/common/Header";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
 import { useGetChannelFeedListQuery } from "@/hooks/queries/useChannelList.query";
-import { useAuthStore } from "@/store/auth/authStore";
 import { isValidImageUrl } from "@/utils";
-import { DEFAULT_API_URL, DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
 import { cleanDomain, ensureHttp, formatSlug } from "@/utils/helper/helper";
 import { AnimatePresence, motion } from "framer-motion";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/stores/auth/authStore";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
+import { ChannelList } from "@/types/patchwork";
 
 export default function ChannelsLists() {
   const { userOriginInstance, userInfo } = useAuthStore();
   const {t} = useLocale();
   const router = useRouter();
-  const { data: serverInfo, isFetching: isSearching } = useSearchServerInstance(
+  const { data: serverInfo } = useSearchServerInstance(
     {
       domain: userOriginInstance,
       enabled: true,
@@ -30,13 +30,14 @@ export default function ChannelsLists() {
     useGetChannelFeedListQuery({
       enabled: true,
     });
-
+  const imageUrl = serverInfo?.thumbnail?.url ?? FALLBACK_PREVIEW_IMAGE_URL;
+  const validUrl = ensureHttp(imageUrl) ? imageUrl : FALLBACK_PREVIEW_IMAGE_URL;
 
   const itemVariants = {
     hidden: { opacity: 0, y: 50 },
     visible: { opacity: 1, y: 0, transition: { duration: 0.5 } },
   };
-  const handleChannelClick = (channel) => {
+  const handleChannelClick = (channel: ChannelList) => {
     const userId = channel.attributes.community_admin.account_id;
 
     if (userId == userInfo?.id) {
@@ -68,11 +69,7 @@ export default function ChannelsLists() {
               className="relative flex-shrink-0 cursor-pointer hover:opacity-80 transition-opacity duration-300"
             >
               <Image
-                src={
-                  ensureHttp(serverInfo?.thumbnail.url)
-                    ? serverInfo?.thumbnail.url
-                    : FALLBACK_PREVIEW_IMAGE_URL
-                }
+                src={validUrl}
                 alt="Special Channel"
                 width={200}
                 height={264}

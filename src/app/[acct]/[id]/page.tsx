@@ -12,7 +12,7 @@ export default function StatusDetailPage({
 }) {
   const { id } = use(params);
   const searchParams = useSearchParams();
-  const domain = searchParams.get("domain");
+  const domain = searchParams.get("domain") ?? "";
   const { data } = useVerifyAuthToken({
     enabled: true,
   });

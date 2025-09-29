@@ -1,10 +1,8 @@
 "use client";
 
-import GoBack from "@/components/atoms/common/GoBack";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { Input } from "@/components/atoms/ui/input";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
+import { useLocale } from "@/providers/localeProvider";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import MessageInput from "@/components/organisms/compose/MessageInput";
 import { StatusComposeFormData } from "@/components/organisms/compose/types";
@@ -14,28 +12,50 @@ import { useViewAllConversations } from "@/hooks/queries/conversations/useViewAl
 import { useSearchQuery } from "@/hooks/queries/search/useSearchQuery";
 import { useLookupAccount } from "@/hooks/queries/status/useLookupAccount";
 import { fetchFile } from "@/services/media/fetchMediaFiles";
-import { useConversationStore } from "@/store/conversations/conversation";
 import { Account, Media } from "@/types/status";
 import dayjs from "dayjs";
 import { X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { FC, useEffect, useRef, useState } from "react";
+import { FC, useCallback, useEffect, useRef, useState } from "react";
+import { useConversationStore } from "@/stores/conversations/conversation";
+import GoBack from "@/components/molecules/common/GoBack";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
+import Image from "next/image";
+
+type Participant = {
+  id: string;
+  acct: string;
+  avatar: string;
+  display_name?: string;
+  username: string;
+  emojis?: MastodonCustomEmoji[];
+}
+
+type Message = {
+  id: string;
+  content: string;
+  media_attachments: Media[];
+  created_at: string;
+  account: {
+    username: string;
+  };
+}
 
 const NewConversationPage: FC = () => {
   const searchParams = useSearchParams();
   const acct = searchParams.get("acct");
   const {t} = useLocale();
-  const { data: account } = useLookupAccount(acct);
+  const { data: account } = useLookupAccount(acct??"");
   const router = useRouter();
   const [searchQuery, setSearchQuery] = useState("");
-  const [selectedParticipants, setSelectedParticipants] = useState<any[]>([]);
+  const [selectedParticipants, setSelectedParticipants] = useState<Participant[]>([]);
   const [uploadedMedias, setUploadedMedias] = useState<Media[]>([]);
-  const [messageHistory, setMessageHistory] = useState<any[]>([]);
+  const [messageHistory, setMessageHistory] = useState<Message[]>([]);
   const searchInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
     if (account) {
-      setSelectedParticipants([account]);
+      setSelectedParticipants([account as Participant]);
     }
   }, [account]);
 
@@ -70,12 +90,15 @@ const NewConversationPage: FC = () => {
       "flex-1 p-2 bg-gray-700 rounded-lg text-white placeholder-gray-400 focus:outline-none",
   });
 
-  const handleAddParticipant = (participant: any) => {
-    if (!selectedParticipants.find((p) => p.id === participant.id)) {
-      setSelectedParticipants([...selectedParticipants, participant]);
-      setSearchQuery(""); // Clear search after selection
-    }
-  };
+  const handleAddParticipant = useCallback((participant: Participant) => {
+    setSelectedParticipants(prev => {
+      if (!prev.find((p) => p.id === participant.id)) {
+        return [...prev, participant];
+      }
+      return prev;
+    });
+    setSearchQuery(""); // Clear search after selection
+  }, []);
 
   const handleRemoveParticipant = (id: string) => {
     setSelectedParticipants(selectedParticipants.filter((p) => p.id !== id));
@@ -149,7 +172,7 @@ const NewConversationPage: FC = () => {
 
   // Extracted reusable component for ParticipantChip
   const ParticipantChip: React.FC<{
-    participant: any;
+    participant: Participant;
     onRemove: (id: string) => void;
   }> = ({ participant, onRemove }) => {
     const { editorjsx } = useTipTapEditor({
@@ -160,10 +183,12 @@ const NewConversationPage: FC = () => {
     });
     return (
       <div className="flex items-center space-x-1 bg-primary px-2 py-1 rounded-lg">
-        <img
+        <Image
           src={participant.avatar}
-          alt={participant.display_name}
+          alt={participant.display_name as string}
           className="w-6 h-6 rounded-full"
+          width={24}
+          height={24}
         />
         {editorjsx}
         <button onClick={() => onRemove(participant.id)}>
@@ -204,20 +229,20 @@ const NewConversationPage: FC = () => {
             placeholder={t("conversation.search_by_name_or_username") as string}
             className="w-full p-2 rounded-lg text-foreground border border-gray-600 placeholder-gray-400 focus:outline-none"
           />
-          {(isSearching || searchResults?.accounts?.length > 0) && (
+          {(isSearching || searchResults && searchResults?.accounts?.length > 0) && (
             <div className="absolute z-10 w-full mt-1 dark:bg-primary border border-secondary rounded-lg shadow-lg max-h-60 overflow-y-auto">
               {isSearching && (
                 <div className="p-2 flex justify-center">
                   <LoadingSpinner />
                 </div>
               )}
-              {searchResults?.accounts?.length > 0 && !isSearching && (
+              {searchResults && searchResults?.accounts?.length > 0 && !isSearching && (
                 <ul className="py-1">
                   {searchResults.accounts.map((account) => (
                     <SearchItem
                       key={account.id}
                       account={account}
-                      onClick={() => handleAddParticipant(account)}
+                      onClick={() => handleAddParticipant(account as Participant)}
                     />
                   ))}
                 </ul>
@@ -234,12 +259,14 @@ const NewConversationPage: FC = () => {
             <div key={message.id} className="flex justify-end">
               <div className="max-w-xs p-3 rounded-lg bg-orange-500 text-white">
                 {message.media_attachments.length > 0 &&
-                  message.media_attachments.map((media) => (
-                    <img
+                  message.media_attachments.map((media: Media) => (
+                    <Image
                       key={media.id}
                       src={media.preview_url}
                       alt="attachment"
                       className="w-[200px] rounded-lg"
+                      width={200}
+                      height={200}
                     />
                   ))}
                 <p>{message.content}</p>
@@ -283,7 +310,7 @@ const SearchItem = ({
   const { editorjsx } = useTipTapEditor({
     editable: false,
     content: account.display_name || account.username,
-    emojis: account.emojis,
+    emojis: account.emojis as MastodonCustomEmoji[],
     contentClassName: "dark:text-white",
   });
   return (
@@ -291,10 +318,12 @@ const SearchItem = ({
       className="flex items-center space-x-2 p-2 hover:bg-gray-200 dark:hover:bg-gray-500 text-white cursor-pointer"
       onClick={() => onClick(account)}
     >
-      <img
+      <Image
         src={account.avatar}
         alt={account.display_name}
         className="w-6 h-6 rounded-full"
+        width={24}
+        height={24}
       />
       <span>{editorjsx}</span>
     </li>

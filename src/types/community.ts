@@ -113,10 +113,6 @@ export type Contributor = {
 };
 
 export type CommunityAccountResponse = {
-  // contributors: Account[];
-  // meta: {
-  //   has_more_objects: boolean;
-  // };
   contributors: Contributor[];
   meta: {
     current_page: number;

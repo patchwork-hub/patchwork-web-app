@@ -100,6 +100,9 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
     if (openDialog) {
       Cookies.set("slug", status?.account?.acct ?? "");
       Cookies.set("id", status?.id ?? "");
+    }else{
+      Cookies.remove("slug");
+      Cookies.remove("id");
     }
   }, [openDialog]);
 

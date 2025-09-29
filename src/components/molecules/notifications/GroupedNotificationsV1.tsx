@@ -18,6 +18,7 @@ import { useLocale } from "@/providers/localeProvider";
 import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { DisplayName } from "../common/DisplayName";
 import Image from "next/image";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 
 const GroupedNotificationsV1 = () => {
   const {
@@ -71,6 +72,8 @@ const GroupedNotificationsV1 = () => {
                     src={notification.account.avatar}
                     alt={notification.account.username}
                     className="w-9 h-9 rounded-full mr-2"
+                    width={36}
+                    height={36}
                   />
                 </Link>
                 <div className="w-fit ms-auto flex items-end">
@@ -81,7 +84,7 @@ const GroupedNotificationsV1 = () => {
               </div>
               <div className="my-1 flex items-baseline gap-1">
                 <DisplayName
-                  emojis={notification.account.emojis}
+                  emojis={notification.account.emojis as MastodonCustomEmoji[]}
                   displayName={
                     notification.account.display_name ||
                     notification.account.username

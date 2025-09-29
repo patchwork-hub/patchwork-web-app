@@ -18,6 +18,7 @@ import { useLocale } from "@/providers/localeProvider";
 import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { DisplayName } from "../common/DisplayName";
 import Image from "next/image";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 
 
 type GroupedNotificationsV2Props = {
@@ -107,6 +108,8 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                           src={filteredAccounts[0]?.avatar}
                           alt={filteredAccounts[0]?.username}
                           className="w-9 h-9 rounded-full mr-2"
+                          width={36}
+                          height={36}
                         />
                       </Link>
                       <div className="w-fit ms-auto flex items-end">
@@ -121,7 +124,7 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                     </div>
                     <div className="text-base my-1 flex items-baseline gap-1">
                       <DisplayName
-                        emojis={filteredAccounts[0]?.emojis}
+                        emojis={filteredAccounts[0]?.emojis as MastodonCustomEmoji[]}
                         className="text-base inline-block"
                         displayName={
                           filteredAccounts[0]?.display_name ||
@@ -156,6 +159,8 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                             src={acc.avatar}
                             alt={acc.username}
                             className="w-9 h-9 rounded-full"
+                            width={36}
+                            height={36}
                           />
                         </Link>
                       ))}
@@ -163,7 +168,7 @@ const GroupedNotificationsV2 = ({ uri }: GroupedNotificationsV2Props) => {
                     <div className="flex items-center justify-between">
                       <div className="flex items-center gap-2 text-base opacity-80 my-1">
                         <DisplayName
-                          emojis={filteredAccounts[0]?.emojis}
+                          emojis={filteredAccounts[0]?.emojis as MastodonCustomEmoji[]}
                           className="text-base inline-block"
                           displayName={
                             filteredAccounts[0]?.display_name ||

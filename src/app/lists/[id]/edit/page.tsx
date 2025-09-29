@@ -1,8 +1,8 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
-import LoadingSpinner from "@/components/atoms/common/LoadingSpinner";
-import PrimaryButton from "@/components/atoms/common/PrimaryButton";
-import Toggle from "@/components/atoms/common/ToggleButton";
+import Header from "@/components/molecules/common/Header";
+
+import PrimaryButton from "@/components/molecules/common/PrimaryButton";
+import Toggle from "@/components/molecules/common/ToggleButton";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -14,10 +14,8 @@ import { useEditListMutation } from "@/hooks/mutations/lists/useEditList";
 import { useAccountsInList } from "@/hooks/queries/useAccountsInList.query";
 import { useSingleList } from "@/hooks/queries/useSingleList";
 import { createSchemas } from "@/lib/schema/validations";
-import { useActiveDomainStore } from "@/store/auth/activeDomain";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
-import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { use, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
@@ -26,11 +24,11 @@ import { Input } from "@/components/atoms/ui/input";
 import { cn } from "@/lib/utils";
 import { Label } from "@/components/atoms/ui/label";
 import { useTheme } from "next-themes";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
-import { count } from "console";
-import Placeholder from "@tiptap/extension-placeholder";
+import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
+import { useActiveDomainStore } from "@/stores/auth/activeDomain";
+import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 
 export default function EditCreateForm({
   params,
@@ -49,7 +47,7 @@ export default function EditCreateForm({
     domain_name: activeDomain,
   });
 
-  const { data: AccountsInList, isLoading: AccountInListLoading } =
+  const { data: AccountsInList } =
     useAccountsInList({
       id,
       domain_name: activeDomain,
@@ -89,7 +87,7 @@ export default function EditCreateForm({
         options.find((opt) => opt.value === list.replies_policy) || options[0];
       setSelected(selectedOption);
     }
-  }, [list, isLoading, setValue]);
+  }, [list, isLoading, setValue, options]);
 
   const handleToggle = (newState: boolean) => {
     setFormData((prev) => ({ ...prev, acceptTerms: newState }));
@@ -161,9 +159,9 @@ export default function EditCreateForm({
                 "bg-white": theme === "light",
               })}
             >
-              {options.map((option) => (
+              {options.map((option, idx) => (
                 <DropdownMenuItem
-                  key={option.value}
+                  key={`${option.value}-${idx}`}
                   onClick={() => setSelected(option)}
                   className="cursor-pointer"
                 >

@@ -9,7 +9,8 @@ export const useGetMutedUserList = () => {
   return useInfiniteQuery({
     queryKey,
     refetchOnMount: "always",
-    queryFn: ({ pageParam }) => getMutedUserList(pageParam),
+    queryFn: ({ pageParam }: { pageParam?: string }) => 
+      getMutedUserList(pageParam ?? ""),
     getNextPageParam: (lastPage) => lastPage.max_id,
     initialPageParam: undefined,
   });
@@ -20,7 +21,8 @@ export const useGetBlockedUserList = () => {
   return useInfiniteQuery({
     queryKey,
     refetchOnMount: "always",
-    queryFn: ({ pageParam }) => getBlockedUserList(pageParam),
+    queryFn: ({ pageParam }: { pageParam?: string }) => 
+      getBlockedUserList(pageParam ?? ""),
     getNextPageParam: (lastPage) => lastPage.max_id,
     initialPageParam: undefined,
   });

@@ -5,15 +5,15 @@ import { useEffect, useState } from "react";
 import { checkSupportsNotiV2 } from "@/utils";
 import Cookies from "js-cookie";
 import { DEFAULT_API_URL } from "@/utils/constant";
-import { useSearchServerInstance } from "@/hooks/auth/useSearchInstance";
-import GroupedNotificationsV2 from "@/components/notifications/GroupedNotificationsV2";
-import GroupedNotificationsV1 from "@/components/notifications/GroupedNotificationsV1";
-import MentionsNotifications from "@/components/notifications/MentionsNotifications";
-import FollowRequestsNotifications from "@/components/notifications/FollowRequestsNotifications";
-import { useFCMStore } from "@/store/conversations/useFCMStore";
 import { useQueryClient } from "@tanstack/react-query";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useLocale } from "@/components/molecules/providers/localeProvider";
+import { useLocale } from "@/providers/localeProvider";
+import { useFCMStore } from "@/stores/conversations/useFCMStore";
+import FollowRequestsNotifications from "@/components/molecules/notifications/FollowRequestsNotifications";
+import GroupedNotificationsV2 from "@/components/molecules/notifications/GroupedNotificationsV2";
+import GroupedNotificationsV1 from "@/components/molecules/notifications/GroupedNotificationsV1";
+import MentionsNotifications from "@/components/molecules/notifications/MentionsNotifications";
+import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 
 type TabId = "All" | "Mentions" | "FollowRequests";
 

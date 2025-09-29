@@ -31,7 +31,6 @@ export const Context: FC<ContextProps> = ({
 }) => {
   const router = useRouter();
   const { t } = useLocale();
-  const { theme } = useTheme();
   const { data: status, isPending: isFetchingStatus } = useGetStatus(
     id,
     domain
@@ -88,7 +87,7 @@ export const Context: FC<ContextProps> = ({
   return (
     <div className="pb-16 sm:pb-0 relative max-h-screen overflow-auto">
       <Button onClick={() => router.back()} className="w-fit ml-4 my-4">
-        <ArrowLeft />
+        <ArrowLeft className="text-white"/>
       </Button>
       {isFetchingStatus || isFetchingContext || isLoadingEmojis ? (
         <div className="px-4">
@@ -129,11 +128,7 @@ export const Context: FC<ContextProps> = ({
             </div>
           </div>
           <div
-            className={`sticky bottom-0 left-0 w-full flex flex-col border-y-[0.5px] py-4 space-y-2 px-3 ${
-              theme === "dark" || (theme === "system" && isSystemDark)
-                ? "border-gray-600 bg-primary"
-                : "border-gray-300 bg-white"
-            }`}
+            className={`sticky bottom-0 left-0 w-full flex flex-col border-y-[0.5px] py-4 space-y-2 px-3 border-gray-300 dark:border-gray-600 bg-background`}
           >
             <MessageInput
               placeholder={t("status.reply") as string}

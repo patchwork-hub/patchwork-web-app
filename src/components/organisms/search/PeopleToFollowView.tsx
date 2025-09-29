@@ -147,7 +147,7 @@ const PeopleToFollowView: React.FC<SuggestedPeopleBySearchProps> = ({
                   <Button
                     size="sm"
                     onClick={() => onMakeRelationship(people)}
-                    className="mt-2 rounded-3xl"
+                    className="mt-2 rounded-3xl text-white"
                   >
                     <span className="text-sm">
                       {relationships?.find((rel) => rel.id === people.id)

@@ -1,5 +1,5 @@
 "use client";
-import Header from "@/components/atoms/common/Header";
+import Header from "@/components/molecules/common/Header";
 import { Button } from "@/components/atoms/ui/button";
 import { Checkbox } from "@/components/atoms/ui/checkbox";
 import { queryClient } from "@/providers/queryProvider";
