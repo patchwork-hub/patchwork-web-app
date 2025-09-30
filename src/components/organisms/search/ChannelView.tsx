@@ -15,7 +15,7 @@ import { useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstanc
 import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { Instance_V2 } from "@/types/auth";
 
-interface ChannelViewProps {
+type ChannelViewProps = {
   channelFeeds: ChannelList[];
   communities: ChannelList[];
   newsmastChannels: ChannelList[];

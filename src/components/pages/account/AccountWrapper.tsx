@@ -8,7 +8,7 @@ import Cookies from "js-cookie";
 import { useSearchParams } from "next/navigation";
 import { JSX, use } from "react";
 
-interface AccountWrapperProps {
+type AccountWrapperProps = {
   params: Promise<{ acct: string }>;
   render: (props: {
     accountId: string;

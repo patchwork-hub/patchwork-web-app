@@ -44,8 +44,8 @@ import { useLocale } from "@/providers/localeProvider";
 import { useAuthorizeInstanceMutation, useRequestPermissionToInstanceMutation, useSearchServerInstance } from "@/hooks/mutations/auth/useSearchInstance";
 import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 
-interface SignInWithMastodonProps
-  extends React.ComponentPropsWithoutRef<"div"> {
+type SignInWithMastodonProps
+  = React.ComponentPropsWithoutRef<"div"> & {
   setSignInWithMastodon: React.Dispatch<React.SetStateAction<boolean>>;
   code?: string;
 }

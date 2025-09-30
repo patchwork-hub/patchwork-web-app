@@ -4,7 +4,7 @@ import { Status } from '@/types/status';
 import { ErrorResponse } from '@/types/error';
 import { AxiosError } from 'axios';
 
-interface PaginatedStatuses {
+type PaginatedStatuses = {
   statuses: Status[];
   [key: string]: unknown;
 }

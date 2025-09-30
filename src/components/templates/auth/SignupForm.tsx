@@ -35,7 +35,7 @@ import z from "zod";
 import { useTString } from "@/lib/tString";
 import { isSystemDark } from "@/utils/helper/helper";
 
-interface SignInFormProps extends React.ComponentPropsWithoutRef<"div"> {
+type SignInFormProps = React.ComponentPropsWithoutRef<"div"> & {
   className?: string;
 }
 

@@ -11,7 +11,7 @@ import { useDetailCollectionChannelList } from "@/hooks/queries/useCommunityChan
 import { useLocale } from "@/providers/localeProvider";
 import { ChannelList } from "@/types/patchwork";
 
-interface CollectionChannelsResponse {
+type CollectionChannelsResponse = {
   data: ChannelList[];
 }
 

@@ -1,10 +1,10 @@
-export interface GifvResponse {
+export type GifvResponse = {
     locale:  string;
     results: Result[];
     next:    string;
 }
 
-export interface Result {
+export type Result = {
     id:                         string;
     title:                      string;
     media_formats:              MediaFormats;
@@ -22,7 +22,7 @@ export enum ContentDescriptionSource {
     GenerativeAI = "GENERATIVE_AI",
 }
 
-export interface MediaFormats {
+export type MediaFormats = {
     tinygifpreview: GIF;
     gif:            GIF;
     gifpreview:     GIF;
@@ -30,7 +30,7 @@ export interface MediaFormats {
     tinygif:        GIF;
 }
 
-export interface GIF {
+export type GIF = {
     url:      string;
     duration: number;
     preview:  string;

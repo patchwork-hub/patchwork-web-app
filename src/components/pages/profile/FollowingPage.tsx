@@ -1,18 +1,22 @@
 "use client";
 import Header from "@/components/molecules/common/Header";
 import SocialConnections from "@/components/templates/profile/SocialConnections";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
 import { useFollowingAccountsQuery } from "@/hooks/queries/useFollowingAccount";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
+import { Account } from "@/types/patchwork";
 import { flattenPages } from "@/utils/helper/timeline";
 import React from "react";
 
-interface FollowingPage {
+type FollowingPage = {
   accountId: string;
   acct: string;
   isRemoteUser: boolean;
 }
-
+type FollowerResponse = {
+  data: Account[];
+  max_id: string | null;
+}
 const FollowingPage: React.FC<FollowingPage> = ({ accountId, acct, isRemoteUser }) => {
   const domain = acct.split("@")[1];
   const username = acct.split("@")[0];
@@ -23,8 +27,10 @@ const FollowingPage: React.FC<FollowingPage> = ({ accountId, acct, isRemoteUser 
     enabled: !!accountId,
   });
 
-  const followingData = data?.pages.flatMap((page) => page.data);
-  const followerIds = flattenPages(data).map((follower) => follower.id);
+  const typedData = data as unknown as { pages: FollowerResponse[] } | undefined;
+    
+  const followingData = typedData?.pages?.flatMap((page) => page.data) ?? [];
+  const followerIds = followingData.map((follower: Account) => follower.id);
 
   const { data: relationships } = useCheckRelationships({
     accountIds: followerIds
@@ -42,7 +48,7 @@ const FollowingPage: React.FC<FollowingPage> = ({ accountId, acct, isRemoteUser 
       <SocialConnections
         isLoading={isLoading}
         data={followingData}
-        relationships={relationships}
+        relationships={relationships ?? []}
         followerIds={followerIds}
         isOtherServer={isRemoteUser}
         externalLink={externalLink}

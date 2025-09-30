@@ -5,7 +5,7 @@ import { Button } from "./button";
 import { Eye, EyeOff, X } from "lucide-react";
 import { useTheme } from "next-themes";
 
-interface InputProps extends React.ComponentProps<"input"> {
+type InputProps = React.ComponentProps<"input"> &{
   showTogglePassword?: boolean;
   closeIcon?: boolean;
   icon?: React.ReactNode;

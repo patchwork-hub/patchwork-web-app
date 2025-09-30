@@ -18,7 +18,7 @@ import { useFileReport } from "@/hooks/mutations/report/useFileReport";
 import { useFetchRules } from "@/hooks/queries/report/useFetchRules";
 import { useLocale } from "@/providers/localeProvider";
 
-interface ReportDialogProps {
+type ReportDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   account?: Account;

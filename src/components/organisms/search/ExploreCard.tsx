@@ -5,7 +5,7 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import React from "react";
 
-interface ExploreCardProps {
+type ExploreCardProps = {
   title: string | React.ReactNode;
   count: number;
   image: [string, string, string, string];

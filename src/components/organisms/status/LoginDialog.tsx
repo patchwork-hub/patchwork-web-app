@@ -24,7 +24,7 @@ import useLoggedIn from "@/lib/auth/useLoggedIn";
 import Cookies from "js-cookie";
 import { useAuthStoreAction } from "@/stores/auth/authStore";
 
-interface LoginDialogProps {
+type LoginDialogProps = {
   status?: StatusType;
   action?: React.ReactNode;
   actionType: "reply" | "boost" | "favorite" | "bookmark" | "menu" | "login";

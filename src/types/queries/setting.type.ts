@@ -1,25 +1,25 @@
 export type AppName = "patchwork" | "newsmast";
 export type ThemeType = "light" | "dark" | null;
 
-export interface ThemeSettings {
+export type ThemeSettings = {
   type: ThemeType;
 }
 
-export interface UserSettings {
+export type UserSettings = {
   theme: ThemeSettings;
 }
 
-export interface SettingsData {
+export type SettingsData = {
   app_name: AppName;
   account_id: number;
   settings: UserSettings;
 }
 
-export interface SettingsResponse {
+export type SettingsResponse = {
   data: SettingsData;
 }
 
-export interface SettingsParams {
+export type SettingsParams = {
   app_name: AppName;
   instance_domain?: string;
   token?: boolean | string;

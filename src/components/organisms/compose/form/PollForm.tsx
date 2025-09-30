@@ -37,7 +37,7 @@ const PollFormWrapper: React.FC = () => {
   );
 };
 
-interface PollFormProps {
+type PollFormProps = {
   pollOptions: string[];
   setPollOptions: (options: string[]) => void;
   pollChoiceType: "single" | "multiple";

@@ -5,7 +5,7 @@ import { useCustomEmojiStore } from '../store/useCustomEmojiStore';
 import { useTheme } from 'next-themes';
 import { isSystemDark } from '@/utils/helper/helper';
 
-export interface MastodonCustomEmoji {
+export type MastodonCustomEmoji = {
   shortcode: string;
   url: string;
   static_url: string;
@@ -13,7 +13,7 @@ export interface MastodonCustomEmoji {
   category?: string;
 }
 
-interface EmojiMartEmoji {
+type EmojiMartEmoji = {
   id: string;
   name: string;
   keywords: string[];
@@ -21,7 +21,7 @@ interface EmojiMartEmoji {
   skins: { src: string }[];
 }
 
-interface EmojiMartCategory {
+type EmojiMartCategory = {
   id: string;
   name: string;
   emojis: EmojiMartEmoji[];
@@ -29,7 +29,7 @@ interface EmojiMartCategory {
 
 type CustomEmojis = EmojiMartCategory[];
 
-interface MastodonEmojiPickerProps {
+type MastodonEmojiPickerProps = {
   onEmojiSelect?: (emoji: { id: string; native?: string; shortcodes: string }) => void;
 }
 

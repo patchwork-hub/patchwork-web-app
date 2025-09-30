@@ -12,17 +12,6 @@ import { Star } from "lucide-react";
 import GoBack from "./GoBack";
 import Image from "next/image";
 
-interface NewsmastChannelDetail {
-  attributes: {
-    name: string;
-    description?: string;
-    banner_image_url?: string;
-    avatar_image_url?: string;
-    created_at?: string;
-  };
-}
-
-
 type TCommunityBanner = {
   type?: string;
   channelDetail?: ChannelDetail;

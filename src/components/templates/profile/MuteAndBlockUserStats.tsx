@@ -10,7 +10,7 @@ import dayjs from "dayjs";
 import Image from "next/image";
 import React from "react";
 
-interface MuteAndBlockUserStatsProps {
+type MuteAndBlockUserStatsProps = {
   data?: MuteBlockUserAccount[];
   type: "MUTE" | "BLOCK";
   lastItem?: React.JSX.Element;
@@ -68,7 +68,7 @@ const MuteAndBlockUserStats: React.FC<MuteAndBlockUserStatsProps> = ({ data, typ
               </Button>
             </div>
           </div>
-        )).concat(lastItem)}
+        )).concat(lastItem ? [lastItem] : [])}
     </div>
   );
 };

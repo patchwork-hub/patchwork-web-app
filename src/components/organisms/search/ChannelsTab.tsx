@@ -1,7 +1,8 @@
 import React from "react";
 import ChannelView from "./ChannelView";
+import { ChannelAndCollectionSearch } from "@/types/patchwork";
 
-interface ChannelBySearchProps {
+type ChannelBySearchProps = {
   searchData: ChannelAndCollectionSearch;
   loading?: boolean;
   fromHome?: boolean; 

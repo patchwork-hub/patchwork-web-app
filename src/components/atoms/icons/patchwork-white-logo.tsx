@@ -1,6 +1,6 @@
 import React from "react";
 
-interface PatchworkWhiteLogoProps {
+type PatchworkWhiteLogoProps = {
   width?: number;
   height?: number;
 }

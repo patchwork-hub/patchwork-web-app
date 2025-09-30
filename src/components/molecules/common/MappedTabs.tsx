@@ -2,7 +2,7 @@ import { cn } from "@/lib/utils";
 import React from "react";
 import { useRef } from "react";
 
-interface MappedTabsProps {
+type MappedTabsProps = {
   activeTab: string;
   tabs: { name: string; value: string }[];
   onTabChange: (tab: { name: string; value: string }) => void;

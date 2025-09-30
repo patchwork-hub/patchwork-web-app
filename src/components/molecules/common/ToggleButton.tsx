@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-interface ToggleProps {
+type ToggleProps = {
   initialState?: boolean;
   state?: boolean;
   onToggle?: (state: boolean) => void;

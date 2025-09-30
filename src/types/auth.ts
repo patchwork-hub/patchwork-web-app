@@ -3,14 +3,14 @@ export type SearchServerInstanceQueryKey = [
   { domain: string }
 ];
 
-export interface LoginResponse {
+export type LoginResponse = {
   access_token: string;
   token_type: string;
   scope: string;
   created_at: string;
 }
 
-export interface Instance_V2 {
+export type Instance_V2 = {
   domain: string;
   title: string;
   version: string;
@@ -27,31 +27,31 @@ export interface Instance_V2 {
   rules: Rule[];
 }
 
-export interface Usage {
+export type Usage = {
   users: Users;
 }
 
-export interface Users {
+export type Users = {
   active_month: number;
 }
 
-export interface Thumbnail {
+export type Thumbnail = {
   url: string;
   blurhash: string;
   versions: Versions;
 }
 
-export interface Versions {
+export type Versions = {
   "@1x": string;
   "@2x": string;
 }
 
-export interface Icon {
+export type Icon = {
   src: string;
   size: string;
 }
 
-export interface Configuration {
+export type Configuration = {
   urls: Urls;
   vapid: Vapid;
   accounts: Accounts;
@@ -61,7 +61,7 @@ export interface Configuration {
   translation: Translation;
 }
 
-export interface Urls {
+export type Urls = {
   streaming: string;
   status: string;
   about: string;
@@ -69,22 +69,22 @@ export interface Urls {
   terms_of_service: unknown;
 }
 
-export interface Vapid {
+export type Vapid = {
   public_key: string;
 }
 
-export interface Accounts {
+export type Accounts = {
   max_featured_tags: number;
   max_pinned_statuses: number;
 }
 
-export interface Statuses {
+export type Statuses = {
   max_characters: number;
   max_media_attachments: number;
   characters_reserved_per_url: number;
 }
 
-export interface MediaAttachments {
+export type MediaAttachments = {
   description_limit: number;
   image_matrix_limit: number;
   image_size_limit: number;
@@ -94,34 +94,34 @@ export interface MediaAttachments {
   video_size_limit: number;
 }
 
-export interface Polls {
+export type Polls = {
   max_options: number;
   max_characters_per_option: number;
   min_expiration: number;
   max_expiration: number;
 }
 
-export interface Translation {
+export type Translation = {
   enabled: boolean;
 }
 
-export interface Registrations {
+export type Registrations = {
   enabled: boolean;
   approval_required: boolean;
   message: unknown;
   url: unknown;
 }
 
-export interface ApiVersions {
+export type ApiVersions = {
   mastodon: number;
 }
 
-export interface Contact {
+export type Contact = {
   email: string;
   account: Account;
 }
 
-export interface Account {
+export type Account = {
   id: string;
   username: string;
   acct: string;
@@ -150,19 +150,19 @@ export interface Account {
   fields: Field[];
 }
 
-export interface Field {
+export type Field = {
   name: string;
   value: string;
   verified_at?: string;
 }
 
-export interface Rule {
+export type Rule = {
   id: string;
   text: string;
   hint: string;
 }
 
-export interface InstanceResponse {
+export type InstanceResponse = {
   vapid_key: string;
   redirect_uri: string;
   client_id: string;
@@ -175,7 +175,7 @@ export interface InstanceResponse {
   redirect_uris: Array<string>;
 }
 
-export interface InstanceAuthResponse {
+export type InstanceAuthResponse = {
   access_token: string;
   token_type: string;
   scope: string;

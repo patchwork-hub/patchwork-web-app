@@ -5,7 +5,7 @@ import { ListMembersIcon, PenIcon, SettingIcon, StatusDeleteIcon } from "@/compo
 import { Popover, PopoverContent, PopoverTrigger } from "@/components/atoms/ui/popover";
 import { useLocale } from "@/providers/localeProvider";
 
-interface THeader {
+type THeader = {
   title: string | React.ReactNode;
   setting?: boolean;
   handleDelete?: () => void;

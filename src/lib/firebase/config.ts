@@ -1,7 +1,7 @@
 import { initializeApp, FirebaseApp } from 'firebase/app';
 import { getMessaging, Messaging, isSupported } from 'firebase/messaging';
 
-interface FirebaseConfig {
+type FirebaseConfig = {
     apiKey: string;
     authDomain: string;
     projectId: string;

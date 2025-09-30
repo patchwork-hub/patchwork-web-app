@@ -18,12 +18,12 @@ import { useForm } from "react-hook-form";
 import { setToken } from "@/lib/auth";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
-import { useResetPasswordMutation } from "@/hooks/auth/useResetPassword";
 import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
+import { useResetPasswordMutation } from "@/hooks/mutations/auth/useResetPassword";
 
-interface ResetPasswordFormProps extends React.ComponentPropsWithoutRef<"div"> {
+type ResetPasswordFormProps = React.ComponentPropsWithoutRef<"div"> & {
   className?: string;
   token: string;
   resetToken: string;

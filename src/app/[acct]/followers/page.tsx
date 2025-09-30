@@ -4,7 +4,7 @@ import { AccountWrapper } from "@/components/pages/account/AccountWrapper";
 import FollowerPage from "@/components/pages/profile/FollowerPage";
 import { NextPage } from "next";
 
-interface FollowerProps {
+type FollowerProps  ={
   params: Promise<{ acct: string }>;
 }
 

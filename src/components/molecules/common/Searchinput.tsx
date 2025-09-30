@@ -7,7 +7,7 @@ import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";
 import { Input } from "@/components/atoms/ui/input";
 
-interface SearchInputProps {
+type SearchInputProps = {
   onSearch: (searchTerm: string) => void;
   placeholder?: string | React.ReactNode;
   debounceDelay?: number;

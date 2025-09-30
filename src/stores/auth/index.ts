@@ -32,7 +32,7 @@ export const getToken = (): string | false => {
   }
 };
 
-export interface ChangeEmailProps {
+export type ChangeEmailProps = {
   newAccessToken?: string;
   oldEmail: string;
   newEmail: string;

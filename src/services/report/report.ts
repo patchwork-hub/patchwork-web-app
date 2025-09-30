@@ -6,7 +6,7 @@ export const getRules = async () => {
     return response.data;
 };
 
-interface FileReportParams {
+type FileReportParams = {
     account_id: string;
     status_ids?: string[];
     comment: string;

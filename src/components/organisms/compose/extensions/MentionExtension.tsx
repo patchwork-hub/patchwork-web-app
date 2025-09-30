@@ -6,6 +6,7 @@ import { Account } from '@/types/status';
 import { debounce } from 'lodash';
 import { searchAccounts } from '@/services/status/account';
 import Image from 'next/image';
+import { SuggestionProps } from '@tiptap/suggestion';
 
 // Mention Suggestion Component
 type MentionSuggestionProps = {
@@ -37,7 +38,12 @@ const MentionSuggestion: React.FC<MentionSuggestionProps> = ({ editor, range, it
                                 .deleteRange(range)
                                 .insertContent({
                                     type: 'mention',
-                                    attrs: { label: `@${account.acct}`, class: 'text-orange-500' }
+                                    // attrs: { label: `@${account.acct}`, class: 'text-orange-500' }
+                                    attrs: {
+                            // PASS THE REQUIRED 'id' and 'label'
+                            id: account.id,
+                            label: account.username,
+                        }
                                 })
                                 .run()
                         }}
@@ -59,14 +65,6 @@ const debouncedSearchAccounts = debounce(async (query: string, callback: (data: 
     callback(data);
 }, 300);
 
-interface TiptapSuggestionProps {
-    query: string;
-    editor: Editor;
-    range: { from: number; to: number };
-    clientRect?: (() => DOMRect | null) | null;
-    command: (props: { editor: Editor; range: { from: number; to: number }; attrs: Record<string, unknown> }) => void;
-}
-
 const suggestion = {
     items: async () => {
         return [];
@@ -78,7 +76,7 @@ const suggestion = {
 
         return {
 
-            onStart: (props: TiptapSuggestionProps) => {
+            onStart: (props: SuggestionProps) => {
                 const { query } = props;
                 debouncedSearchAccounts(query, (data) => {
                     if (!component) {
@@ -112,7 +110,7 @@ const suggestion = {
                 });
             },
 
-            onUpdate: (props: TiptapSuggestionProps) => {
+            onUpdate: (props: SuggestionProps) => {
                 const { query } = props;
                 debouncedSearchAccounts(query, (data) => {
                     if (component) {

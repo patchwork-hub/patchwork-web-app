@@ -4,7 +4,7 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
 
-interface CommunityActionParams {
+type CommunityActionParams = {
   id: string;
   instance_domain?: string;
   platform_type?: string;

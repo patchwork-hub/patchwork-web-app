@@ -28,7 +28,7 @@ export const getTimeAgo = (timestamp: Timestamp): string => {
   }
 };
 
-interface TimeAgoProps {
+type TimeAgoProps = {
   timestamp: Timestamp;
   className?: string;
 }

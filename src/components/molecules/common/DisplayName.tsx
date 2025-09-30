@@ -4,7 +4,7 @@ import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji"
 import Link from "next/link";
 import { FC } from "react";
 
-interface DisplayNameProps {
+type DisplayNameProps = {
   acct?: string;
   displayName: string;
   className?: string;
