@@ -36,7 +36,7 @@ import { useTString } from "@/lib/tString";
 import { useLoginEmailMutation } from "@/hooks/mutations/auth/useSignIn";
 import { AxiosError } from "axios";
 
-interface SignInFormProps extends React.ComponentPropsWithoutRef<"div"> {
+type SignInFormProps = React.ComponentPropsWithoutRef<"div"> & {
   className?: string;
   code?: string;
 }

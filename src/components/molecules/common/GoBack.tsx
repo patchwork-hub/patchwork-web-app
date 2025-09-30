@@ -5,7 +5,7 @@ import { ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React from "react";
 
-interface GoBackProps extends React.ComponentPropsWithoutRef<"div"> {
+type GoBackProps = React.ComponentPropsWithoutRef<"div"> & {
   backRoute?: string;
 }
 

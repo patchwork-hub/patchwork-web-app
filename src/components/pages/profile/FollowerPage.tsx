@@ -1,17 +1,23 @@
 "use client";
 import Header from "@/components/molecules/common/Header";
 import SocialConnections from "@/components/templates/profile/SocialConnections";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
 import { useFollowerAccountsQuery } from "@/hooks/queries/useFollowerAccount";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
+import { Account } from "@/types/patchwork";
 import { flattenPages } from "@/utils/helper/timeline";
 
 import React from "react";
 
-interface FollowerPage {
+type FollowerPage = {
   accountId: string;
   acct: string;
   isRemoteUser: boolean;
+}
+
+type FollowerResponse = {
+  data: Account[];
+  max_id: string | null;
 }
 
 const FollowerPage: React.FC<FollowerPage> = ({ accountId, acct, isRemoteUser }) => {
@@ -23,8 +29,10 @@ const FollowerPage: React.FC<FollowerPage> = ({ accountId, acct, isRemoteUser })
     enabled: !!accountId
   });
 
-  const followerData = data?.pages?.flatMap((page) => page.data);
-  const followerIds = flattenPages(data).map((follower) => follower.id);
+  const typedData = data as unknown as { pages: FollowerResponse[] } | undefined;
+  
+  const followerData = typedData?.pages?.flatMap((page) => page.data) ?? [];
+  const followerIds = followerData.map((follower: Account) => follower.id);
 
   const { data: relationships } = useCheckRelationships({
     accountIds: followerIds
@@ -42,7 +50,7 @@ const FollowerPage: React.FC<FollowerPage> = ({ accountId, acct, isRemoteUser })
       <SocialConnections
         isLoading={isLoading}
         data={followerData}
-        relationships={relationships}
+        relationships={relationships ?? []}
         followerIds={followerIds}
         isOtherServer={isRemoteUser}
         externalLink={externalLink}

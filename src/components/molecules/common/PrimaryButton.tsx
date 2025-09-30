@@ -1,7 +1,7 @@
 import { LoaderCircle } from "lucide-react";
 import React from "react";
 
-interface ButtonProps {
+type ButtonProps = {
   isPending: boolean;
   onClick?: () => void;
   text: string | React.ReactNode;

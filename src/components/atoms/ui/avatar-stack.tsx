@@ -12,13 +12,13 @@ const getInitials = (name: string): string => {
   return names[0].substring(0, 2).toUpperCase();
 };
 
-interface UserInfo {
+type UserInfo = {
   id: string | number;
   avatar?: string | null;
   name: string;
 }
 
-export interface GroupAvatarProps {
+export type GroupAvatarProps = {
   users: UserInfo[];
   maxDisplayed?: number;
   size?: string;

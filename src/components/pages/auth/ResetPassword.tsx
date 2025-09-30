@@ -1,7 +1,7 @@
 import React from "react";
 import ResetPasswordForm from "../../templates/auth/ResetPasswordForm";
 
-interface ResetPasswordPageProps {
+type ResetPasswordPageProps = {
   token: string;
   resetToken: string;
 }

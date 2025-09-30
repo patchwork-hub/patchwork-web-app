@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/patchwork";
 import { getMaxId } from "@/utils";
 import { AxiosResponse } from "axios";
 

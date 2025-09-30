@@ -5,7 +5,7 @@ import StarterKit from "@tiptap/starter-kit";
 import Link from "@tiptap/extension-link";
 import { useEffect } from "react";
 
-interface PostContentProps {
+type PostContentProps = {
   content: string;
 }
 

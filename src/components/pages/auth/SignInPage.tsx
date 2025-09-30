@@ -2,7 +2,7 @@
 import SignInForm from "@/components/templates/auth/SignInForm";
 import React from "react";
 
-interface SignInPageProps {
+type SignInPageProps = {
   code: string;
 }
 

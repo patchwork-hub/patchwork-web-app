@@ -21,7 +21,7 @@ import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { Account } from "@/types/account";
 import { queryClient } from "@/providers/queryProvider";
 
-interface SuggestedPeopleBySearchProps {
+type SuggestedPeopleBySearchProps = {
   data: Account[];
   hideViewAll?: boolean;
   checkNoResults: boolean;

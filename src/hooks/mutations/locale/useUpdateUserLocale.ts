@@ -4,7 +4,7 @@ import { useMutation, UseMutationResult } from '@tanstack/react-query';
 import { UserLocaleParams, UserLocaleResponse, ApiError } from '@/types/locale';
 import { updateUserLocale } from '@/services/locale/locale';
 
-interface UseUpdateUserLocaleOptions {
+type UseUpdateUserLocaleOptions = {
   onSuccess?: (data: UserLocaleResponse, variables: UserLocaleParams) => void;
   onError?: (error: ApiError, variables: UserLocaleParams) => void;
   onSettled?: (data: UserLocaleResponse | undefined, error: ApiError | null, variables: UserLocaleParams) => void;

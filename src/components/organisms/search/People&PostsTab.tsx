@@ -6,7 +6,7 @@ import { StatusList } from "../status/StatusList";
 import { Status } from "@/types/status";
 import { cn } from "@/lib/utils";
 
-interface SuggestedPeopleBySearchProps {
+type SuggestedPeopleBySearchProps = {
   searchData: Account[];
   statusData?: Status[];
   checkNoResults: boolean;

@@ -1,7 +1,7 @@
 import { toggleHashtagFollow } from "@/services/hashtag/toggleHashtagFollow";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface HashtagDetail {
+type HashtagDetail = {
   id: string;
   name: string;
   url: string;

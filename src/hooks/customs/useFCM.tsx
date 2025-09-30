@@ -6,7 +6,7 @@ import { isiOS } from "@tiptap/core";
 import { useFCMStore } from "@/stores/conversations/useFCMStore";
 import { getMessagingInstance } from "@/lib/firebase/config";
 
-interface FCMState {
+type FCMState = {
   token: string | null;
   permissionStatus: NotificationPermission;
   isSafari: boolean;

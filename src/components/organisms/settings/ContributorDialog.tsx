@@ -31,8 +31,10 @@ import Image from "next/image";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { RelationShip } from "@/types/profile";
+import { Contributor, SearchContributorRes } from "@/types/patchwork";
+import { Account } from "@/types/account";
 
-interface ContributorDialogProps {
+type ContributorDialogProps = {
   isOpen: boolean;
   onClose: () => void;
   type: "follow" | "mute";
@@ -192,7 +194,7 @@ const ContributorDialog = ({
             <CommandList>
               {searchedUsers?.accounts?.length > 0 ? (
                 <CommandGroup className="space-y-2">
-                  {searchedUsers?.accounts?.map((account) => (
+                  {searchedUsers?.accounts?.map((account: Contributor) => (
                     <CommandItem key={account.id} className="mb-2">
                       <div className="flex items-start gap-4 w-full">
                         <div className="flex-shrink-0">

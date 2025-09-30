@@ -2,7 +2,7 @@ import SignInPage from "@/components/pages/auth/SignInPage";
 import { NextPage } from "next";
 import { use } from "react";
 
-interface SignInPageProps {
+type SignInPageProps = {
   searchParams: Promise<{ code: string }>;
 }
 

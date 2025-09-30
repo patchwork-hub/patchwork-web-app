@@ -22,7 +22,7 @@ import { useDateTimePickerStore } from "@/components/organisms/compose/store/use
 import { isSystemDark } from "@/utils/helper/helper";
 import { useLocale } from "@/providers/localeProvider";
 
-interface DateTimePickerProps {
+type DateTimePickerProps = {
   value?: Date;
   onChange?: (date: Date | undefined) => void;
   hideLabel?: boolean;

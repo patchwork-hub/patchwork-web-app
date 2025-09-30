@@ -1,6 +1,6 @@
 import { create } from "zustand";
 
-interface DateTimePickerState {
+type DateTimePickerState = {
   isDateOpen: boolean;
   setIsDateOpen: (value: boolean) => void;
 }

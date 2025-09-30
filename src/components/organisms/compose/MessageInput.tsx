@@ -22,7 +22,7 @@ type Mention = {
   url: string;
   acct: string;
 };
-interface MessageInputProps {
+type MessageInputProps = {
   placeholder?: string;
   isLoadingGifv: boolean;
   isUploading: boolean;

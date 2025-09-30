@@ -1,7 +1,7 @@
 import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 import { Field } from "./auth";
 
-export interface Asset {
+export type Asset = {
   base64?: string;
   uri?: string;
   width?: number;

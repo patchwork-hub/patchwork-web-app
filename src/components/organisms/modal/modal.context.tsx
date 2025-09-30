@@ -3,7 +3,7 @@ import React from "react";
 
 export type MODAL_VIEWS = "COMPOSE_FORM_VIEW" | "EDIT_COMPOSE_FORM_VIEW";
 
-interface State {
+type State = {
   view?: MODAL_VIEWS;
   data?: unknown;
   isOpen: boolean;
@@ -46,7 +46,7 @@ const ModalActionContext = React.createContext<
 >(undefined);
 ModalActionContext.displayName = "ModalActionContext";
 
-interface ModalProviderProps {
+type ModalProviderProps = {
   children: React.ReactNode;
 }
 

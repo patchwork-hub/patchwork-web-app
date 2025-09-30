@@ -41,7 +41,7 @@ export const LANGUAGE_OPTIONS: Languages[] = [
   { value: "es" as Locale, label: "Spanish", flag: "fi fi-es" },
 ];
 
-interface Props {
+type Props = {
   hasLangClicked?: boolean;
   label?: boolean;
 }

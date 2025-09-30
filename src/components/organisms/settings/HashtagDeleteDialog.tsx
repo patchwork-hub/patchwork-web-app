@@ -9,7 +9,7 @@ import {
 import { Dialog } from "@/components/atoms/ui/dialog";
 import React from "react";
 
-interface HashtagDeleteDialogProps {
+type HashtagDeleteDialogProps = {
   isOpen: boolean;
   onOpenChange: (isOpen: boolean) => void;
   message: string;

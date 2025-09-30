@@ -1,7 +1,7 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { useEffect } from "react";
 
-interface ModalProps {
+type ModalProps = {
   open: boolean;
   onClose: (payload?: unknown) => void;
   children: React.ReactNode;

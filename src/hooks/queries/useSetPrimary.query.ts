@@ -2,7 +2,7 @@ import { setPrimaryChannel } from "@/services/community/primaryChannelService";
 import { ChannelList } from "@/types/patchwork";
 import { useMutation, useQueryClient } from "@tanstack/react-query";
 
-interface SetPrimaryChannelOptions {
+type SetPrimaryChannelOptions = {
   id: string;
   instance_domain?: string;
   platform_type?: string;

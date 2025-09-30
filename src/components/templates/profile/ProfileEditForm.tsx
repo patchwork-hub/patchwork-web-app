@@ -32,7 +32,7 @@ import z from "zod";
 import { useTString } from "@/lib/tString";
 
 
-interface ProfileEditFormProps {
+type ProfileEditFormProps = {
   userId: string;
   display_name: string;
   note: string;

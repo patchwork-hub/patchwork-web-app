@@ -2,17 +2,18 @@ import { getNewsmastChannelList } from "@/services/home-feed/newsmastChannelsSer
 import { GetNewsmastChannelListQueryKey } from "@/types/queries/channel.type";
 import { useQuery } from "@tanstack/react-query";
 
-interface UseGetNewsmastChannelListOptions {
+type UseGetNewsmastChannelListOptions = {
   enabled?: boolean;
-  instance_domain?: string;
+  instance_domain?: string ;
 }
 
 export const useGetNewsmastChannelList = (
   options?: UseGetNewsmastChannelListOptions
 ) => {
+  const instanceDomain = options?.instance_domain ?? "";
   const queryKey: GetNewsmastChannelListQueryKey = [
     "newsmast-channel-list",
-    { instance_domain: options?.instance_domain },
+    { instance_domain: instanceDomain },
   ];
   return useQuery({
     queryKey,

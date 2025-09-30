@@ -18,7 +18,7 @@ import { toast } from "sonner";
 import { ContributorList } from "@/types/patchwork";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 
-interface ContributorProfileProps {
+type ContributorProfileProps = {
   account: ContributorList;
   channelId: string;
   operationType: "follow" | "mute";

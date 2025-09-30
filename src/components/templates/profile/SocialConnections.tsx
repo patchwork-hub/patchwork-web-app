@@ -14,8 +14,9 @@ import Image from "next/image";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import React, { useMemo } from "react";
+import { Account } from "@/types/patchwork";
 
-interface SocialConnectionsProps {
+type SocialConnectionsProps = {
   data: Account[];
   relationships: RelationShip[];
   followerIds: string[];

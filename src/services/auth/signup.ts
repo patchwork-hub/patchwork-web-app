@@ -4,7 +4,7 @@ import axios, { AxiosResponse } from "axios";
 import { z } from "zod";
 
 const schemas = createSchemas();
-interface SignUpForm extends z.infer<typeof schemas.SignUpFormSchema> {
+type SignUpForm = z.infer<typeof schemas.SignUpFormSchema> & {
   email: string;
   username: string;
   password: string;

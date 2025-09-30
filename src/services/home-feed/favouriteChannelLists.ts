@@ -2,8 +2,9 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { cleanDomain, handleError } from "@/utils/helper/helper";
 import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
+import { ChannelList, JoinedCommunitiesList } from "@/types/patchwork";
 
-interface GetFavouriteChannelsParams {
+type GetFavouriteChannelsParams = {
   instance_domain?: string;
   platform_type?: string;
 }

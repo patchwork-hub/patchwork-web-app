@@ -2,7 +2,7 @@ import ResetPasswordPage from "@/components/pages/auth/ResetPassword";
 import { NextPage } from "next";
 import { use } from "react";
 
-interface ResetPasswordProps {
+type ResetPasswordProps = {
   searchParams: Promise<{ resetToken: string; token: string }>;
 }
 

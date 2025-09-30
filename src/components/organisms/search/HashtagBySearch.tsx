@@ -5,7 +5,7 @@ import { ChevronRightIcon, Flame } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useTransition } from "react";
 
-interface HashTagsBySearchResultProps {
+type HashTagsBySearchResultProps = {
   hashtagsSearchResult: HashtagDetail[];
 }
 

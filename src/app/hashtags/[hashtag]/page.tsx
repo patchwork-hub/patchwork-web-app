@@ -10,7 +10,7 @@ import { useToggleHashtagFollow } from "@/hooks/mutations/hashtag/useToggleHasht
 import { useLocale } from "@/providers/localeProvider";
 import { HashtagHistory } from "@/types/patchwork";
 
-interface HashtagDetail {
+type HashtagDetail = {
   id: string;
   name: string;
   url: string;

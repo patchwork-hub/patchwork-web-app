@@ -1,11 +1,11 @@
 import { Locale } from "@/lib/locale/i18n";
 
 
-export interface UserLocaleParams {
+export type UserLocaleParams = {
   lang: Locale;
 }
 
-export interface UserLocaleResponse {
+export type UserLocaleResponse = {
   message: string;
   data: {
     locale: Locale;
@@ -13,13 +13,13 @@ export interface UserLocaleResponse {
   };
 }
 
-export interface ApiError {
+export type ApiError = {
   message: string;
   code?: number;
   details?: unknown;
 }
 
-export interface AxiosErrorResponse {
+export type AxiosErrorResponse = {
   message?: string;
   error?: string;
   errors?: Record<string, string[]>;

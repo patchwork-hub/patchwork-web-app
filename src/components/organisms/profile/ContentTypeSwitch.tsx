@@ -6,7 +6,7 @@ import {
 } from "@/hooks/mutations/profile/useChannelContent";
 import { toast } from "sonner";
 
-interface ContentTypeSwitchProps {
+type ContentTypeSwitchProps = {
   isSwitchOn: boolean;
   channelId: string;
   label: string;
