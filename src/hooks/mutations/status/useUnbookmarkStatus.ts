@@ -106,7 +106,7 @@ export const useUnbookmarkStatus = () => {
     },
     onError: (
       err,
-      { id },
+      _,
       snapshot
     ) => {
       snapshot?.forEach((it) => {

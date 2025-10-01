@@ -32,7 +32,7 @@ export const useEditProfile = () => {
         userInfo.header || userInfo.header_static
       );
     }
-  }, [userInfo]);
+  }, [userInfo, actions]);
 
   const acctInfoQueryKey: AccountInfoQueryKey = [
     "get_account_info",
@@ -43,7 +43,7 @@ export const useEditProfile = () => {
   ];
 
   const { mutateAsync, isPending: isUpdatingProfile } = useProfileMutation({
-    onSuccess: (response) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: acctInfoQueryKey });
       queryClient.invalidateQueries({ queryKey: ["verify-auth-token"] });
       toast.success(t("toast.profile_updated"));

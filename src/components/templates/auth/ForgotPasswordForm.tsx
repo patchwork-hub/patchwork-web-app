@@ -14,7 +14,6 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { createSchemas } from "@/lib/schema/validations";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
-import { useForgotPasswordMutation } from "@/hooks/auth/useForgotPassword";
 import { useState } from "react";
 import EmailVerification from "./EmailVerification";
 import { useTheme } from "next-themes";
@@ -22,6 +21,7 @@ import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useForgotPasswordMutation } from "@/hooks/mutations/auth/useForgotPassword";
 
 const ForgotPasswordForm = ({
   className,

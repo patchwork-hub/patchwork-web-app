@@ -19,10 +19,10 @@ export const queryClient = new QueryClient({
     }
   }),
   mutationCache: new MutationCache({
-    onSuccess: (query) => {
+    onSuccess: () => {
       // console.log('MutationCacheSuccess:', query);
     },
-    onError: (error) => {
+    onError: () => {
       // console.error('MutationCacheError', error);
     }
   }),

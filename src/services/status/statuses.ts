@@ -1,7 +1,6 @@
 import type { StatusComposeFormData } from "@/components/organisms/compose/types";
 import http from "@/lib/http";
 import { Context, Status } from "@/types/status";
-import { DEFAULT_API_URL } from "@/utils/constant";
 
 export type StatusActionParams = {
   id: string;

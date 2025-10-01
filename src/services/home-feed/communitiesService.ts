@@ -1,13 +1,10 @@
 import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { handleError } from "@/utils/helper/helper";
-import { QueryFunctionContext } from "@tanstack/react-query";
-import { GetCollectionChannelListQueryKey } from "@/types/queries/channel.type";
 import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
+import { CollectionList } from "@/types/patchwork";
 
-export const getCollectionChannelList = async (
-  qfContext: QueryFunctionContext<GetCollectionChannelListQueryKey>
-) => {
+export const getCollectionChannelList = async () => {
   try {
     const resp: AxiosResponse<{ data: CollectionList[] }> =
       await axiosInstance.get("/api/v1/collections", {

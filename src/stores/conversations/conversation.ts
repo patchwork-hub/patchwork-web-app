@@ -4,13 +4,13 @@ import { persist, createJSONStorage } from 'zustand/middleware'
 
 export type ConversationState = {
     reset: () => void;
-    conversation: Conversation;
+    conversation: Conversation | undefined;
     setConversation: (conversation: Conversation) => void;
 }
 
 export const useConversationStore = create<ConversationState>()(
     persist(
-        (set, get) => ({
+        (set) => ({
             conversation: undefined,
             setConversation: (conversation: Conversation) => set({ conversation }),
             reset: () => set({ conversation: undefined })

@@ -13,12 +13,7 @@ import {
   InputOTPSlot,
 } from "@/components/atoms/ui/input-otp";
 import { useEffect, useState } from "react";
-import {
-  useOTPVerificationMutation,
-  useSignupOTPVerificationMutation,
-} from "@/hooks/auth/useOTPVerification";
 import { toast } from "sonner";
-import { useForgotPasswordMutation } from "@/hooks/auth/useForgotPassword";
 import { useRouter } from "next/navigation";
 import Cookies from "js-cookie";
 import { getToken, setToken } from "@/lib/auth";
@@ -27,6 +22,7 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { useLocale } from "@/providers/localeProvider";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useSignupOTPVerificationMutation } from "@/hooks/mutations/auth/useOTPVerification";
 
 const SignupEmailVerification = () => {
   const [value, setValue] = useState<string>("");
@@ -49,7 +45,7 @@ const SignupEmailVerification = () => {
       // router.push("/auth/sign-up/join-communities");
     },
     onError: (err) => {
-      const { message } = err.response.data as ErrorResponse;
+      const { message } = err?.response?.data as ErrorResponse;
       toast.error(message);
     },
   });

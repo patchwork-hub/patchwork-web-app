@@ -14,7 +14,7 @@ export type SearchQueryResponse = {
   hashtags: Hashtag[];
 };
 
-export const searchQuery = async ({ query, type, domain_name }: SearchQueryParams) => {
+export const searchQuery = async ({ query, type }: SearchQueryParams) => {
   const response = await http.get<SearchQueryResponse>(
     `/api/v2/search?q=${query}&type=${type}&limit=10&resolve=true`
   );

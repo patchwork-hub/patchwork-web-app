@@ -2,9 +2,8 @@ import axiosInstance from "@/lib/http";
 import { createSchemas } from "@/lib/schema/validations";
 import z from "zod";
 
-
-const schemas = createSchemas();
-export const signIn = async ({ username, password }: z.infer<typeof schemas.SignInFormSchema>) => {
+type SignInFormData = z.infer<ReturnType<typeof createSchemas>["SignInFormSchema"]>;
+export const signIn = async ({ username, password }: SignInFormData) => {
   const body = {
     username,
     password,

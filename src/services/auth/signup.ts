@@ -1,10 +1,8 @@
 import axiosInstance from "@/lib/http";
 import { createSchemas } from "@/lib/schema/validations";
-import axios, { AxiosResponse } from "axios";
+import { AxiosResponse } from "axios";
 import { z } from "zod";
-
-const schemas = createSchemas();
-type SignUpForm = z.infer<typeof schemas.SignUpFormSchema> & {
+type SignUpForm = z.infer<ReturnType<typeof createSchemas>["SignUpFormSchema"]> & {
   email: string;
   username: string;
   password: string;
@@ -19,7 +17,6 @@ export const signUp = async ({
   password,
   agreement,
   locale,
-  access_token,
 }: SignUpForm) => {
   const body = {
     email,

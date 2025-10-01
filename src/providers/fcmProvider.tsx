@@ -30,7 +30,7 @@ export const FCMProvider = ({ children }: PropsWithChildren) => {
         if (isSafari && permissionStatus === "default" && !isIOS) {
             setIsDialogOpen(true);
         }
-    }, [isSafari, permissionStatus]);
+    }, [isSafari, permissionStatus, isIOS]);
 
     useEffect(() => {
         if (token && !pathname.startsWith('/auth/') && domain === DEFAULT_API_URL && !saved) {
@@ -39,7 +39,7 @@ export const FCMProvider = ({ children }: PropsWithChildren) => {
                 setSaved(true);
             }
         }
-    }, [token, pathname, saved])
+    }, [token, pathname, saved, domain])
 
     useEffect(() => {
         if (pathname.startsWith('/auth/')) {
