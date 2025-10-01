@@ -37,12 +37,3 @@ type NestedKeyOf<T extends object> = {
     ? `${Key}` | `${Key}.${NestedKeyOf<T[Key]>}`
     : `${Key}`;
 }[keyof T & (string | number)];
-
-type LocaleContextType = {
-  locale: Locale;
-  setLocale: (locale: Locale) => void;
-  t: <K extends NestedKeyOf<Translations>>(
-    key: K,
-    options?: Record<string, unknown>
-  ) => string;
-};

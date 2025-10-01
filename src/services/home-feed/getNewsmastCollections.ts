@@ -1,7 +1,8 @@
 import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { handleError } from "@/utils/helper/helper";
-import { DEFAULT_DASHBOARD_API_URL, isDevelopment, STAGING_DASHBOARD_API_URL } from "@/utils/constant";
+import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
+import { CollectionList } from "@/types/patchwork";
 
 export const getNewsmastCollections = async () => {
   try {
@@ -9,7 +10,6 @@ export const getNewsmastCollections = async () => {
       await axiosInstance.get("/api/v1/collections/newsmast_collections", {
         params: {
           domain_name:
-            // process.env.NEXT_PUBLIC_STAGING_DASHBOARD_API_URL || DEFAULT_DASHBOARD_API_URL,
           DEFAULT_DASHBOARD_API_URL,
           isDynamicDomain: true,
         },

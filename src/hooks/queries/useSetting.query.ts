@@ -49,11 +49,11 @@ export const useUpdateSettings = (params: SettingsParams) => {
         );
       }
 
-      setTheme(themeType.theme.type);
+      setTheme(themeType.theme.type??"system");
 
       return { previousSettings };
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
       queryClient.invalidateQueries({
         queryKey: ["settings", params.app_name, params.instance_domain],
       });

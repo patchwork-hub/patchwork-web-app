@@ -14,7 +14,6 @@ import { CHANNEL_ORG_INSTANCE, DEFAULT_DASHBOARD_API_URL, userOriginInstanceDoma
 import { cleanDomain } from "@/utils/helper/helper";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
-import Cookies from "js-cookie";
 
 
 export const fetchCommunityAbout = async (

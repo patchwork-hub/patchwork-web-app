@@ -10,9 +10,9 @@ type PostContentProps = {
 }
 
 const decodeHtml = (html: string): string => {
-  const txt = document.createElement("textarea");
-  txt.innerHTML = html;
-  return txt.value;
+  const parser = new DOMParser();
+  const doc = parser.parseFromString(html, 'text/html');
+  return doc.documentElement.textContent || html;
 };
 
 const PostContent: React.FC<PostContentProps> = ({ content }) => {

@@ -16,9 +16,8 @@ import { Media, Mention, Status } from "@/types/status";
 import { useQueryClient } from "@tanstack/react-query";
 import dayjs from "dayjs";
 import { ChevronLeft } from "lucide-react";
-import { useTheme } from "next-themes";
 import Link from "next/link";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useRef, useState, useCallback } from "react";
 import { useFCMStore } from "@/stores/conversations/useFCMStore";
 import { useLocale } from "@/providers/localeProvider";
 import { useConversationStore } from "@/stores/conversations/conversation";
@@ -29,17 +28,17 @@ import Image from "next/image";
 const ConversationPage = () => {
   const queryClient = useQueryClient();
   const { message } = useFCMStore();
-  const { theme } = useTheme();
+  
   useEffect(() => {
     if (message) {
       queryClient.invalidateQueries({
         queryKey: ["context"],
       });
     }
-  }, [message]);
+  }, [message, queryClient]);
 
   const messagesEndRef = useRef<HTMLDivElement>(null);
-  const {t} = useLocale();
+  const { t } = useLocale();
 
   const [messageHistory, setMessagesHistory] = useState<Status[]>([]);
 
@@ -51,11 +50,15 @@ const ConversationPage = () => {
   const { mutate: markConversationAsRead } = useMarkConversationAsRead();
   const { conversation, setConversation } = useConversationStore();
 
-  useEffect(() => {
+  const handleMarkConversationAsRead = useCallback(() => {
     if (conversation && conversation.unread) {
       markConversationAsRead(conversation.id);
     }
-  }, [conversation]);
+  }, [conversation, markConversationAsRead]);
+
+  useEffect(() => {
+    handleMarkConversationAsRead();
+  }, [handleMarkConversationAsRead]);
 
   const accounts = conversation?.accounts ?? [];
   const isGroupChat = accounts.length > 1;
@@ -64,7 +67,7 @@ const ConversationPage = () => {
     useVerifyAuthToken({ enabled: true });
   const currentUsername = currentUser ? getExactUsername(currentUser.url) : "";
 
-  const { data: contextData } = useGetContext(conversation?.last_status?.id);
+  const { data: contextData } = useGetContext(conversation?.last_status?.id ?? "");
 
   useEffect(() => {
     if (contextData && conversation?.last_status) {
@@ -73,11 +76,13 @@ const ConversationPage = () => {
         conversation?.last_status,
         ...contextData?.descendants,
       ]);
+      
+    
       setTimeout(() => {
         messagesEndRef.current?.scrollIntoView({ behavior: "auto" });
-      }, 0); // Delay to ensure DOM updates before scrolling
+      }, 0);
     }
-  }, [contextData, conversation?.last_status, message, messagesEndRef.current]);
+  }, [contextData, conversation?.last_status, message]);
 
   const removeMentions = (
     content: string,
@@ -155,14 +160,14 @@ const ConversationPage = () => {
           <div className="w-10 h-10">
             {isGroupChat ? (
               <div className="w-10 h-10 aspect-square relative">
-                {accounts?.slice(0, 2)?.map((account, index) => (
+                {accounts?.slice(0, 2)?.map((account) => (
                   <Image
-                    key={index}
+                    key={account.id}
                     className={cn(
                       "w-8 aspect-square rounded-full absolute bg-gray-300 border border-white",
                       {
-                        "top-0 end-0 z-10": index === 0,
-                        "bottom-0 start-0": index !== 0,
+                        "top-0 end-0 z-10": account === accounts[0],
+                        "bottom-0 start-0": account !== accounts[0],
                       }
                     )}
                     width={32}
@@ -189,7 +194,7 @@ const ConversationPage = () => {
             <h1 className="text-lg font-semibold flex items-center gap-1 text-foreground">
               {isGroupChat ? (
                 accounts
-                  .map((account, index) => (
+                  .map((account) => (
                     <DisplayName
                       emojis={account.emojis as MastodonCustomEmoji[]}
                       key={account.id}
@@ -292,7 +297,6 @@ const formatTimestamp = (timestamp: string) => {
   return messageDate.format("MMMM D, YYYY h:mm A");
 };
 
-// Implementation of MessageBubble component
 const MessageBubble: React.FC<{
   emojis?: MastodonCustomEmoji[];
   showAvatar?: boolean;

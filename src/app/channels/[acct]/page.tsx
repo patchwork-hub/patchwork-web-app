@@ -65,7 +65,7 @@ function ChannelProfile({
   const { data: channelDetail } = useChannelDetail({ id: acct });
   const isChannel = channelDetail?.type === "channel";
   const { mutate: favouriteChannelMutate } = useFavouriteChannelMutation({
-    onSuccess(data) {
+    onSuccess() {
       const channelDetailQueryKey: GetChannelDetailQueryKey = [
         "channel-detail",
         { id: isChannel ? channelDetail?.attributes.slug ?? "" : "" },

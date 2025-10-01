@@ -1,4 +1,3 @@
-import { app } from "@/firebase/config";
 import http from "@/lib/http";
 import { SettingsParams, SettingsResponse } from "@/types/queries/setting.type";
 

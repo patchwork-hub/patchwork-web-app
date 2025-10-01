@@ -2,12 +2,12 @@
 
 import { useHashtagTimeline } from "@/hooks/queries/status/useHashtagTimeline";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
 import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
 
 export const HashtagTimeline: React.FC<{
   excludeReplies?: boolean;

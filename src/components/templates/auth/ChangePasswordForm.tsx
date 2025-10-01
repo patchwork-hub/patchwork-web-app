@@ -7,7 +7,6 @@ import {
   FormLabel,
 } from "@/components/atoms/ui/form";
 import { Input } from "@/components/atoms/ui/input";
-import { useChangePasswordMutation } from "@/hooks/auth/useChangePassword";
 import { createSchemas } from "@/lib/schema/validations";
 import { cn } from "@/lib/utils";
 import { ErrorResponse } from "@/types/error";
@@ -16,10 +15,10 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../../atoms/ui/button";
-import { Card, CardContent } from "../../atoms/ui/card";
 import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
+import { useChangePasswordMutation } from "@/hooks/mutations/auth/useChangePassword";
 
 const ChangePasswordForm = ({
   className,
@@ -41,7 +40,7 @@ const ChangePasswordForm = ({
       router.back();
     },
     onError: (error) => {
-      const { message } = error.response.data as ErrorResponse;
+      const { message } = error?.response?.data as ErrorResponse;
       toast.error(message || "Something Went Wrong");
     },
   });

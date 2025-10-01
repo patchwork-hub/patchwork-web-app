@@ -1,6 +1,5 @@
 "use client";
-import SearchInput from "@/components/atoms/common/Searchinput";
-import HomeHeader from "@/components/atoms/home-feed/HomeHeader";
+
 import React, { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import ExploreCard from "@/components/organisms/search/ExploreCard";
@@ -13,6 +12,8 @@ import { useRouter } from "next/navigation";
 import { useSearchChannelAndCommunity } from "@/hooks/queries/search/useSearchAllQueries";
 import ChannelBySearch from "@/components/organisms/search/ChannelsTab";
 import { useLocale } from "@/providers/localeProvider";
+import HomeHeader from "@/components/molecules/HomeHeader";
+import SearchInput from "@/components/molecules/common/Searchinput";
 
 const ExploreSearchListPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");

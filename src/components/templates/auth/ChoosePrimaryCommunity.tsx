@@ -1,31 +1,21 @@
 "use client";
-import React, { useMemo } from "react";
+import React from "react";
 
 import {
   Avatar,
   AvatarFallback,
   AvatarImage,
 } from "@/components/atoms/ui/avatar";
-import { Button } from "@/components/atoms/ui/button";
-import {
-  useFavouriteCommunityChannel,
-  useUnFavouriteCommunityChannel,
-} from "@/hooks/mutations/community/useToggleFavouriteChannel";
 import { useSetPrimaryChannel } from "@/hooks/queries/useSetPrimary.query";
 import { useGetNewsmastChannelList } from "@/hooks/queries/useNewsmastChannel.query";
-import { useSelectedDomain } from "@/store/auth/activeDomain";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
-import { Circle, CircleCheck, User, UserPlus } from "lucide-react";
-import { queryClient } from "@/providers/queryProvider";
-import { useJoinedCommunitiesList } from "@/hooks/queries/useFavouriteChannelList.query";
-import { useAuthStore } from "@/store/auth/authStore";
-import { DEFAULT_API_URL } from "@/utils/constant";
+import { Circle, CircleCheck } from "lucide-react";
+import { useSelectedDomain } from "@/stores/auth/activeDomain";
 
 const ChoosePrimaryCommunity = () => {
   const domain_name = useSelectedDomain();
-  const { userOriginInstance } = useAuthStore();
 
-  const { data: lists, isLoading: listLoading } = useGetNewsmastChannelList({
+  const { data: lists } = useGetNewsmastChannelList({
     instance_domain: domain_name,
   });
 

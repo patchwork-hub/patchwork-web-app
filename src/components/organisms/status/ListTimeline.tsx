@@ -2,8 +2,6 @@
 
 import { useListTimeline } from "@/hooks/queries/status/useListTimeline";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
 import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
@@ -12,6 +10,8 @@ import { useLocale } from "@/providers/localeProvider";
 import { AccountListIcon } from "@/components/atoms/icons/Icons";
 import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
 
 export const ListTimeline: React.FC<{
   excludeReplies?: boolean;
@@ -53,7 +53,7 @@ export const ListTimeline: React.FC<{
   return account && !isLoadingEmojis && !isLoading ? (
     <>
       <>
-        {data?.pages[0].statuses.length > 0 ? (
+        {data && data?.pages[0].statuses.length > 0 ? (
           data?.pages.map((page, index) =>
             page.statuses.map((status, idx) => {
               {
