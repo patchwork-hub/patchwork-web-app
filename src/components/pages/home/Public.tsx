@@ -22,7 +22,10 @@ import { useCollectionChannelList } from "@/hooks/queries/useCollections.query";
 import ChannelBySearch from "@/components/organisms/search/ChannelsTab";
 import { useSearchChannelAndCommunity } from "@/hooks/queries/search/useSearchAllQueries";
 import Link from "next/link";
-import { useActiveDomainStore, useSelectedDomain } from "@/stores/auth/activeDomain";
+import {
+  useActiveDomainStore,
+  useSelectedDomain,
+} from "@/stores/auth/activeDomain";
 import LayoutContainer from "@/components/templates/LayoutContainer";
 import MappedTabs from "@/components/molecules/common/MappedTabs";
 
@@ -61,7 +64,8 @@ const PublicHome = () => {
     router.replace(`/home?activeTab=${tab.value}`);
   };
 
-  const { data: searchChannelRes, isFetching: searchLoading } = useSearchChannelAndCommunity({
+  const { data: searchChannelRes, isFetching: searchLoading } =
+    useSearchChannelAndCommunity({
       searchKeyword,
       enabled: searchKeyword.length > 0,
     });
@@ -87,13 +91,13 @@ const PublicHome = () => {
   }, []);
 
   useEffect(() => {
-  const search = searchParams.get("s");
-  if (search) {
-    setSearchKeyword(search);
-  } else {
-    setSearchKeyword("");
-  }
-}, [searchParams]);
+    const search = searchParams.get("s");
+    if (search) {
+      setSearchKeyword(search);
+    } else {
+      setSearchKeyword("");
+    }
+  }, [searchParams]);
 
   useEffect(() => {
     setActiveTab(activeTabParam);
@@ -102,8 +106,19 @@ const PublicHome = () => {
   if (searchKeyword.length > 0) {
     return (
       <LayoutContainer>
-         <ChannelBySearch searchData={searchChannelRes} fromHome loading={searchLoading}/>
-     </LayoutContainer>
+        <ChannelBySearch
+          searchData={
+            searchChannelRes ?? {
+              communities: { data: [] },
+              collections: { data: [] },
+              channel_feeds: { data: [] },
+              newsmast_channels: { data: [] },
+            }
+          }
+          fromHome
+          loading={searchLoading}
+        />
+      </LayoutContainer>
     );
   }
 
@@ -131,9 +146,7 @@ const PublicHome = () => {
           <div className="space-y-6">
             <div className="text-center">
               <p className="text-2xl font-bold">patchwork.io</p>
-              <p>
-                Your social media
-              </p>
+              <p>Your social media</p>
             </div>
 
             <Accordion
@@ -356,12 +369,14 @@ const PublicHome = () => {
           <div className="pb-6 flex justify-between items-center gap-4 w-full">
             <ExploreCard
               title={t("screen.newsmast_channels")}
-              count={newsmastColletionlList?.[0]?.attributes.community_count}
+              count={
+                newsmastColletionlList?.[0]?.attributes.community_count ?? 0
+              }
               image={[
-                newsmastColletionlList?.[1]?.attributes.avatar_image_url,
-                newsmastColletionlList?.[2]?.attributes.avatar_image_url,
-                newsmastColletionlList?.[3]?.attributes.avatar_image_url,
-                newsmastColletionlList?.[4]?.attributes.avatar_image_url,
+                newsmastColletionlList?.[1]?.attributes.avatar_image_url ?? "",
+                newsmastColletionlList?.[2]?.attributes.avatar_image_url ?? "",
+                newsmastColletionlList?.[3]?.attributes.avatar_image_url ?? "",
+                newsmastColletionlList?.[4]?.attributes.avatar_image_url ?? "",
               ]}
               type="newsmast"
               onClick={() => {
@@ -380,12 +395,12 @@ const PublicHome = () => {
           <div className="pb-6 flex justify-between items-center gap-4">
             <ExploreCard
               title={t("screen.communities")}
-              count={collectionList?.[0]?.attributes.community_count}
+              count={collectionList?.[0]?.attributes.community_count ?? 0}
               image={[
-                collectionList?.[1]?.attributes.avatar_image_url,
-                collectionList?.[2]?.attributes.avatar_image_url,
-                collectionList?.[3]?.attributes.avatar_image_url,
-                collectionList?.[4]?.attributes.avatar_image_url,
+                collectionList?.[1]?.attributes.avatar_image_url ?? "",
+                collectionList?.[2]?.attributes.avatar_image_url ?? "",
+                collectionList?.[3]?.attributes.avatar_image_url ?? "",
+                collectionList?.[4]?.attributes.avatar_image_url ?? "",
               ]}
               type="collection"
               onClick={() => {

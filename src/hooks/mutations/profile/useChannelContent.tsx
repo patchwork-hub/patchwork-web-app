@@ -4,10 +4,11 @@ import {
   removeOrUpdateFilterKeyword,
   removeOrUpdateHashtag,
   updateChannelContentType,
-  updateChannelPostType
+  updateChannelPostType,
 } from "@/services/settings/addChannelContent";
 import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
+import { ChannelContentAttribute, ChannelContentTpye } from "@/types/patchwork";
 
 export const useChangeChannelContentType = (
   options: UseMutationOptions<
@@ -35,8 +36,8 @@ export const updateChannelContentTypeCache = (
         ...item,
         attributes: {
           ...item.attributes,
-          custom_condition
-        }
+          custom_condition,
+        },
       };
     });
     queryClient.setQueryData(queryKey, updatedData);

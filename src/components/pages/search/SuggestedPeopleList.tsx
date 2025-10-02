@@ -14,7 +14,7 @@ const SuggestedPeopleListPage = () => {
   const searchParams = useSearchParams();
   const q = searchParams.get("q");
   const { search } = useSearchStore();
-  const {t} = useLocale();
+  const { t } = useLocale();
 
   const { data, isLoading } = useGetSuggestedPeople({ limit: 20 });
   const { data: searchAllRes } = useSearchAllQueries({
@@ -24,9 +24,15 @@ const SuggestedPeopleListPage = () => {
     options: { enabled: q ? q.length > 0 : search.length > 0 },
   });
 
-  const accounts = data?.map((it) => it.account);
-  const accountIds = accounts?.map((account) => account.id);
-  const suggestedAccIds = searchAllRes?.accounts?.map((it) => it.id);
+  const accounts = data?.map(
+    (it: unknown) => (it as unknown as { account: unknown }).account
+  );
+  const accountIds = accounts?.map(
+    (account: unknown) => (account as unknown as { id: string }).id
+  );
+  const suggestedAccIds = searchAllRes?.accounts?.map(
+    (it: unknown) => (it as unknown as { id: string }).id
+  );
 
   const { data: relationships } = useCheckRelationships({
     accountIds: (suggestedAccIds ? suggestedAccIds : accountIds) ?? [],
@@ -35,7 +41,9 @@ const SuggestedPeopleListPage = () => {
     },
   });
 
-  const headerTitle = q ? `Search results for "${q}"` : `${t("screen.people_to_follow")}`;
+  const headerTitle = q
+    ? `Search results for "${q}"`
+    : `${t("screen.people_to_follow")}`;
 
   return (
     <div className="mb-16">

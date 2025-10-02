@@ -10,6 +10,7 @@ import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { DisplayName } from "../common/DisplayName";
 import Status from "@/components/organisms/status/Status";
 import Image from "next/image";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 
 const MentionsNotifications = () => {
   const {
@@ -19,7 +20,7 @@ const MentionsNotifications = () => {
     isFetchingNextPage: isFetchingNextMentions,
     isLoading,
   } = useMentionsNotifications();
-  const {t} = useLocale();
+  const { t } = useLocale();
 
   const loadMoreMentionsRef = useInfiniteScroll(() => {
     if (hasNextMentions && !isFetchingNextMentions) {
@@ -68,15 +69,16 @@ const MentionsNotifications = () => {
               <div className="my-1 flex items-baseline gap-1">
                 <DisplayName
                   className="text-base inline-block"
-                  emojis={mention.account.emojis}
+                  emojis={mention.account.emojis as MastodonCustomEmoji[]}
                   displayName={
                     mention.account.display_name || mention.account.username
                   }
                   acct={mention.account.acct}
                 />{" "}
                 <span className="text-sm opacity-70">
-                  {mention.status?.visibility === "direct" && t("notifications.private")}
-                  {" "}{t("notifications.messages.mention")}
+                  {mention.status?.visibility === "direct" &&
+                    t("notifications.private")}{" "}
+                  {t("notifications.messages.mention")}
                 </span>
               </div>
               {mention.status && (

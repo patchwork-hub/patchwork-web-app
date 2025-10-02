@@ -139,7 +139,11 @@ const SidebarNavigator = () => {
           pathname={pathname}
           lastReadId={lastReadId}
           notificationGroups={notificationGroups}
-          message={message}
+          message={
+            message as {
+              data?: { noti_type?: string; visibility?: string };
+            } | null
+          }
         />
       ),
       label: `${t("navigation.notifications")}`,
@@ -151,11 +155,13 @@ const SidebarNavigator = () => {
         <div className="relative">
           <Mail className="w-5 h-5 group-hover:text-white" />
           {pathname !== "/notifications" &&
-            message &&
-            message?.data?.noti_type === "mention" &&
-            message?.data?.visibility === "direct" && (
-              <span className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full" />
-            )}
+          message &&
+          (message as { data?: { noti_type?: string; visibility?: string } })
+            ?.data?.noti_type === "mention" &&
+          (message as { data?: { noti_type?: string; visibility?: string } })
+            ?.data?.visibility === "direct" ? (
+            <span className="absolute top-0 right-0 w-2 h-2 bg-orange-500 rounded-full" />
+          ) : null}
         </div>
       ),
       label: `${t("navigation.messages")}`,

@@ -46,7 +46,7 @@ describe("ContentTypeSwitch", () => {
     const mutate = vi.fn();
     vi.mocked(useChangeChannelContentType).mockReturnValueOnce({
       mutate,
-    } as any); //use 'any' for now
+    } as unknown as ReturnType<typeof useChangeChannelContentType>);
 
     render(<ContentTypeSwitch {...defaultProps} />);
     fireEvent.click(screen.getByRole("switch"));
@@ -62,7 +62,7 @@ describe("ContentTypeSwitch", () => {
     const mutate = vi.fn();
     vi.mocked(useChangeChannelContentType).mockReturnValueOnce({
       mutate,
-    } as any); //use 'any' for now
+    } as unknown as ReturnType<typeof useChangeChannelContentType>);
 
     render(<ContentTypeSwitch {...defaultProps} type="selected" />);
     fireEvent.click(screen.getByRole("switch"));

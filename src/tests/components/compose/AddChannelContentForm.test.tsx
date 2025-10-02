@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 
@@ -24,13 +25,17 @@ vi.mock("@/hooks/queries/useChannelContent", () => ({
 }));
 
 vi.mock("@/components/atoms/common/ThemeText", () => ({
-  ThemeText: ({ children, variant }) => (
-    <span className={variant}>{children}</span>
-  ),
+  ThemeText: ({
+    children,
+    variant,
+  }: {
+    children: React.ReactNode;
+    variant: string;
+  }) => <span className={variant}>{children}</span>,
 }));
 
 vi.mock("@/components/organisms/profile/ContentTypeSwitch", () => ({
-  default: ({ isSwitchOn, label }) => (
+  default: ({ isSwitchOn, label }: { isSwitchOn: boolean; label: string }) => (
     <div
       data-testid={`content-type-switch-${label
         .toLowerCase()
@@ -42,9 +47,15 @@ vi.mock("@/components/organisms/profile/ContentTypeSwitch", () => ({
 }));
 
 vi.mock("@/components/organisms/settings/HorizontalItemRenderer", () => ({
-  default: ({ data, renderItem }) => (
+  default: ({
+    data,
+    renderItem,
+  }: {
+    data: any;
+    renderItem: (item: any) => React.ReactNode;
+  }) => (
     <div data-testid="horizontal-item-renderer">
-      {data.map((item, idx) => (
+      {data.map((item: unknown, idx: number) => (
         <div key={idx}>{renderItem(item)}</div>
       ))}
     </div>
@@ -52,25 +63,25 @@ vi.mock("@/components/organisms/settings/HorizontalItemRenderer", () => ({
 }));
 
 vi.mock("@/components/organisms/settings/ContributorProfile", () => ({
-  default: ({ account }) => (
+  default: ({ account }: { account: { name: string } }) => (
     <div data-testid="contributor-profile">{account.name}</div>
   ),
 }));
 
 vi.mock("@/components/organisms/settings/Hashtag", () => ({
-  default: ({ hashtag }) => (
+  default: ({ hashtag }: { hashtag: { name: string } }) => (
     <div data-testid="hashtag-item">{hashtag.name}</div>
   ),
 }));
 
 vi.mock("@/components/organisms/settings/FilterKeywordItem", () => ({
-  default: ({ keyword }) => (
+  default: ({ keyword }: { keyword: { name: string } }) => (
     <div data-testid="keyword-item">{keyword.name}</div>
   ),
 }));
 
 vi.mock("@/components/organisms/settings/ContributorDialog", () => ({
-  default: ({ isOpen, onClose }) =>
+  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) =>
     isOpen ? (
       <div data-testid="contributor-dialog">
         Contributor Dialog
@@ -80,7 +91,7 @@ vi.mock("@/components/organisms/settings/ContributorDialog", () => ({
 }));
 
 vi.mock("@/components/organisms/settings/SearchHashtagDialog", () => ({
-  default: ({ isOpen, onClose }) => (
+  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
     <div
       data-testid="hashtag-dialog"
       style={{ display: isOpen ? "block" : "none" }}
@@ -92,7 +103,7 @@ vi.mock("@/components/organisms/settings/SearchHashtagDialog", () => ({
 }));
 
 vi.mock("@/components/organisms/settings/FilterInKeywordDialog", () => ({
-  default: ({ isOpen, onClose }) => (
+  default: ({ isOpen, onClose }: { isOpen: boolean; onClose: () => void }) => (
     <div
       data-testid="keyword-dialog"
       style={{ display: isOpen ? "block" : "none" }}
@@ -145,7 +156,7 @@ describe("AddChannelContentPage", () => {
       status: "success",
       failureCount: 0,
       failureReason: null,
-    } as any);
+    } as unknown as ReturnType<typeof useGetMyTotalChannelList>);
 
     vi.mocked(useGetChannelHashtagList).mockReturnValue({
       data: [
@@ -165,7 +176,7 @@ describe("AddChannelContentPage", () => {
       status: "success",
       failureCount: 0,
       failureReason: null,
-    } as any);
+    } as unknown as ReturnType<typeof useGetMyTotalChannelList>);
 
     vi.mocked(useGetChannelFilterKeyword).mockReturnValue({
       data: [
@@ -185,7 +196,7 @@ describe("AddChannelContentPage", () => {
       status: "success",
       failureCount: 0,
       failureReason: null,
-    } as any);
+    } as unknown as ReturnType<typeof useGetMyTotalChannelList>);
 
     vi.mocked(useGetChannelContentType).mockReturnValue({
       data: [{ attributes: { custom_condition: "or_condition" } }],
@@ -202,7 +213,7 @@ describe("AddChannelContentPage", () => {
       status: "success",
       failureCount: 0,
       failureReason: null,
-    } as any);
+    } as unknown as ReturnType<typeof useGetMyTotalChannelList>);
   });
 
   afterEach(() => {
@@ -263,7 +274,7 @@ describe("AddChannelContentPage", () => {
       status: "success",
       failureCount: 0,
       failureReason: null,
-    } as any);
+    } as unknown as ReturnType<typeof useGetMyTotalChannelList>);
 
     render(<AddChannelContentPage />, { wrapper: AllProviders });
     const addButton = screen.getByTestId("add-hashtag-button");

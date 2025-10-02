@@ -13,7 +13,11 @@ export const useSignupMutation = (
   options: UseMutationOptions<
     LoginResponse,
     AxiosError,
-    z.infer<typeof schemas.SignUpFormSchema> & { access_token: string }
+    z.infer<typeof schemas.SignUpFormSchema> & {
+      agreement: boolean;
+      locale: string;
+      access_token: string;
+    }
   >
 ) => {
   return useMutation({ mutationFn: signUp, ...options });

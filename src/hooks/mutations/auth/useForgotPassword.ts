@@ -6,7 +6,7 @@ export const useForgotPasswordMutation = (
   options: UseMutationOptions<
     { reset_password_token: string },
     AxiosError,
-    { email?: string }
+    { email: string }
   >
 ) => {
   return useMutation({ mutationFn: forgotPassword, ...options });

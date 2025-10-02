@@ -1,14 +1,14 @@
 import { queryClient } from "@/providers/queryProvider";
 import {
   blockUnBlockUserMutationFn,
-  muteUnMuteUserMutationFn
+  muteUnMuteUserMutationFn,
 } from "@/services/profile/muteAndBlock";
 import { MuteBlockUserAccount, RelationShip } from "@/types/profile";
 import { PagedResponse } from "@/utils/helper/timeline";
 import {
   InfiniteData,
   useMutation,
-  UseMutationOptions
+  UseMutationOptions,
 } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
@@ -41,14 +41,15 @@ export const useMuteUnmuteUserMutation = (
                 return { ...user, isUnMutedNow: !toMute };
               }
               return user;
-            })
-          }))
+            }),
+          })),
         };
       });
 
       return { previousMutedUser };
     },
-    onError: (_, __, context: { previousRelationships?: RelationShip[] }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (_, __, context: any) => {
       queryClient.setQueryData(
         ["muted-user-list"],
         context?.previousRelationships
@@ -57,7 +58,7 @@ export const useMuteUnmuteUserMutation = (
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["muted-user-list"] });
     },
-    ...options
+    ...options,
   });
 };
 
@@ -90,14 +91,15 @@ export const useBlockUnBlockUserMutation = (
                 return { ...user, isUnMutedNow: !toBlock };
               }
               return user;
-            })
-          }))
+            }),
+          })),
         };
       });
 
       return { previousMutedUser };
     },
-    onError: (_, __, context: { previousRelationships?: RelationShip[] }) => {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    onError: (_, __, context: any) => {
       queryClient.setQueryData(
         ["blocked-user-list"],
         context?.previousRelationships
@@ -106,6 +108,6 @@ export const useBlockUnBlockUserMutation = (
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["blocked-user-list"] });
     },
-    ...options
+    ...options,
   });
 };
