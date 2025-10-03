@@ -3,10 +3,51 @@ import { Status } from "../../types/status";
 import http from "@/lib/http";
 import { getMaxId } from "@/utils";
 
+
+
 export type StatusListResponse = {
   statuses: Status[];
   nextMaxId: string | null;
 };
+
+
+export type StatusFilterParams = {
+  limit: number;
+  excludeReplies?: boolean;
+  onlyMedia?: boolean;
+  excludeReblogs?: boolean;
+  pageParam?: string | null;
+  excludeOriginalStatuses?: boolean;
+}
+
+
+export type AccountStatusParams = StatusFilterParams & {
+  accountId: string;
+  onlyReblogs?: boolean;
+}
+
+
+export type HomeTimelineParams = StatusFilterParams & {
+  instanceUrl?: string;
+  remote?: boolean;
+  local?: boolean;
+  excludeDirect?: boolean;
+  isCommunity?: boolean;
+}
+
+
+export type HashtagTimelineParams = StatusFilterParams & {
+  remote?: boolean;
+  hashtag: string;
+}
+
+
+export type ListTimelineParams = StatusFilterParams & {
+  remote?: boolean;
+  id: string; 
+}
+
+
 
 export const fetchAccountStatuses = async ({
   accountId,
@@ -17,11 +58,11 @@ export const fetchAccountStatuses = async ({
   pageParam,
   excludeOriginalStatuses,
   onlyReblogs,
-}): Promise<StatusListResponse> => {
+}: AccountStatusParams): Promise<StatusListResponse> => {
   const url = `/api/v1/accounts/${accountId}/statuses`;
   const searchParams = new URLSearchParams();
 
-  // Add pagination and filtering parameters
+  
   searchParams.append("limit", limit.toString());
 
   if (excludeReplies) {
@@ -40,7 +81,7 @@ export const fetchAccountStatuses = async ({
     searchParams.append("exclude_original_statuses", "true");
   }
 
-  // Add max_id parameter for pagination if we have a pageParam
+  
   if (pageParam) {
     searchParams.append("max_id", pageParam);
   }
@@ -51,14 +92,14 @@ export const fetchAccountStatuses = async ({
 
   const fullUrl = `${url}?${searchParams.toString()}`;
 
-  // Fetch the data
+  
   const response = await http.get<Status[]>(fullUrl, {
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  // Api does not work for excludeReplies, so added this filter here
+  
   return {
     statuses: excludeReplies
       ? response.data.filter((it) => !it.in_reply_to_id)
@@ -79,12 +120,12 @@ export const fetchHomeTimeline = async ({
   local,
   excludeDirect,
   isCommunity,
-}): Promise<StatusListResponse> => {
+}: HomeTimelineParams): Promise<StatusListResponse> => {
   const url = new URL(
     `${instanceUrl}/api/v1/timelines/${isCommunity ? "public" : "home"}`
   );
 
-  // Add pagination and filtering parameters
+  
   url.searchParams.append("limit", limit.toString());
 
   if (excludeReplies) {
@@ -115,19 +156,19 @@ export const fetchHomeTimeline = async ({
     url.searchParams.append("remote", "true");
   }
 
-  // Add max_id parameter for pagination if we have a pageParam
+  
   if (pageParam) {
     url.searchParams.append("max_id", pageParam);
   }
 
-  // Fetch the data
+  
   const response = await http.get<Status[]>(url.toString(), {
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  // Api does not work for excludeReplies, so added this filter here
+  
   return {
     statuses: response.data
       .filter((it) => !(excludeReplies && it.in_reply_to_id))
@@ -145,11 +186,11 @@ export const fetchHashtagTimeline = async ({
   excludeOriginalStatuses,
   remote,
   hashtag,
-}): Promise<StatusListResponse> => {
+}: HashtagTimelineParams): Promise<StatusListResponse> => {
   const url = `/api/v1/timelines/tag/${hashtag}`;
   const searchParams = new URLSearchParams();
 
-  // Add pagination and filtering parameters
+  
   searchParams.append("limit", limit.toString());
 
   if (excludeReplies) {
@@ -172,21 +213,21 @@ export const fetchHashtagTimeline = async ({
     searchParams.append("remote", "true");
   }
 
-  // Add max_id parameter for pagination if we have a pageParam
+  
   if (pageParam) {
     searchParams.append("max_id", pageParam);
   }
 
   const fullUrl = `${url}?${searchParams.toString()}`;
 
-  // Fetch the data
+  
   const response = await http.get<Status[]>(fullUrl, {
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  // Api does not work for excludeReplies, so added this filter here
+  
   return {
     statuses: excludeReplies
       ? response.data.filter((it) => !it.in_reply_to_id)
@@ -204,11 +245,11 @@ export const fetchListTimeline = async ({
   excludeOriginalStatuses,
   remote,
   id,
-}): Promise<StatusListResponse> => {
+}: ListTimelineParams): Promise<StatusListResponse> => {
   const url = `/api/v1/timelines/list/${id}`;
   const searchParams = new URLSearchParams();
 
-  // Add pagination and filtering parameters
+  
   searchParams.append("limit", limit.toString());
 
   if (excludeReplies) {
@@ -231,21 +272,21 @@ export const fetchListTimeline = async ({
     searchParams.append("remote", "true");
   }
 
-  // Add max_id parameter for pagination if we have a pageParam
+  
   if (pageParam) {
     searchParams.append("max_id", pageParam);
   }
 
   const fullUrl = `${url}?${searchParams.toString()}`;
 
-  // Fetch the data
+  
   const response = await http.get<Status[]>(fullUrl, {
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  // Api does not work for excludeReplies, so added this filter here
+  
   return {
     statuses: excludeReplies
       ? response.data.filter((it) => !it.in_reply_to_id)
@@ -262,12 +303,12 @@ export const fetchNewsmastTimeline = async ({
   excludeReblogs,
   pageParam,
   excludeOriginalStatuses,
-}): Promise<StatusListResponse> => {
+}: AccountStatusParams): Promise<StatusListResponse> => {
   const url = new URL(
     `https://newsmast.community/api/v1/accounts/${accountId}/statuses`
   );
 
-  // Add pagination and filtering parameters
+  
   url.searchParams.append("limit", limit.toString());
 
   if (excludeReplies) {
@@ -286,19 +327,19 @@ export const fetchNewsmastTimeline = async ({
     url.searchParams.append("exclude_original_statuses", "true");
   }
 
-  // Add max_id parameter for pagination if we have a pageParam
+  
   if (pageParam) {
     url.searchParams.append("max_id", pageParam);
   }
 
-  // Fetch the data
+  
   const response = await http.get<Status[]>(url.toString(), {
     headers: {
       "Content-Type": "application/json",
     },
   });
 
-  // Api does not work for excludeReplies, so added this filter here
+  
   return {
     statuses: excludeReplies
       ? response.data.filter((it) => !it.in_reply_to_id)

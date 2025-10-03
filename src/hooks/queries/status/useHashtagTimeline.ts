@@ -42,7 +42,7 @@ export const useHashtagTimeline = ({
         excludeReplies,
         onlyMedia,
         excludeReblogs,
-        pageParam,
+        pageParam: pageParam as string | null | undefined,
         excludeOriginalStatuses,
         remote,
         hashtag,

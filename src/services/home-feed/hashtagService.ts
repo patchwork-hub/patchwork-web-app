@@ -3,6 +3,7 @@ import { QueryFunctionContext } from "@tanstack/react-query";
 import axiosInstance from "@/lib/http";
 import { AxiosResponse } from "axios";
 import { handleError } from "@/utils/helper/helper";
+import { HashtagsFollowing } from "@/types/patchwork";
 
 export const getHashtagsFollowing = async (
   qfContext: QueryFunctionContext<HashtagsFollowingQueryKey>

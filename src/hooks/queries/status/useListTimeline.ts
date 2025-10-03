@@ -13,7 +13,7 @@ type UseListTimelineOptions = {
   excludeReblogs?: boolean;
   excludeOriginalStatuses?: boolean;
   remote?: boolean;
-  id: string | number;
+  id: string;
 };
 
 export const useListTimeline = ({
@@ -42,7 +42,7 @@ export const useListTimeline = ({
         excludeReplies,
         onlyMedia,
         excludeReblogs,
-        pageParam,
+        pageParam: pageParam as string | null | undefined,
         excludeOriginalStatuses,
         remote,
         id,

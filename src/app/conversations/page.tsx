@@ -113,7 +113,7 @@ const ConversationsPage: React.FC = () => {
                 <ConversationListItem
                   key={conversation.id}
                   conversation={conversation}
-                  currentUser={currentUser}
+                  currentUser={currentUser as Account}
                 />
               ))
             )

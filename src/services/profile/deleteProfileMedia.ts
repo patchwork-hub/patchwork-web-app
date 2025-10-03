@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/account";
 import { AxiosResponse } from "axios";
 
 export const deleteProfileMedia = async ({

@@ -1,4 +1,5 @@
-import { Account } from "@/types/account";
+
+import { Account } from "@/types/patchwork";
 import { DEFAULT_API_URL } from "@/utils/constant";
 import { ensureHttp } from "@/utils/helper/helper";
 import Cookies from "js-cookie";

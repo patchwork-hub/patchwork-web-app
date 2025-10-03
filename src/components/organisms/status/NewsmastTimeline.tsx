@@ -1,7 +1,7 @@
 import { useNewsmastTimeline } from "@/hooks/queries/status/useNewsmastTimeline";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useInfiniteScroll } from "@/hooks/scroll/useInfiniteScroll";
-import useScrollRestoration from "@/hooks/scroll/useScrollRestoration";
+import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
+import useScrollRestoration from "@/hooks/customs/useScrollRestoration";
 import { cn } from "@/lib/utils";
 import { StatusSkeleton } from "../../molecules/skeletons/Status.Skeleton";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
@@ -16,14 +16,14 @@ export const NewsmastAccountStatusList: React.FC<{
   id,
   excludeReplies = false,
   excludeReblogs = false,
-  excludeOriginalStatuses = false
+  excludeOriginalStatuses = false,
 }) => {
   const { data, fetchNextPage, hasNextPage, isFetchingNextPage, isLoading } =
     useNewsmastTimeline(id as string, {
       limit: 20,
       excludeReplies,
       excludeReblogs,
-      excludeOriginalStatuses
+      excludeOriginalStatuses,
     });
 
   const loadMoreRef = useInfiniteScroll(() => {
@@ -55,7 +55,7 @@ export const NewsmastAccountStatusList: React.FC<{
                 status={status.reblog ?? status}
                 ownStatus={account?.id === status.account.id}
                 className={cn({
-                  "border-t-0": index === 0 && idx === 0
+                  "border-t-0": index === 0 && idx === 0,
                 })}
               />
             );

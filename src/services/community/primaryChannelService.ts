@@ -3,6 +3,7 @@ import axiosInstance from "@/lib/http";
 import { cleanDomain, handleError } from "@/utils/helper/helper";
 import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
 import { GetNewsmastChannelListParams } from "../home-feed/newsmastChannelsService";
+import { ChannelList } from "@/types/patchwork";
 
 export const setPrimaryChannel = async (
   params?: GetNewsmastChannelListParams
@@ -15,7 +16,7 @@ export const setPrimaryChannel = async (
       await axiosInstance.post(
         "/api/v1/joined_communities/set_primary",
         {
-          id: params.id,
+          id: params?.id,
           instance_domain: cleanedDomain,
           platform_type: "newsmast.social",
         },

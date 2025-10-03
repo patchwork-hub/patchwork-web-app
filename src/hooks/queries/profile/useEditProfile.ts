@@ -37,7 +37,7 @@ export const useEditProfile = () => {
   const acctInfoQueryKey: AccountInfoQueryKey = [
     "get_account_info",
     { 
-      id: userInfo.id,
+      id:  userInfo?.id ?? "",
       domain_name: process.env.API_URL ?? DEFAULT_API_URL 
     }
   ];

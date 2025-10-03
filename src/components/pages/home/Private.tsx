@@ -37,7 +37,7 @@ import LayoutContainer from "@/components/templates/LayoutContainer";
 import HomeHeader from "@/components/molecules/HomeHeader";
 import MappedTabs from "@/components/molecules/common/MappedTabs";
 import { Instance_V2 } from "@/types/auth";
-import { Account } from "@/types/status";
+import { Account } from "@/types/patchwork";
 
 const Home = () => {
   const router = useRouter();
@@ -68,18 +68,19 @@ const Home = () => {
     }
   );
 
-  const {
-    data: myChannels,
-    isSuccess: myChannelSuccess,
-    isLoading: myChannelLoading,
-  } = useMyChannel({
+ const {
+  data: myChannels,
+  isSuccess: myChannelSuccess,
+  isLoading: myChannelLoading,
+} = useMyChannel(
+  { 
     domain_name:
       process.env.NEXT_PUBLIC_DASHBOARD_API_URL || DEFAULT_DASHBOARD_API_URL,
-    options: {
-      enabled: domain_name === CHANNEL_ORG_INSTANCE,
-    },
-  });
-
+  },
+  {
+    enabled: domain_name === CHANNEL_ORG_INSTANCE,
+  }
+);
   const { data: favouriteChannelLists, isLoading: favLoading } =
     useFavouriteChannelLists({
       instance_domain: domain,
@@ -99,18 +100,22 @@ const Home = () => {
 
   const { data: peopleFollowing, isLoading: peopleFollowingLoading } =
     useFollowingAccountsQuery({
-      accountId: userInfo?.id && userInfo?.id,
+      accountId: userInfo?.id ? userInfo?.id : "",
       enabled: !!userInfo?.id,
     });
 
   const { data: myLists, isLoading: myListsLoading } = useListsQueries();
 
   const { data: hashtagsFollowing, isLoading: hashtagsFollowingLoading } =
-    useGetHashtagsFollowing({
-      limit: 10,
+  useGetHashtagsFollowing(
+    {
+      limit: 100,
       domain_name: domain_name,
-      options: { enabled: domain_name === ensureHttp(domain) },
-    });
+    },
+    {
+      enabled: domain_name === ensureHttp(domain),
+    }
+  );
 
   const reorderedChannelFeedList = useChannelFeedReOrder(
     channelFeedList,

@@ -1,14 +1,27 @@
+import {
+  useQuery,
+  type UseQueryOptions,
+  type UseQueryResult,
+} from "@tanstack/react-query";
+import type { AxiosError } from "axios";
 import { getHashtagsFollowing } from "@/services/home-feed/hashtagService";
-import { HashtagsFollowingQueryKey } from "@/types/queries/hashtag.type";
-import { QueryOptionHelper } from "@/utils/helper/helper";
-import { useQuery } from "@tanstack/react-query";
+import type { HashtagsFollowing } from "@/types/patchwork";
+import type { HashtagsFollowingQueryKey } from "@/types/queries/hashtag.type";
 
-export const useGetHashtagsFollowing = ({
-  options,
-  ...queryParam
-}: HashtagsFollowingQueryKey[1] & {
-  options?: QueryOptionHelper<HashtagsFollowing[] | undefined>;
-}) => {
+type QueryOptions = Omit<
+  UseQueryOptions<
+    HashtagsFollowing[],
+    AxiosError,
+    HashtagsFollowing[],
+    HashtagsFollowingQueryKey
+  >,
+  "queryKey" | "queryFn"
+>;
+
+export const useGetHashtagsFollowing = (
+  queryParam: HashtagsFollowingQueryKey[1],
+  options?: QueryOptions
+): UseQueryResult<HashtagsFollowing[], AxiosError> => {
   const queryKey: HashtagsFollowingQueryKey = [
     "hashtags-following",
     queryParam,

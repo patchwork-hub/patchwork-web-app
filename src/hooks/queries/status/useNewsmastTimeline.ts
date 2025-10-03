@@ -41,7 +41,7 @@ export const useNewsmastTimeline = (
         excludeReplies,
         onlyMedia,
         excludeReblogs,
-        pageParam,
+        pageParam: pageParam as string | null | undefined,
         excludeOriginalStatuses,
       }),
     getNextPageParam: (lastPage) => lastPage.nextMaxId,

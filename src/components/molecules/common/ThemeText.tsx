@@ -2,6 +2,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import * as React from "react";
 import Image from "next/image";
 import { cn } from "@/lib/utils";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 
 const textVariants = cva(
   "text-sm group flex items-center justify-center rounded-md text-foreground",
@@ -37,7 +38,7 @@ const textVariants = cva(
 
 type TextProps = React.ComponentPropsWithoutRef<"p"> &
   VariantProps<typeof textVariants> & {
-    emojis?: Emoji[];
+    emojis?: MastodonCustomEmoji[];
     disabled?: boolean;
   };
 

@@ -31,7 +31,7 @@ export const useAccountStatuses = (
       excludeReplies,
       onlyMedia,
       excludeReblogs,
-      pageParam,
+      pageParam: pageParam as string | null | undefined,
       excludeOriginalStatuses,
       onlyReblogs
     }),

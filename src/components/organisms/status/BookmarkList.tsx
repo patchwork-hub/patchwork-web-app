@@ -25,14 +25,14 @@ export const BookmarkList: React.FC = () => {
   return !isLoadingEmojis && !isLoading ? (
     <>
       <>
-        {(("newsmast.social" === cleanDomain(domain_name??"")
-          ? data?.pages[0]?.statuses?.data
+        {(("newsmast.social" === cleanDomain(domain_name ?? "")
+          ? data?.pages[0]?.statuses
           : data?.pages[0]?.statuses
         )?.length ?? 0) > 0 ? (
           data?.pages?.map((page, index) => {
             const statusesArray =
-              "newsmast.social" === cleanDomain(domain_name??"")
-                ? page?.statuses?.data
+              "newsmast.social" === cleanDomain(domain_name ?? "")
+                ? page?.statuses
                 : page?.statuses;
 
             return statusesArray?.map((status: StatusType, idx: number) => {

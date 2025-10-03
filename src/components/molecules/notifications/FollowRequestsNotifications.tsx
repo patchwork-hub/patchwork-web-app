@@ -4,6 +4,7 @@ import { useFollowRequestsNotifications } from "@/hooks/queries/notifications/us
 import TimeAgo from "@/utils/helper/timeAgo";
 import { UserPlus } from "lucide-react";
 import Link from "next/link";
+import { MastodonCustomEmoji } from "@/components/organisms/compose/tools/Emoji";
 
 import EmptyNotifications from "./EmptyNotifications";
 import { NotificationSkeleton } from "./NotificationSkeleton";
@@ -53,7 +54,7 @@ const FollowRequestsNotifications = () => {
               </div>
               <div className="flex-1">
                 <DisplayName
-                  emojis={request.emojis}
+                  emojis={request.emojis as MastodonCustomEmoji[]}
                   displayName={request.display_name || request.username}
                   acct={request.acct}
                   className="font-medium text-base"

@@ -4,7 +4,7 @@ import {
   SuggestedPeople
 } from "@/services/search/fetchSuggestion";
 import { QueryOptionHelper } from "@/utils/helper/helper";
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
 export const useGetSuggestedPeople = ({
   options,
@@ -16,7 +16,7 @@ export const useGetSuggestedPeople = ({
 
   return useQuery({
     queryKey,
-    queryFn: getSuggestedPeople,
+    queryFn: (context) => getSuggestedPeople(context as QueryFunctionContext<GetSuggestedPeopleQueryKey>),
     ...options
   });
 };

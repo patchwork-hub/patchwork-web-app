@@ -16,11 +16,15 @@ export default function HashtagsPage() {
   const { userOriginInstance } = useAuthStore();
 
   const { data: hashtagsFollowing, isLoading: hashtagsFollowingLoading } =
-    useGetHashtagsFollowing({
+  useGetHashtagsFollowing(
+    {
       limit: 100,
       domain_name: domain_name,
-      options: { enabled: domain_name === userOriginInstance },
-    });
+    },
+    {
+      enabled: domain_name === userOriginInstance,
+    }
+  );
   const router = useRouter();
 
   const itemVariants = {

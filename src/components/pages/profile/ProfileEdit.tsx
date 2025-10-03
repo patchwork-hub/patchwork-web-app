@@ -59,10 +59,10 @@ const ProfileEditPage = () => {
           </div>
           <p>{userInfo?.display_name || userInfo?.username}</p>
           <ProfileEditForm
-            userId={userInfo && userInfo?.id}
+            userId={userInfo && userInfo?.id || ""}
             headerImage={headerCrop || ""}
             avatarImage={avatarCrop || ""}
-            display_name={userInfo?.display_name || userInfo?.username}
+            display_name={userInfo?.display_name || userInfo?.username || ""}
             note={userInfo?.note || ""}
           />
         </div>

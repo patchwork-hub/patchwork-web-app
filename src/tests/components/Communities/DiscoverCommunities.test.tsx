@@ -19,7 +19,9 @@ vi.mock("@/hooks/mutations/community/useToggleFavouriteChannel");
 vi.mock("sonner");
 vi.mock("next/image", () => ({
   __esModule: true,
-  default: (props: any) => <img {...props} />,
+  default: (props: React.ImgHTMLAttributes<HTMLImageElement>) => (
+    <img {...props} />
+  ),
 }));
 
 vi.mock("@/components/atoms/common/Header", () => ({
@@ -69,24 +71,24 @@ describe("DiscoverCommunitiesLayout", () => {
     vi.mocked(useGetNewsmastChannelList).mockReturnValue({
       data: mockChannels,
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useGetNewsmastChannelList>);
 
     vi.mocked(useSearchServerInstance).mockReturnValue({
       data: mockServerInfo,
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useSearchServerInstance>);
 
     vi.mocked(useSetPrimaryChannel).mockReturnValue({
       mutate: mockSetPrimary,
-    } as any);
+    } as unknown as ReturnType<typeof useSetPrimaryChannel>);
 
     vi.mocked(useFavouriteCommunityChannel).mockReturnValue({
       mutate: mockFavorite,
-    } as any);
+    } as unknown as ReturnType<typeof useFavouriteCommunityChannel>);
 
     vi.mocked(useUnFavouriteCommunityChannel).mockReturnValue({
       mutate: mockUnfavorite,
-    } as any);
+    } as unknown as ReturnType<typeof useUnFavouriteCommunityChannel>);
   });
 
   afterEach(() => {
@@ -107,7 +109,7 @@ describe("DiscoverCommunitiesLayout", () => {
     vi.mocked(useGetNewsmastChannelList).mockReturnValue({
       data: null,
       isLoading: true,
-    } as any);
+    } as unknown as ReturnType<typeof useGetNewsmastChannelList>);
     render(<DiscoverCommunitiesLayout />);
     expect(screen.getByTestId("loading-spinner")).toBeInTheDocument();
   });
@@ -132,7 +134,7 @@ describe("DiscoverCommunitiesLayout", () => {
     const mockSetPrimary = vi.fn();
     vi.mocked(useSetPrimaryChannel).mockReturnValue({
       mutate: mockSetPrimary,
-    } as any);
+    } as unknown as ReturnType<typeof useSetPrimaryChannel>);
 
     vi.mock("@/store/auth/activeDomain", () => ({
       useSelectedDomain: () => process.env.NEXT_PUBLIC_API_URL,
@@ -161,7 +163,7 @@ describe("DiscoverCommunitiesLayout", () => {
     const mockFavorite = vi.fn();
     vi.mocked(useFavouriteCommunityChannel).mockReturnValue({
       mutate: mockFavorite,
-    } as any);
+    } as unknown as ReturnType<typeof useFavouriteCommunityChannel>);
 
     render(<DiscoverCommunitiesLayout />);
 
@@ -202,12 +204,12 @@ describe("DiscoverCommunitiesLayout", () => {
     vi.mocked(useGetNewsmastChannelList).mockReturnValue({
       data: mockChannels,
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useGetNewsmastChannelList>);
 
     const mockUnfavorite = vi.fn();
     vi.mocked(useUnFavouriteCommunityChannel).mockReturnValue({
       mutate: mockUnfavorite,
-    } as any);
+    } as unknown as ReturnType<typeof useUnFavouriteCommunityChannel>);
 
     render(<DiscoverCommunitiesLayout />);
 
@@ -224,7 +226,7 @@ describe("DiscoverCommunitiesLayout", () => {
     vi.mocked(useGetNewsmastChannelList).mockReturnValue({
       data: mockChannels.slice(0, 1),
       isLoading: false,
-    } as any);
+    } as unknown as ReturnType<typeof useGetNewsmastChannelList>);
 
     render(<DiscoverCommunitiesLayout />);
 

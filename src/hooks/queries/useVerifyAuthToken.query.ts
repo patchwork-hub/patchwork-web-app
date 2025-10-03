@@ -2,12 +2,13 @@ import {
   getNewsmastUserInfo,
   verifyAuthToken
 } from "@/services/auth/verifyAuthToken";
+import { Account } from "@/types/patchwork";
 import {
   GetNewsmastAccountlDetailQueryKey,
   VerifyAuthTokenQueryKey
 } from "@/types/queries/auth.type";
 import { QueryOptionHelper } from "@/utils/helper/helper";
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 
 export const useVerifyAuthToken = ({ enabled }: { enabled?: boolean }) => {
@@ -32,7 +33,8 @@ export const useGetNewsmastAccountDetail = ({
   ];
   return useQuery({
     queryKey,
-    queryFn: getNewsmastUserInfo,
-    ...options
+    // queryFn: getNewsmastUserInfo,
+    queryFn:(context) => getNewsmastUserInfo(context as QueryFunctionContext<GetNewsmastAccountlDetailQueryKey>),
+    ...options,
   });
 };

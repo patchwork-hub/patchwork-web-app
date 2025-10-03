@@ -17,7 +17,7 @@ import SearchInput from "@/components/molecules/common/Searchinput";
 
 const ExploreSearchListPage = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
-  const {t} = useLocale();
+  const { t } = useLocale();
   const router = useRouter();
 
   const debouncedSearch = useDebouncedCallback((value) => {
@@ -44,7 +44,7 @@ const ExploreSearchListPage = () => {
         <SearchInput
           className="sticky mt-4"
           onSearch={debouncedSearch}
-          placeholder= {t("channel.explore_channels")}
+          placeholder={t("channel.explore_channels")}
         />
       </div>
 
@@ -54,36 +54,36 @@ const ExploreSearchListPage = () => {
         <div className="grid grid-cols-3 gap-4">
           <ExploreCard
             title={t("screen.channels")}
-            count={channelFeedCollectionList?.[0]?.attributes.community_count}
+            count={channelFeedCollectionList?.[0]?.attributes.community_count || 0}
             image={[
-              channelFeedCollectionList?.[1]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[2]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[3]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[4]?.attributes.avatar_image_url,
+              channelFeedCollectionList?.[1]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[2]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[3]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[4]?.attributes.avatar_image_url ?? "",
             ]}
             type="channel"
             onClick={() => router.push("/channels")}
           />
           <ExploreCard
             title={t("screen.newsmast_channels")}
-            count={newsmastColletionlList?.[0]?.attributes.community_count}
+            count={newsmastColletionlList?.[0]?.attributes.community_count ?? 0}
             image={[
-              newsmastColletionlList?.[1]?.attributes.avatar_image_url,
-              newsmastColletionlList?.[2]?.attributes.avatar_image_url,
-              newsmastColletionlList?.[3]?.attributes.avatar_image_url,
-              newsmastColletionlList?.[4]?.attributes.avatar_image_url,
+              newsmastColletionlList?.[1]?.attributes.avatar_image_url ?? "",
+              newsmastColletionlList?.[2]?.attributes.avatar_image_url ?? "",
+              newsmastColletionlList?.[3]?.attributes.avatar_image_url ?? "",
+              newsmastColletionlList?.[4]?.attributes.avatar_image_url ?? "",
             ]}
             type="newsmast"
             onClick={() => router.push("/newsmast-channel/all-collection")}
           />
           <ExploreCard
             title={t("screen.communities")}
-            count={collectionList?.[0]?.attributes.community_count}
+            count={collectionList?.[0]?.attributes.community_count ?? 0}
             image={[
-              collectionList?.[1]?.attributes.avatar_image_url,
-              collectionList?.[2]?.attributes.avatar_image_url,
-              collectionList?.[3]?.attributes.avatar_image_url,
-              collectionList?.[4]?.attributes.avatar_image_url,
+              collectionList?.[1]?.attributes.avatar_image_url ?? "",
+              collectionList?.[2]?.attributes.avatar_image_url ?? "",
+              collectionList?.[3]?.attributes.avatar_image_url ?? "",
+              collectionList?.[4]?.attributes.avatar_image_url ?? "",
             ]}
             type="collection"
             onClick={() =>

@@ -3,6 +3,7 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { GetNewsmastAccountlDetailQueryKey } from "@/types/queries/auth.type";
 import { QueryFunctionContext } from "@tanstack/react-query";
+import { Account } from "@/types/patchwork";
 
 export const verifyAuthToken = async () => {
   try {

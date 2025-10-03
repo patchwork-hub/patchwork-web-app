@@ -6,8 +6,9 @@ import {
   GetCommunityAndChannelSearchQueryKey,
   SearchAllQueryKey
 } from "@/services/search/searchQuery";
+import { SearchAll } from "@/types/patchwork";
 import { QueryOptionHelper } from "@/utils/helper/helper";
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
 export const useSearchAllQueries = ({
   options,
@@ -18,7 +19,7 @@ export const useSearchAllQueries = ({
   const queryKey: SearchAllQueryKey = ["search-all", queryParam];
   return useQuery({
     queryKey,
-    queryFn: searchAllFn,
+     queryFn: (context) => searchAllFn(context as QueryFunctionContext<SearchAllQueryKey>),
     ...options
   });
 };

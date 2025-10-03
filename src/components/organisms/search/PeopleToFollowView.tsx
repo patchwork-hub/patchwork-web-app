@@ -18,8 +18,8 @@ import { useGetSuggestedPeople } from "@/hooks/queries/search/useFetchSuggestion
 import { useSearchStore } from "@/stores/search/useSearchStore";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
-import { Account } from "@/types/account";
 import { queryClient } from "@/providers/queryProvider";
+import { Account } from "@/types/patchwork";
 
 type SuggestedPeopleBySearchProps = {
   data: Account[];

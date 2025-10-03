@@ -2,7 +2,7 @@ import { checkRelationshipQueryFn } from "@/services/profile/relationship";
 import { RelationShip } from "@/types/profile";
 import { CheckRelationshipQueryKey } from "@/types/queries/profile.type";
 import { QueryOptionHelper } from "@/utils/helper/helper";
-import { useQuery } from "@tanstack/react-query";
+import { QueryFunctionContext, useQuery } from "@tanstack/react-query";
 
 export const useCheckRelationships = ({
   options,
@@ -16,7 +16,7 @@ export const useCheckRelationships = ({
   ];
   return useQuery({
     queryKey,
-    queryFn: checkRelationshipQueryFn,
+    queryFn:(context) => checkRelationshipQueryFn(context as QueryFunctionContext<CheckRelationshipQueryKey>),
     ...options
   });
 };

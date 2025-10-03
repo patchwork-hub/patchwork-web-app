@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/patchwork";
 
 import { AccountInListQueryKey } from "@/types/queries/lists.type";
 import { QueryFunctionContext } from "@tanstack/react-query";

@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/account";
 import { QueryFunctionContext } from "@tanstack/react-query";
 import { AxiosResponse } from "axios";
 

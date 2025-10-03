@@ -82,7 +82,7 @@ const NotificationsPage = () => {
       <div className="px-4">
         {activeTab === 'All' && !isLoading && (
           useV2 ? (
-            <GroupedNotificationsV2 uri={currentUser?.uri} />
+            <GroupedNotificationsV2 uri={currentUser?.uri ?? ""} />
           ) : (
             <GroupedNotificationsV1 />
           )

@@ -53,7 +53,7 @@ export default function ListMember({
       domain_name: activeDomain,
     });
   const memberIds = new Set(
-    AccountsInList?.map((member: Account) => member.id)
+    AccountsInList?.map((member) => member.id)
   );
 
   const { data: currentAccount } = useVerifyAuthToken({

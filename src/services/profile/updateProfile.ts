@@ -1,14 +1,15 @@
 import { UpdateProfilePayload } from "@/types/profile";
 import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/account";
 
 export const updateProfile = async (
   params: UpdateProfilePayload
 ): Promise<Account> => {
   try {
     const formData = new FormData();
-    formData.append("display_name", params.display_name);
-    formData.append("note", params.note);
+    formData.append("display_name", params.display_name ?? "");
+    formData.append("note", params.note ?? "");
 
     if (params.avatar && typeof params.avatar !== "string") {
       formData.append("avatar", params.avatar);
