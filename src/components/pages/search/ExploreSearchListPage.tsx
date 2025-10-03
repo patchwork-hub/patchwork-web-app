@@ -54,12 +54,12 @@ const ExploreSearchListPage = () => {
         <div className="grid grid-cols-3 gap-4">
           <ExploreCard
             title={t("screen.channels")}
-            count={channelFeedCollectionList?.[0]?.attributes.community_count}
+            count={channelFeedCollectionList?.[0]?.attributes.community_count || 0}
             image={[
-              channelFeedCollectionList?.[1]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[2]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[3]?.attributes.avatar_image_url,
-              channelFeedCollectionList?.[4]?.attributes.avatar_image_url,
+              channelFeedCollectionList?.[1]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[2]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[3]?.attributes.avatar_image_url ?? "",
+              channelFeedCollectionList?.[4]?.attributes.avatar_image_url ?? "",
             ]}
             type="channel"
             onClick={() => router.push("/channels")}

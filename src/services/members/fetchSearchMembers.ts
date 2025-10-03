@@ -1,4 +1,5 @@
 import axiosInstance from "@/lib/http";
+import { Account } from "@/types/account";
 
 export type SearchAccountsResponse = {
   accounts: Account[];

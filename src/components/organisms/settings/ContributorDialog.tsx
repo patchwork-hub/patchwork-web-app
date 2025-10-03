@@ -192,7 +192,7 @@ const ContributorDialog = ({
               }}
             />
             <CommandList>
-              {searchedUsers?.accounts?.length > 0 ? (
+              {searchedUsers && searchedUsers?.accounts?.length > 0 ? (
                 <CommandGroup className="space-y-2">
                   {searchedUsers?.accounts?.map((account: Contributor) => (
                     <CommandItem key={account.id} className="mb-2">
