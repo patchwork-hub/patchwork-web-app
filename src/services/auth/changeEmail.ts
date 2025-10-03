@@ -1,4 +1,5 @@
 import http from "@/lib/http";
+import { LoginResponse } from "@/types/auth";
 import { AxiosResponse } from "axios";
 
 export const changeEmail = async (params: {

@@ -17,13 +17,13 @@ import {
   useSearchChannelAndCommunity,
 } from "@/hooks/queries/search/useSearchAllQueries";
 import { useSearchStore } from "@/stores/search/useSearchStore";
-import { Account } from "@/types/account";
 import { Status as StatusType } from "@/types/status";
 import { isSystemDark } from "@/utils/helper/helper";
 import { useTheme } from "next-themes";
 import { useRouter, useSearchParams } from "next/navigation";
 import { useMemo, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
+import { Account } from "@/types/patchwork";
 
 const SearchList = () => {
   const [searchKeyword, setSearchKeyword] = useState("");
@@ -76,7 +76,7 @@ const SearchList = () => {
       phone: "",
       about_me: "",
     })
-  ) as Account[];
+  ) as unknown as Account[]; 
 
   const checkNoResults = useMemo(() => {
     const accountsLength = searchAllRes?.accounts?.length ?? 0;

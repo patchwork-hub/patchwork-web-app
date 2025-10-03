@@ -1,10 +1,10 @@
 "use client";
 import { useGetSuggestedPeople } from "@/hooks/queries/search/useFetchSuggestion";
 import PeopleToFollowView from "./PeopleToFollowView";
-import { Account } from "@/types/account";
 import { StatusList } from "../status/StatusList";
 import { Status } from "@/types/status";
 import { cn } from "@/lib/utils";
+import { Account } from "@/types/patchwork";
 
 type SuggestedPeopleBySearchProps = {
   searchData: Account[];

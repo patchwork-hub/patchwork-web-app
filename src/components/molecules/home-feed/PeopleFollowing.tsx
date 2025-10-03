@@ -9,7 +9,7 @@ import { useTheme } from "next-themes";
 import { isSystemDark } from "@/utils/helper/helper";
 import { ThemeText } from "../common/ThemeText";
 import ListIcon from "../common/ListIcon";
-import { Account } from "@/types/status";
+import { Account } from "@/types/patchwork";
 import { useLocale } from "@/providers/localeProvider";
 
 type TFollowing = {

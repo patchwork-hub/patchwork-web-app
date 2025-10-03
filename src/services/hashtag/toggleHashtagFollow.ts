@@ -1,6 +1,7 @@
 import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { handleError } from "@/utils/helper/helper";
+import { HashtagDetail } from "@/types/patchwork";
 export const toggleHashtagFollow = async ({
   hashtag,
   shouldFollow,

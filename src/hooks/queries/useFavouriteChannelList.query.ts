@@ -2,6 +2,7 @@ import {
   getFavouriteChannelLists,
   getJoinedCommunitiesList
 } from "@/services/home-feed/favouriteChannelLists";
+import { ChannelList, JoinedCommunitiesList } from "@/types/patchwork";
 import {
   GetFavouriteChannelListsQueryKey,
   GetJoinedCommunitiesListQueryKey

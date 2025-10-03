@@ -2,6 +2,7 @@ import { AxiosResponse } from "axios";
 import axiosInstance from "@/lib/http";
 import { handleError } from "@/utils/helper/helper";
 import { DEFAULT_DASHBOARD_API_URL } from "@/utils/constant";
+import { CollectionList } from "@/types/patchwork";
 
 export const getChannelFeedCollections = async () => {
   try {

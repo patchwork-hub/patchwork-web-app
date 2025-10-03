@@ -5,7 +5,7 @@ import { useQuery } from "@tanstack/react-query";
 export const useTranslate = (id?: string) => {
     return useQuery({
         queryKey: ["translate", id],
-        queryFn: () => translate(id),
+        queryFn: () => translate(id ?? ""),
         enabled: !!id,
     });
 };
