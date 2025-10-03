@@ -46,7 +46,6 @@ export const extractUserName = (url: string | undefined): string | null => {
 
 export const cleanText = (htmlString: string): string => {
   if (!htmlString) return "";
-
   return htmlString
     .replace(/&nbsp;/gi, " ")
     .replace(/&lt;/gi, "<")
