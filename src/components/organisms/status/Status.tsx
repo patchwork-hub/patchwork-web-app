@@ -265,12 +265,12 @@ const Status: React.FC<StatusProps> = ({
       )}
       <div
         className={cn("grid gap-1 rounded-md overflow-hidden px-4 relative", {
-          "grid-cols-1": data.media_attachments.length === 1,
-          "grid-cols-2": data.media_attachments.length > 1,
+          "grid-cols-1": data?.media_attachments?.length === 1,
+          "grid-cols-2": data?.media_attachments?.length > 1,
           "ml-12": !preview && !detail,
         })}
       >
-        {data.media_attachments.map((media, idx) => (
+        {data && data?.media_attachments?.map((media, idx) => (
           <MediaAttachmentPreview
             className={cn({
               "row-span-2":
@@ -293,7 +293,7 @@ const Status: React.FC<StatusProps> = ({
           />
         ))}
       </div>
-      {data.media_attachments.length === 0 && data.card && (
+      {data?.media_attachments?.length === 0 && data.card && (
         <div
           className={cn("px-4", {
             "ml-12": !preview && !detail,

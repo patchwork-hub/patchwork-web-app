@@ -3,6 +3,7 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
+  DialogDescription,
   DialogHeader,
   DialogTitle,
 } from "@/components/atoms/ui/dialog";
@@ -70,7 +71,7 @@ type StatusActionsProps = {
   handleTranslate?: () => void;
 };
 
-const FavouriteAction: React.FC<{
+export const FavouriteAction: React.FC<{
   status: StatusType;
   differentOrigin: boolean;
 }> = ({ status, differentOrigin }) => {
@@ -127,7 +128,7 @@ const FavouriteAction: React.FC<{
   );
 };
 
-const BoostAction: React.FC<{
+export const BoostAction: React.FC<{
   status: StatusType;
   differentOrigin: boolean;
 }> = ({ status, differentOrigin }) => {
@@ -187,6 +188,7 @@ const BoostAction: React.FC<{
       <button
         onClick={handleBoost}
         className="flex items-center space-x-1 cursor-pointer"
+        type="button"
       >
         <Repeat
           className={`w-4 h-4 ${
@@ -208,6 +210,8 @@ const BoostAction: React.FC<{
             <DialogTitle>Undo re-post?</DialogTitle>
             <DialogClose />
           </DialogHeader>
+          <DialogDescription className="sr-only">
+          </DialogDescription>
           <div className="p-4">
             <div className="max-h-[250px] sm:max-h-[360px] overflow-auto">
               <Status preview status={status.reblog ?? status} />
@@ -230,7 +234,7 @@ const BoostAction: React.FC<{
   );
 };
 
-const BookmarkAction: React.FC<{
+export const BookmarkAction: React.FC<{
   status: StatusType;
   differentOrigin: boolean;
 }> = ({ status, differentOrigin }) => {
@@ -271,25 +275,22 @@ const BookmarkAction: React.FC<{
   return (
     <button
       onClick={handleBookmark}
+      aria-label={status.bookmarked ? "Remove bookmark" : "Bookmark"}
       className={cn("flex items-center space-x-1 cursor-pointer", {
         "cursor-auto": !isLoggedIn,
       })}
-      // disabled={!isLoggedIn}
     >
       <Bookmark
         className={cn(
           "w-4 h-4",
           status.bookmarked ? "text-orange-500" : "text-[#96A6C2]"
-          // {
-          //   "text-gray-500": !isLoggedIn,
-          // }
         )}
       />
     </button>
   );
 };
 
-const DeleteAction: React.FC<{ deleteId: string }> = ({ deleteId }) => {
+export const DeleteAction: React.FC<{ deleteId: string }> = ({ deleteId }) => {
   const [showDeleteDialog, setShowDeleteDialog] = useState(false);
   const deleteMutation = useDeleteStatus();
 
@@ -313,6 +314,9 @@ const DeleteAction: React.FC<{ deleteId: string }> = ({ deleteId }) => {
             <DialogTitle>Confirm delete</DialogTitle>
             <DialogClose />
           </DialogHeader>
+          <DialogDescription className="sr-only">
+            Are you sure you want to delete this status? This action cannot be undone.
+          </DialogDescription>
           <div>
             <p>Are you sure you want to delete this status?</p>
             <div className="mt-4 flex justify-end">
@@ -332,7 +336,7 @@ const DeleteAction: React.FC<{ deleteId: string }> = ({ deleteId }) => {
   );
 };
 
-const ReplyAction: React.FC<{
+export const ReplyAction: React.FC<{
   status: StatusType;
   differentOrigin: boolean;
 }> = ({ status }) => {
@@ -437,6 +441,9 @@ export const MuteAction: React.FC<{
             <DialogTitle>{t("confirm_mute")}</DialogTitle>
             <DialogClose />
           </DialogHeader>
+          <DialogDescription className="sr-only">
+            Mute action
+          </DialogDescription>
           <div>
             <p>{t("sure_mute")}</p>
             <div className="mt-4 flex justify-end">
@@ -501,6 +508,9 @@ export const BlockAction: React.FC<{
             <DialogTitle>{t("confirm_block")}</DialogTitle>
             <DialogClose />
           </DialogHeader>
+          <DialogDescription className="sr-only">
+            Are you sure you want to block this status? This action cannot be undone.
+          </DialogDescription>
           <div>
             <p>{t("sure_block")}</p>
             <div className="mt-4 flex justify-end">
@@ -622,7 +632,7 @@ export const ReportAction: React.FC<{
   );
 };
 
-const CopyLinkAction: React.FC<{ status: StatusType }> = ({ status }) => {
+export const CopyLinkAction: React.FC<{ status: StatusType }> = ({ status }) => {
   const { t } = useLocale();
   const handleCopyLink = () => {
     navigator.clipboard.writeText(status.url);
@@ -731,6 +741,7 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
           <Popover open={isPopoverOpen} onOpenChange={setIsPopoverOpen}>
             <PopoverTrigger asChild>
               <button
+                aria-label="More options"
                 onClick={() => setShowOptions((prev) => !prev)}
                 className="flex items-center space-x-1 cursor-pointer"
               >
@@ -789,6 +800,7 @@ export const StatusActions: React.FC<StatusActionsProps> = ({
             actionType="menu"
             openDialog={openDialog}
             setOpenDialog={setOpenDialog}
+            
             action={
               <>
                 <MoreHorizontal className="w-4 h-4 text-[#96A6C2]" />

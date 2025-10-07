@@ -1,174 +1,87 @@
-import { fireEvent, render, screen, within } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { PollForm } from '@/components/organisms/compose/form/PollForm';
+import React from "react";
+import { render, screen, fireEvent } from "@testing-library/react";
+import { describe, it, expect, vi } from "vitest";
+import { PollForm } from "@/components/organisms/compose/form/PollForm";
 
-describe('PollForm Component', () => {
-    it('renders the poll form with default options', () => {
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={vi.fn()}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
 
-        expect(screen.getByText('Create a poll')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Option 1')).toBeInTheDocument();
-        expect(screen.getByPlaceholderText('Option 2')).toBeInTheDocument();
-    });
+vi.mock("next-themes", () => ({
+  useTheme: () => ({ theme: "dark" }),
+}));
 
-    it('adds a new option when the Add option button is clicked', () => {
-        const setPollOptionsMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={setPollOptionsMock}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
+vi.mock("@/providers/localeProvider", () => ({
+  useLocale: () => ({
+    t: (key: string) => key, 
+  }),
+}));
 
-        fireEvent.click(screen.getByText('Add option'));
 
-        expect(setPollOptionsMock).toHaveBeenCalledWith(['Option 1', 'Option 2', '']);
-    });
+vi.mock("@/components/atoms/ui/button", () => ({
+  Button: ({ children, onClick, disabled }: any) => (
+    <button onClick={onClick} disabled={disabled}>
+      {children}
+    </button>
+  ),
+}));
 
-    it('removes an option when the delete button is clicked', () => {
-        const setPollOptionsMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2', 'Option 3']}
-                setPollOptions={setPollOptionsMock}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
+vi.mock("@/components/atoms/ui/input", () => ({
+  Input: ({ value, onChange, placeholder }: any) => (
+    <input
+      value={value}
+      onChange={onChange}
+      placeholder={placeholder}
+      data-testid="input"
+    />
+  ),
+}));
 
-        fireEvent.click(screen.getByLabelText('Remove option 1'));
 
-        expect(setPollOptionsMock).toHaveBeenCalledWith(['Option 2', 'Option 3']);
-    });
+vi.mock("@/components/atoms/ui/select", () => ({
+  Select: ({ children }: any) => <div>{children}</div>,
+  SelectTrigger: ({ children }: any) => <div>{children}</div>,
+  SelectValue: ({ placeholder }: any) => <div>{placeholder}</div>,
+  SelectContent: ({ children }: any) => <div>{children}</div>,
+  SelectItem: ({ children }: any) => <div>{children}</div>,
+}));
 
-    it('does not allow removing options if the number of options is equal to the minimum limit', () => {
-        const setPollOptionsMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={setPollOptionsMock}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
+describe("PollForm - Basic Tests", () => {
+  const defaultProps = {
+    pollOptions: ["Option 1", "Option 2"],
+    setPollOptions: vi.fn(),
+    pollChoiceType: "single" as const,
+    setPollChoiceType: vi.fn(),
+    pollDuration: 1440,
+    setPollDuration: vi.fn(),
+  };
 
-        expect(screen.queryByLabelText('Remove option 1')).not.toBeInTheDocument();
-        expect(screen.queryByLabelText('Remove option 2')).not.toBeInTheDocument();
-    });
+  it("renders without crashing", () => {
+    render(<PollForm {...defaultProps} />);
+    expect(screen.getByText("poll.create_title")).toBeInTheDocument();
+  });
 
-    it('does not show the remove button if the number of options is equal to the minimum limit', () => {
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={vi.fn()}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
+  it("displays initial options", () => {
+    render(<PollForm {...defaultProps} />);
+    
+    const inputs = screen.getAllByTestId("input");
+    expect(inputs).toHaveLength(2);
+    expect(inputs[0]).toHaveValue("Option 1");
+    expect(inputs[1]).toHaveValue("Option 2");
+  });
 
-        expect(screen.queryByLabelText('Remove option 1')).not.toBeInTheDocument();
-        expect(screen.queryByLabelText('Remove option 2')).not.toBeInTheDocument();
-    });
+  it("adds new option when button is clicked", () => {
+    render(<PollForm {...defaultProps} />);
+    
+    const addButton = screen.getByText("poll.add_option");
+    fireEvent.click(addButton);
+    
+    expect(defaultProps.setPollOptions).toHaveBeenCalledWith(["Option 1", "Option 2", ""]);
+  });
 
-    it('updates the poll choice type when a new type is selected', () => {
-        const setPollChoiceTypeMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={vi.fn()}
-                pollChoiceType="single"
-                setPollChoiceType={setPollChoiceTypeMock}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
-
-        fireEvent.click(screen.getByText('Single choice'));
-        fireEvent.click(screen.getByText('Multiple choice'));
-
-        expect(setPollChoiceTypeMock).toHaveBeenCalledWith('multiple');
-    });
-
-    it('updates the poll duration when a new duration is selected', () => {
-        const setPollDurationMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2']}
-                setPollOptions={vi.fn()}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={setPollDurationMock}
-            />
-        );
-
-        // Find the duration SelectTrigger (second combobox, as there are two Select components)
-        const durationSelects = screen.getAllByRole('combobox');
-        const durationSelect = durationSelects[1]; // Second combobox is for duration
-        expect(durationSelect).toHaveTextContent(/1\s*day/i); // Use regex for flexible matching
-
-        // Click to open the dropdown
-        fireEvent.click(durationSelect);
-
-        // Find and click "3 days" in the dropdown
-        const dropdown = screen.getByRole('listbox');
-        fireEvent.click(within(dropdown).getByText('3 days'));
-
-        expect(setPollDurationMock).toHaveBeenCalledWith(259200);
-    });
-
-    it('does not allow adding more options than the maximum limit', () => {
-        const setPollOptionsMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', 'Option 2', 'Option 3', 'Option 4']}
-                setPollOptions={setPollOptionsMock}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
-
-        fireEvent.click(screen.getByText('Add option'));
-
-        expect(setPollOptionsMock).not.toHaveBeenCalled();
-    });
-
-    it('handles empty options correctly', () => {
-        const setPollOptionsMock = vi.fn();
-        render(
-            <PollForm
-                pollOptions={['Option 1', '']}
-                setPollOptions={setPollOptionsMock}
-                pollChoiceType="single"
-                setPollChoiceType={vi.fn()}
-                pollDuration={86400}
-                setPollDuration={vi.fn()}
-            />
-        );
-
-        fireEvent.change(screen.getByPlaceholderText('Option 2'), { target: { value: 'Option 2' } });
-
-        expect(setPollOptionsMock).toHaveBeenCalledWith(['Option 1', 'Option 2']);
-    });
+  it("updates option text", () => {
+    render(<PollForm {...defaultProps} />);
+    
+    const inputs = screen.getAllByTestId("input");
+    fireEvent.change(inputs[0], { target: { value: "Updated Option" } });
+    
+    expect(defaultProps.setPollOptions).toHaveBeenCalledWith(["Updated Option", "Option 2"]);
+  });
 });

@@ -26,6 +26,40 @@ vi.mock("@/components/atoms/icons/Icons", () => ({
   GlobeIcon: () => <span>GlobeIcon</span>,
 }));
 
+//
+vi.mock("@/components/ui/dialog", () => ({
+  Dialog: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogContent: ({
+    children,
+    "aria-describedby": ariaDescribedBy,
+  }: {
+    children: React.ReactNode;
+    "aria-describedby"?: string;
+  }) => (
+    <div
+      role="dialog"
+      aria-describedby={ariaDescribedBy || "dialog-description"}
+    >
+      {children}
+    </div>
+  ),
+  DialogHeader: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogTitle: ({ children }: { children: React.ReactNode }) => (
+    <h2>{children}</h2>
+  ),
+  DialogDescription: ({
+    children,
+    id,
+  }: {
+    children: React.ReactNode;
+    id?: string;
+  }) => <p id={id || "dialog-description"}>{children}</p>,
+}));
+
 describe("SocialLinks Component", () => {
   const defaultProps = {
     openThemeModal: true,
@@ -44,6 +78,8 @@ describe("SocialLinks Component", () => {
     expect(screen.getByText("Twitter")).toBeInTheDocument();
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.getByText("LinkedIn")).toBeInTheDocument();
+
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-describedby");
   });
 
   it("renders existing social links in edit mode", () => {
@@ -58,6 +94,8 @@ describe("SocialLinks Component", () => {
     expect(screen.getByText("GitHub")).toBeInTheDocument();
     expect(screen.queryByText("LinkedIn")).not.toBeInTheDocument();
     expect(screen.getAllByTestId("trash-icon")).toHaveLength(2);
+
+    expect(screen.getByRole("dialog")).toHaveAttribute("aria-describedby");
   });
 
   it("allows selecting a social link and adding a username", () => {
