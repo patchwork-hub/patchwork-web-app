@@ -47,7 +47,7 @@ export const setNewEmail = ({
   currentPassword
 }: ChangeEmailProps) => {
   if (typeof window === "undefined") return;
-   let hashedPassword: string | undefined = undefined;
+  let hashedPassword: string | undefined = undefined;
   if (currentPassword) {
     const salt = bcrypt.genSaltSync(12);
     hashedPassword = bcrypt.hashSync(currentPassword, salt);

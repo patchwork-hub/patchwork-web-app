@@ -5,6 +5,7 @@ import Cookies from "js-cookie";
 import { useDebouncedCallback } from "use-debounce";
 import { toast } from "sonner";
 import Image from "next/image";
+import bcrypt from "bcryptjs";
 import {
   Card,
   CardContent,
@@ -86,8 +87,14 @@ const SignInWithMastodon = ({
         const authUrl = `https://${searchDomain}/oauth/authorize?${routeFilter(
           authParams
         )}`;
+        let clientSecret: string | undefined = undefined;
+        if (res.client_secret){
+              const salt = bcrypt.genSaltSync(12);
+              clientSecret = bcrypt.hashSync(res.client_secret, salt);
+            }
+        
         sessionStorage.setItem("client_id", res.client_id);
-        sessionStorage.setItem("client_secret", res.client_secret);
+        sessionStorage.setItem("client_secret", clientSecret??"");
         sessionStorage.setItem("domain", searchDomain);
         Cookies.set("domain", searchDomain);
         window.location.href = authUrl;
