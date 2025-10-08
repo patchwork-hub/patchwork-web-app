@@ -104,7 +104,7 @@ const LoginDialog: React.FC<LoginDialogProps> = ({
       Cookies.remove("slug");
       Cookies.remove("id");
     }
-  }, [openDialog]);
+  }, [openDialog, status?.account?.acct ,status?.id]);
 
   return (
     <Dialog open={openDialog} onOpenChange={() => setOpenDialog(false)}>

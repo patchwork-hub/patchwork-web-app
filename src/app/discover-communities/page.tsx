@@ -22,7 +22,7 @@ export default function DiscoverCommunitiesLayout() {
       instance_domain: domain_name,
     }
   );
-  const { data: serverInfo, isFetching: isSearching } = useSearchServerInstance(
+  const { data: serverInfo } = useSearchServerInstance(
     {
       domain: domain_name,
     }

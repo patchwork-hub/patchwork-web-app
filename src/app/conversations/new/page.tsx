@@ -153,7 +153,7 @@ const NewConversationPage: FC = () => {
     if (newMessage) {
       fetchConversations();
     }
-  }, [newMessage]);
+  }, [newMessage, fetchConversations]);
 
   useEffect(() => {
     if (newMessage && conversations) {
@@ -168,7 +168,7 @@ const NewConversationPage: FC = () => {
         router.push("/conversations/chat");
       }
     }
-  }, [newMessage, conversations]);
+  }, [newMessage, conversations, router, setConversation]);
 
   // Extracted reusable component for ParticipantChip
   const ParticipantChip: React.FC<{

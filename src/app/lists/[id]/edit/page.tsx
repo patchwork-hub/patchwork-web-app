@@ -17,7 +17,7 @@ import { createSchemas } from "@/lib/schema/validations";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
-import React, { use, useEffect, useState } from "react";
+import React, { use, useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
 import { GroupAvatar } from "@/components/atoms/ui/avatar-stack";
 import { Input } from "@/components/atoms/ui/input";
@@ -67,11 +67,11 @@ export default function EditCreateForm({
     },
   });
 
-  const options = [
-    { title: `${t("list.members_of_the_list")}`, value: "list" },
-    { title: `${t("list.no_one")}`, value: "none" },
-    { title: `${t("list.any_followed_user")}`, value: "followed" },
-  ];
+  const options = useMemo(() => [
+  { title: t("list.members_of_the_list"), value: "list" },
+  { title: t("list.no_one"), value: "none" },
+  { title: t("list.any_followed_user"), value: "followed" },
+], [t]);
 
   const [selected, setSelected] = useState(options[0]);
   const [formData, setFormData] = useState({

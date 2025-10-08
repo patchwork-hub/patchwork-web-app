@@ -5,7 +5,7 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import z from "zod";
 
-const schemas = createSchemas();
+const _schemas = createSchemas();
 export const useGetTokenMutation = () => {
   return useMutation({ mutationFn: getAppToken });
 };
@@ -13,7 +13,7 @@ export const useSignupMutation = (
   options: UseMutationOptions<
     LoginResponse,
     AxiosError,
-    z.infer<typeof schemas.SignUpFormSchema> & {
+    z.infer<typeof _schemas.SignUpFormSchema> & {
       agreement: boolean;
       locale: string;
       access_token: string;

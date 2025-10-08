@@ -93,7 +93,7 @@ export const useFavouriteStatus = () => {
     },
     onError: (
       err,
-      { id },
+      _,
       snapshot
     ) => {
       const error = err?.response?.data?.error;

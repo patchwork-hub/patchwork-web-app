@@ -3,7 +3,6 @@ import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
 import Image from "next/image";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
-import { useCustomEmojiStore } from "@/components/organisms/compose/store/useCustomEmojiStore";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import useLoggedIn from "@/lib/auth/useLoggedIn";
 import { useLocale } from "@/providers/localeProvider";

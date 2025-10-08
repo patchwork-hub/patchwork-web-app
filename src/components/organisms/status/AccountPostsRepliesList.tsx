@@ -27,7 +27,7 @@ export const AccountPostsRepliesList = ({
       return true;
     }
     return false;
-  }, []);
+  }, [domain]);
 
   const tabItems: TabItem<TabId>[] =
     isDefaultUser || !domain

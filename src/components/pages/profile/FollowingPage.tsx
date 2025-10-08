@@ -5,7 +5,6 @@ import { useInfiniteScroll } from "@/hooks/customs/useInfiniteScroll";
 import { useCheckRelationships } from "@/hooks/queries/useCheckRelationship";
 import { useFollowingAccountsQuery } from "@/hooks/queries/useFollowingAccount";
 import { Account } from "@/types/patchwork";
-import { flattenPages } from "@/utils/helper/timeline";
 import React from "react";
 
 type FollowingPage = {

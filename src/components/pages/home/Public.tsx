@@ -88,7 +88,7 @@ const PublicHome = () => {
     if (domain_name !== domain) {
       actions.setDomain(domain);
     }
-  }, []);
+  }, [actions, domain, domain_name]);
 
   useEffect(() => {
     const search = searchParams.get("s");

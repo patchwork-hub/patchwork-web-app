@@ -112,7 +112,7 @@ const SignInForm = ({ className, code, ...props }: SignInFormProps) => {
     if (code) {
       setSignInWithMastodon?.(true);
     }
-  }, [code]);
+  }, [code, setSignInWithMastodon]);
 
   return (
     <div className={cn("flex flex-col", className)} {...props}>

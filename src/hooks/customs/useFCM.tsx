@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { getToken, Messaging, onMessage } from "firebase/messaging";
 import { isiOS } from "@tiptap/core";
 import { useFCMStore } from "@/stores/conversations/useFCMStore";
@@ -12,7 +12,7 @@ type FCMState = {
   isSafari: boolean;
   isIOS: boolean;
   requestPermission: () => Promise<void>;
-}
+};
 
 const isMacOS = () => {
   return /Macintosh/i.test(navigator.userAgent) && !isiOS();
@@ -21,9 +21,14 @@ const isMacOS = () => {
 export const useFCM = (): FCMState => {
   const { setMessage } = useFCMStore();
   const [token, setToken] = useState<string | null>(null);
-  const [permissionStatus, setPermissionStatus] = useState<NotificationPermission>(() => {
-    return (localStorage.getItem("notificationPermission") as NotificationPermission) || "default";
-  });
+  const [permissionStatus, setPermissionStatus] =
+    useState<NotificationPermission>(() => {
+      return (
+        (localStorage.getItem(
+          "notificationPermission"
+        ) as NotificationPermission) || "default"
+      );
+    });
   const [messaging, setMessaging] = useState<Messaging | null>(null);
   const isSafari = /^((?!chrome|android).)*safari/i.test(navigator.userAgent);
   const isIOSDevice = isiOS();
@@ -56,8 +61,9 @@ export const useFCM = (): FCMState => {
     })();
   }, [permissionStatus, messaging]);
 
-  const requestPermission = async () => {
-    if (!messaging) {
+  const requestPermission = useCallback(async () => {
+    const currentMessaging = messaging;
+    if (!currentMessaging) {
       console.error("Messaging not supported in this browser");
       return;
     }
@@ -69,7 +75,7 @@ export const useFCM = (): FCMState => {
     } catch (error) {
       console.error("Error getting FCM token:", error);
     }
-  };
+  }, [messaging]);
 
   useEffect(() => {
     if (!messaging) return;
@@ -88,7 +94,14 @@ export const useFCM = (): FCMState => {
     });
 
     return () => unsubscribe();
-  }, [permissionStatus, isIOSDevice, messaging, setMessage]);
+  }, [
+    permissionStatus,
+    isIOSDevice,
+    messaging,
+    setMessage,
+    isSafari,
+    requestPermission,
+  ]);
 
   return {
     token,

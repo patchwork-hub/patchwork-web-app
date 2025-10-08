@@ -10,7 +10,7 @@ export const useInfiniteScroll = (callback: () => void) => {
         if (isIntersecting) {
             callback();
         };
-    }, [isIntersecting]);
+    }, [isIntersecting, callback]);
 
     return ref;
 }

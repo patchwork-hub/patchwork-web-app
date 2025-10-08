@@ -11,7 +11,7 @@ export const useEditListMutation = () => {
 
   return useMutation({
     mutationFn: ({ payload, id }: TListedit) => editList(payload, id),
-    onMutate: async (newList) => {
+    onMutate: async () => {
       queryClient.invalidateQueries({ queryKey: ["lists"] });
     },
     onError: (error) => {

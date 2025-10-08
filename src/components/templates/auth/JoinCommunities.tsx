@@ -36,7 +36,7 @@ const JoinCommunities: React.FC = () => {
 
   const [step, setStep] = useState<number>(1);
 
-  const { data: lists, isLoading: listLoading } = useGetNewsmastChannelList({
+  const { data: lists } = useGetNewsmastChannelList({
     instance_domain: domain_name,
   });
 

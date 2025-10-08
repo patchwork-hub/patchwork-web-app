@@ -5,7 +5,7 @@ export const useAcceptFollowRequest = () => {
     const queryClient = useQueryClient();
     return useMutation({
         mutationFn: acceptFollowRequest,
-        onSuccess(data, variables, context) {
+        onSuccess() {
             queryClient.invalidateQueries({
                 queryKey: ["follow-requests-notifications"],
             })

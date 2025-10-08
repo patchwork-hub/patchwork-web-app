@@ -35,7 +35,7 @@ type MessageInputProps = {
   className?: string;
   mentions?: Mention[];
   ownAcct?: string | null;
-}
+};
 
 const MessageInput: FC<MessageInputProps> = ({
   isUploading,
@@ -57,14 +57,15 @@ const MessageInput: FC<MessageInputProps> = ({
     content: "",
     placeholder,
     className: `flex-1 p-2 border-1 rounded-lg focus:outline-none ${
-     theme === "dark" || (theme === "system" && isSystemDark) ? "border-gray-600" : "border-gray-200"
+      theme === "dark" || (theme === "system" && isSystemDark)
+        ? "border-gray-600"
+        : "border-gray-200"
     }`,
     contentClassName: "text-foreground",
     onPressEnter: handleSendMessage,
   });
 
   const [openEmojiPicker, setOpenEmojiPicker] = useState(false);
-  
 
   function handleSendMessage() {
     const messageContent = editor?.getText()?.trim();
@@ -90,13 +91,15 @@ const MessageInput: FC<MessageInputProps> = ({
         editor.commands.insertContent(" ");
       }
 
-      mentions && mentions.forEach((mention) => {
-        editor.commands.insertContent({
-          type: "mention",
-          attrs: { label: `@${mention.acct}`, class: "text-orange-500" },
-        });
-        editor.commands.insertContent(" ");
-      });
+      if (mentions) {
+        for (const mention of mentions) {
+          editor.commands.insertContent({
+            type: "mention",
+            attrs: { label: `@${mention.acct}`, class: "text-orange-500" },
+          });
+          editor.commands.insertContent(" ");
+        }
+      }
 
       editor.commands.focus("end");
     }

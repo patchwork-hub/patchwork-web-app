@@ -90,7 +90,7 @@ export const useBookmarkStatus = () => {
         previousSearchData,
       ];
     },
-    onError: (err, { id }, snapshot) => {
+    onError: (err, _, snapshot) => {
       if (!snapshot) return;
       snapshot.forEach((queryData) => {
         queryData?.forEach(([queryKey, data]) => {

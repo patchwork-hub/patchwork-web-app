@@ -84,7 +84,7 @@ export const useBoostStatus = () => {
     onSettled: () => {
       queryClient.invalidateQueries({ queryKey: ["statusList"] });
     },
-    onError: (err, { id }, snapshot) => {
+    onError: (err, _, snapshot) => {
       if (!snapshot) return;
       
       snapshot.forEach((queryData) => {

@@ -11,7 +11,7 @@ export type CustomEmojiState = {
 
 export const useCustomEmojiStore = create<CustomEmojiState>()(
     persist(
-        (set, _) => ({
+        (set) => ({
             emojis: undefined,
             loading: false,
             setLoading: (loading: boolean) => set({ loading }),

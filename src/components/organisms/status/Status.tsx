@@ -66,10 +66,13 @@ const Status: React.FC<StatusProps> = ({
 
   const handleGoToDetail = () => {
     if (domain) {
-      !detail &&
+      if (!detail) {
         router.push(`/@${data.account.acct}/${status.id}?domain=${domain}`);
+      }
     } else {
-      !detail && router.push(`/@${data.account.acct}/${status.id}`);
+      if (!detail) {
+        router.push(`/@${data.account.acct}/${status.id}`);
+      }
     }
   };
 
@@ -81,11 +84,14 @@ const Status: React.FC<StatusProps> = ({
 
   const handleClick = (e: TiptapClickEvent) => {
     const targetElement = e.target as HTMLElement;
-    if (targetElement.tagName === "A" || window.getSelection()?.toString() !== "") {
-        return;
+    if (
+      targetElement.tagName === "A" ||
+      window.getSelection()?.toString() !== ""
+    ) {
+      return;
     }
     handleGoToDetail();
-};
+  };
   const parseContent = (html: string) => {
     const parser = new DOMParser();
     const doc = parser.parseFromString(html, "text/html");
@@ -167,7 +173,10 @@ const Status: React.FC<StatusProps> = ({
         <h1 className="flex gap-2 items-center px-4 mb-2 text-gray-400">
           <Repeat className="w-4 h-4" />{" "}
           <DisplayName
-            emojis={status.account.emojis as MastodonCustomEmoji[] || status.reblog.account.emojis as MastodonCustomEmoji[]}
+            emojis={
+              (status.account.emojis as MastodonCustomEmoji[]) ||
+              (status.reblog.account.emojis as MastodonCustomEmoji[])
+            }
             acct={status.account.acct}
             displayName={status.account.display_name || status.account.username}
             className="inline text-lilac"
@@ -270,28 +279,29 @@ const Status: React.FC<StatusProps> = ({
           "ml-12": !preview && !detail,
         })}
       >
-        {data && data?.media_attachments?.map((media, idx) => (
-          <MediaAttachmentPreview
-            className={cn({
-              "row-span-2":
-                (data.media_attachments.length === 3 && idx === 0) ||
-                data.media_attachments.length === 2,
-              "aspect-video":
-                (data.media_attachments.length === 3 && idx !== 0) ||
-                data.media_attachments.length !== 2,
-              "h-full":
-                (data.media_attachments.length === 3 && idx === 0) ||
-                data.media_attachments.length === 2,
-              "max-h-[350px]":
-                !(data.media_attachments.length === 3 && idx === 0) &&
-                data.media_attachments.length !== 2,
-              "h-[350px]": data.media_attachments.length === 2,
-            })}
-            key={media.id}
-            media={media}
-            sensitive={data.sensitive}
-          />
-        ))}
+        {data &&
+          data?.media_attachments?.map((media, idx) => (
+            <MediaAttachmentPreview
+              className={cn({
+                "row-span-2":
+                  (data.media_attachments.length === 3 && idx === 0) ||
+                  data.media_attachments.length === 2,
+                "aspect-video":
+                  (data.media_attachments.length === 3 && idx !== 0) ||
+                  data.media_attachments.length !== 2,
+                "h-full":
+                  (data.media_attachments.length === 3 && idx === 0) ||
+                  data.media_attachments.length === 2,
+                "max-h-[350px]":
+                  !(data.media_attachments.length === 3 && idx === 0) &&
+                  data.media_attachments.length !== 2,
+                "h-[350px]": data.media_attachments.length === 2,
+              })}
+              key={media.id}
+              media={media}
+              sensitive={data.sensitive}
+            />
+          ))}
       </div>
       {data?.media_attachments?.length === 0 && data.card && (
         <div

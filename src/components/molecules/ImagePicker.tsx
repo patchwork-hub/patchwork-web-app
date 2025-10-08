@@ -143,11 +143,11 @@ const ImagePicker: React.FC<ImagePickerProps> = ({
           <div className="h-[24rem] w-full">
             <div className="relative h-full w-full overflow-hidden">
               {image && (
-                // eslint-disable-next-line @next/next/no-img-element
                 <Image
                   ref={imageRef}
                   src={image}
                   alt="Upload preview"
+                  fill
                   className="block max-w-full"
                   style={{ opacity: 0 }}
                 />

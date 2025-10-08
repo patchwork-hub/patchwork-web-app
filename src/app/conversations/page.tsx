@@ -54,7 +54,7 @@ const ConversationsPage: React.FC = () => {
         queryKey: ["conversations"],
       });
     }
-  }, [message]);
+  }, [message, queryClient]);
 
   const { data: currentUser, isLoading: isLoadingCredentials } =
     useVerifyAuthToken({
@@ -73,7 +73,7 @@ const ConversationsPage: React.FC = () => {
         setMessage("");
       }, 0);
     }
-  }, []);
+  }, [message, setMessage]);
 
   const { loading: isLoadingEmojis } = useCustomEmojiStore();
 
