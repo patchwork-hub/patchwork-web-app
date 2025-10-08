@@ -62,9 +62,9 @@ const SignInWithMastodon = ({
   const baseUrl = window.location.origin;
   const { theme } = useTheme();
   // Retrieve stored client details from localStorage
-  const storedClientId = localStorage.getItem("client_id");
-  const storedClientSecret = localStorage.getItem("client_secret");
-  const storedDomain = localStorage.getItem("domain");
+  const storedClientId = sessionStorage.getItem("client_id");
+  const storedClientSecret = sessionStorage.getItem("client_secret");
+  const storedDomain = sessionStorage.getItem("domain");
   const { t } = useLocale();
 
   // Custom hooks for API interactions
@@ -86,9 +86,9 @@ const SignInWithMastodon = ({
         const authUrl = `https://${searchDomain}/oauth/authorize?${routeFilter(
           authParams
         )}`;
-        localStorage.setItem("client_id", res.client_id);
-        localStorage.setItem("client_secret", res.client_secret);
-        localStorage.setItem("domain", searchDomain);
+        sessionStorage.setItem("client_id", res.client_id);
+        sessionStorage.setItem("client_secret", res.client_secret);
+        sessionStorage.setItem("domain", searchDomain);
         Cookies.set("domain", searchDomain);
         window.location.href = authUrl;
       },
@@ -102,9 +102,9 @@ const SignInWithMastodon = ({
       onSuccess: (res) => {
         if (res?.access_token) {
           setToken(res.access_token, { isSignup: false });
-          localStorage.removeItem("client_id");
-          localStorage.removeItem("client_secret");
-          localStorage.removeItem("domain");
+          sessionStorage.removeItem("client_id");
+          sessionStorage.removeItem("client_secret");
+          sessionStorage.removeItem("domain");
           toast.success(t("toast.signin_success"));
           router.refresh();
           router.replace("/");
