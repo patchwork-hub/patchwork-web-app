@@ -78,7 +78,7 @@ export const Schedules = () => {
         </DialogHeader>
         {isLoading ? (
           <div className="text-foreground">Loading...</div>
-        ) : !scheduleData || (scheduleData && scheduleData.length === 0) ? (
+        ) : !scheduleData || (Array.isArray(scheduleData) && scheduleData?.length === 0) ? (
           <div className="text-foreground text-center flex flex-col items-center space-y-4 justify-center">
             <p>{t("compose.schedule.no_schedule")}</p>
             <Button
