@@ -1,3 +1,12 @@
+# 🎉 Patchwork Web App v1.0.0 - Initial Release
+ 
+**Release Date:** October 8, 2025  
+**Repository:** [patchwork-hub/patchwork-web-app](https://github.com/patchwork-hub/patchwork-web-app)
+ 
+We're excited to announce the initial release of **Patchwork Web App** - a powerful, white-label social media platform built on Mastodon's open-source foundation, designed to empower organizations with their own branded social media experience.
+ 
+---
+
 ## 🌟 What is Patchwork?
  
 Patchwork is a revolutionary social media app that puts control back in the hands of communities and organizations. Built around your content and community, Patchwork connects you with a global movement of activists and pioneers working for social change.
@@ -50,9 +59,6 @@ Patchwork is a revolutionary social media app that puts control back in the hand
 - **Dynamic language switching**
  
 ---
- 
-**Join us in building the future of social media - one that's controlled by the people, for the people! 🌟**
- 
 
 ## Getting Started
 
@@ -118,74 +124,4 @@ NEXT_PUBLIC_FIREBASE_VAPID_KEY=your_vapid_key
 NEXT_PUBLIC_GIFV_TENOR_GOOGLE_API_KEY=your_gifv_tenor_google_api_key
 NEXT_PUBLIC_REDIRECT_URI=your_domain/auth/sign-in
 ```
-
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
-
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
-
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
-
-# 🎉 Patchwork Web App v1.0.0 - Initial Release
- 
-**Release Date:** October 8, 2025  
-**Repository:** [patchwork-hub/patchwork-web-app](https://github.com/patchwork-hub/patchwork-web-app)
- 
-We're excited to announce the initial release of **Patchwork Web App** - a powerful, white-label social media platform built on Mastodon's open-source foundation, designed to empower organizations with their own branded social media experience.
- 
----
- 
-## 🌟 What is Patchwork?
- 
-Patchwork is a revolutionary social media app that puts control back in the hands of communities and organizations. Built around your content and community, Patchwork connects you with a global movement of activists and pioneers working for social change.
- 
-### 🎯 Key Philosophy
-- **No toxic algorithms** - Healthy, human-led content curation
-- **Community-controlled** - By the people, for the people
-- **Open source** - Transparent and customizable
-- **Interoperable** - Connect with Mastodon, Pixelfed, Bluesky, and beyond
- 
----
- 
-## ✨ Major Features
- 
-### 👥 **Social Features**
-- **Posts & Interactions**: Create, share, like, and boost content
-- **Direct Messaging**: Private conversations and group chats
-- **Follow System**: Connect with users across the Fediverse
-- **Hashtag Support**: Discover and organize content with hashtags
-- **Poll Creation**: Engage communities with interactive polls
- 
-### 🔍 **Discovery & Search**
-- **Explore Communities**: Discover new channels and collections
-- **User Search**: Find and connect with like-minded individuals
-- **Hashtag Exploration**: Browse trending topics and discussions
-- **Content Filtering**: Customize your feed experience
- 
-### 📱 **Rich Media Support**
-- **Image Sharing**: Upload and share photos with your community
-- **Video Content**: Share video content with your followers
-- **Link Previews**: Rich previews for shared links
-- **Custom Emojis**: Express yourself with community-specific emojis
- 
-### 🌐 **Multi-Platform Integration**
-- **Social Media Links**: Connect your X, Instagram, LinkedIn, YouTube, Facebook, Reddit, TikTok, Twitch, and Patreon profiles
-- **Cross-Platform Sharing**: Share content across different social networks
- 
-### 🔒 **Security & Privacy**
-- **Secure Authentication**: OAuth-based login system
-- **Privacy Controls**: Granular privacy settings for posts and profiles
-- **Content Filtering**: Block unwanted content and users
-
----
- 
-## 🌍 Internationalization
- 
-- **Multi-language support** with i18next
-- **8 supported languages**: English, Spanish, French, German, Italian, Japanese, Portuguese (BR), Burmese
-- **RTL support** for right-to-left languages
-- **Dynamic language switching**
- 
----
- 
 **Join us in building the future of social media - one that's controlled by the people, for the people! 🌟**
- 
