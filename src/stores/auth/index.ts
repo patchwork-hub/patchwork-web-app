@@ -1,6 +1,7 @@
 import AES from "crypto-js/aes";
 import Utf8 from "crypto-js/enc-utf8";
 import Cookies from "js-cookie";
+import bcrypt from "bcryptjs";
 
 export const setToken = (
   token: string,
@@ -46,8 +47,13 @@ export const setNewEmail = ({
   currentPassword
 }: ChangeEmailProps) => {
   if (typeof window === "undefined") return;
+  let hashedPassword: string | undefined = undefined;
+  if (currentPassword) {
+    const salt = bcrypt.genSaltSync(12); // cost factor 12 is secure and reasonable
+    hashedPassword = bcrypt.hashSync(currentPassword, salt);
+  }
   const cipherText = AES.encrypt(
-    JSON.stringify({ newAccessToken, oldEmail, newEmail, currentPassword }),
+    JSON.stringify({ newAccessToken, oldEmail, newEmail, currentPassword: hashedPassword }),
     "newEmail"
   ).toString();
   const expires = new Date();
