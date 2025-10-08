@@ -6,7 +6,7 @@ import { DEFAULT_API_URL } from "@/utils/constant";
 import { useQueryClient } from "@tanstack/react-query";
 import Cookies from "js-cookie";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useCallback, useEffect } from "react";
 import SidebarNavigator from "../molecules/SidebarNavigator";
 import RightSidebar from "../molecules/RightSidebar";
 import { useTheme } from "next-themes";
@@ -41,13 +41,13 @@ export default function LayoutContainer({
 
   const queryClient = useQueryClient();
 
-  const handleLogout = async () => {
+  const handleLogout = useCallback(async () => {
     setAuthToken("");
     localStorage.removeItem("fcmToken");
     removeToken();
     queryClient.clear();
     router.refresh();
-  };
+  }, [setAuthToken, queryClient, router]);
   const { isOpen, account, status, closeDialog } = useReportDialogStore();
 
   useEffect(() => {
@@ -66,7 +66,15 @@ export default function LayoutContainer({
     } else {
       handleLogout();
     }
-  }, [token, domain, isLoading, authState, setAuthToken]);
+  }, [
+    token,
+    domain,
+    isLoading,
+    authState,
+    setAuthToken,
+    handleLogout,
+    setUserInfo,
+  ]);
 
   useEffect(() => {
     if (preferences && !isPreferencesLoading) {
@@ -76,7 +84,7 @@ export default function LayoutContainer({
         ] as Locale
       );
     }
-  }, [preferences]);
+  }, [preferences, isPreferencesLoading, setLocale]);
 
   useCustomEmojis();
 

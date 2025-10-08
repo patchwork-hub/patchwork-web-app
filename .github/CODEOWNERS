@@ -1,0 +1,34 @@
+# Global owners - these users will be requested for review on all PRs
+* @patchwork-hub
+
+# Frontend components and UI
+/src/components/ @patchwork-hub
+/src/app/ @patchwork-hub
+
+# API routes and backend logic
+/src/app/api/ @patchwork-hub
+/src/services/ @patchwork-hub
+
+# Configuration and build files
+package.json @patchwork-hub
+pnpm-lock.yaml @patchwork-hub
+tsconfig.json @patchwork-hub
+next.config.ts @patchwork-hub
+tailwind.config.* @patchwork-hub
+eslint.config.* @patchwork-hub
+
+# CI/CD and GitHub configuration
+/.github/ @patchwork-hub
+
+# Documentation
+*.md @patchwork-hub
+/docs/ @patchwork-hub
+
+# Tests
+/src/tests/ @patchwork-hub
+**/*.test.* @patchwork-hub
+**/*.spec.* @patchwork-hub
+
+# Security and environment files
+.env* @patchwork-hub
+/src/lib/auth/ @patchwork-hub

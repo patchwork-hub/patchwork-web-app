@@ -47,7 +47,7 @@ export const GifvModal = ({
 
   useEffect(() => {
     refetch();
-  }, [debounced]);
+  }, [debounced, refetch]);
 
   const loadMoreRef = useInfiniteScroll(() => {
     if (hasNextPage && !isFetchingNextPage) {

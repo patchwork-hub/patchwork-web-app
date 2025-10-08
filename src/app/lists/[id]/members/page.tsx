@@ -12,7 +12,6 @@ import {
   useRemoveAccountFromList,
 } from "@/hooks/mutations/lists/useAddAccountToList";
 import { useFollowAccount } from "@/hooks/mutations/status/useFollowAccount";
-import { useCheckAccountRelationship } from "@/hooks/queries/status/useCheckAccountRelationship";
 import { useAccountsInList } from "@/hooks/queries/useAccountsInList.query";
 import { useSearchAccounts } from "@/hooks/queries/useSearchMembers";
 import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
@@ -65,16 +64,6 @@ export default function ListMember({
     searchTerm,
     searchTriggered
   );
-  const accountIds = searchList?.accounts?.map((account) => account.id) || [];
-  const queryString = accountIds
-    .map((id) => `id[]=${id}`)
-    .join("&")
-    .replace(/^id\[\]=/, "");
-
-  const { data: relationships } = useCheckAccountRelationship({
-    id: queryString,
-    enabled: accountIds.length > 0,
-  });
   
   const handleToggleListMember = (acc: Account, type: string) => {
     if (type === "add") {

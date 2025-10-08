@@ -5,18 +5,19 @@ import * as PopoverPrimitive from "@radix-ui/react-popover";
 
 import { cn } from "@/lib/utils";
 
-function Popover({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Root>) {
+// CORRECTED VERSION
+function Popover(props: React.ComponentProps<typeof PopoverPrimitive.Root>) {
   return <PopoverPrimitive.Root data-slot="popover" {...props} />;
 }
 
-function PopoverTrigger({
-  ...props
-}: React.ComponentProps<typeof PopoverPrimitive.Trigger>) {
+// CORRECTED VERSION
+function PopoverTrigger(
+  props: React.ComponentProps<typeof PopoverPrimitive.Trigger>
+) {
   return <PopoverPrimitive.Trigger data-slot="popover-trigger" {...props} />;
 }
 
+// This was already correct, but included for completeness
 function PopoverContent({
   className,
   align = "center",

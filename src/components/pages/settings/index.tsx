@@ -14,7 +14,6 @@ import { useLocale } from "@/providers/localeProvider";
 import { queryClient } from "@/providers/queryProvider";
 import { Schedules } from "@/components/organisms/compose/tools/Schedules";
 import LanguageSwitcher from "@/components/organisms/locale/LanguageSwitcher";
-import { useDeleteAccount } from "@/hooks/mutations/auth/useDeleteAccount";
 import { useRevokeFCMToken } from "@/hooks/mutations/fcm/useRevokeFCMToken";
 import { removeToken } from "@/lib/auth";
 import { cn } from "@/lib/utils";
@@ -41,10 +40,6 @@ const SettingPage = () => {
   const [isPending, startTransition] = useTransition();
 
   const { mutateAsync: revokeFCMToken } = useRevokeFCMToken();
-  const { mutateAsync: deleteAccount, isPending: isDeleting } =
-    useDeleteAccount();
-
-  const [openDeleteDialog, setOpenDeleteDialog] = useState(false);
   const [openLogoutDialog, setOpenLogoutDialog] = useState(false);
 
   const handleLogout = async () => {

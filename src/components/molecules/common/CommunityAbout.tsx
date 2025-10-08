@@ -15,7 +15,7 @@ import { useTheme } from "next-themes";
 import { cn } from "@/lib/utils";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
-import { ChannelAbout, ChannelDetail, ChannelList } from "@/types/patchwork";
+import { ChannelAbout, ChannelList } from "@/types/patchwork";
 import { useLocale } from "@/providers/localeProvider";
 
 type ContributorAccount = CommunityAccountResponse["contributors"][number];

@@ -13,10 +13,7 @@ import { FC, useState } from "react";
 import MessageInput from "../compose/MessageInput";
 import { useCustomEmojiStore } from "../compose/store/useCustomEmojiStore";
 import Status from "./Status";
-import { useVerifyAuthToken } from "@/hooks/queries/useVerifyAuthToken.query";
-import { useTheme } from "next-themes";
 import { useLocale } from "@/providers/localeProvider";
-import { isSystemDark } from "@/utils/helper/helper";
 import { Visibility } from "@/types/preferences";
 
 type ContextProps = {

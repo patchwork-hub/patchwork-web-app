@@ -64,7 +64,7 @@ const NotificationsPage = () => {
         });
       }
     }
-  }, [message]);
+  }, [message, activeTab, queryClient]);
 
   useEffect(() => {
     if (message) {
@@ -72,7 +72,7 @@ const NotificationsPage = () => {
         setMessage('');
       }, 0);
     }
-  }, []);
+  }, [message, setMessage]);
 
   return (
     <div className="pb-16 sm:pb-4">

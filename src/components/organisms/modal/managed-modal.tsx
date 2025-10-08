@@ -1,5 +1,4 @@
 "use client";
-import { useRouter } from "next/navigation";
 import ComposeForm from "../compose/form/ComposeForm";
 import Modal from "./modal";
 import { useModalAction, useModalState } from "./modal.context";

@@ -17,7 +17,7 @@ export function useCustomEmojis() {
             setEmojis(data);
         }
         setLoading(isLoading);
-    }, [data, isLoading]);
+    }, [data, isLoading, setEmojis, setLoading]);
 
     return {
         data, isLoading, ...rest

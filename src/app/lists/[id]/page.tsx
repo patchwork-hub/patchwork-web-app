@@ -15,7 +15,7 @@ export default function ListDetail({
 }) {
   const { id } = use(params);
   const { domain_name: activeDomain } = useActiveDomainStore();
-  const { data: list, isLoading } = useSingleList({
+  const { data: list } = useSingleList({
     id,
     domain_name: activeDomain,
   });

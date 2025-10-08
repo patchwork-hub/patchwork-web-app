@@ -2,7 +2,7 @@
 import React from "react";
 import { ThemeText } from "./ThemeText";
 import { useLocale } from "@/providers/localeProvider";
-import { ChannelAbout, ChannelDetail } from "@/types/patchwork";
+import { ChannelDetail } from "@/types/patchwork";
 
 
 type Props = {

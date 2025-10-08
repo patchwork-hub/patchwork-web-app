@@ -14,7 +14,6 @@ import { ChevronDown } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
-import { useTheme } from "next-themes";
 import { useLocale } from "@/providers/localeProvider";
 import { Input } from "@/components/atoms/ui/input";
 import z from "zod";
@@ -23,7 +22,6 @@ import PrimaryButton from "@/components/molecules/common/PrimaryButton";
 import Toggle from "@/components/molecules/common/ToggleButton";
 
 export default function ListCreateForm() {
-  const { theme } = useTheme();
   const {t} = useLocale();
   const tString = useTString();
   const schemas = createSchemas(tString);
@@ -33,7 +31,6 @@ export default function ListCreateForm() {
     handleSubmit,
     formState: { errors },
     reset,
-    watch,
   } = useForm<z.infer<typeof schemas.listSchema>>({
       resolver: zodResolver(schemas.listSchema),
       defaultValues: {

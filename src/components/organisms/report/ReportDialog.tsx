@@ -106,7 +106,7 @@ export const ReportDialog: React.FC<ReportDialogProps> = ({
                 className="divide-y divide-gray-700 gap-0"
               >
                 {Object.entries(reportOptions).map(
-                  ([key, _]) => (
+                  ([key]) => (
                     <div key={key} className="flex items-center space-x-2 py-2">
                       <RadioGroupItem value={key} id={key} />
                       <Label

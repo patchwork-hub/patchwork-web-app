@@ -15,7 +15,6 @@ import { useRouter } from "next/navigation";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 import { Button } from "../../atoms/ui/button";
-import { useLocale } from "@/providers/localeProvider";
 import { z } from "zod";
 import { useTString } from "@/lib/tString";
 import { useChangePasswordMutation } from "@/hooks/mutations/auth/useChangePassword";
@@ -25,7 +24,6 @@ const ChangePasswordForm = ({
   ...props
 }: React.ComponentPropsWithoutRef<"div">) => {
   const router = useRouter();
-  const { t } = useLocale();
   const tString = useTString();
   const schemas = createSchemas(tString);
 

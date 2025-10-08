@@ -13,7 +13,7 @@ import { Trash2 } from "lucide-react";
 import { Badge } from "@/components/atoms/ui/badge";
 import { Input } from "@/components/atoms/ui/input";
 import { cn } from "@/lib/utils";
-import { DialogTitle } from "@radix-ui/react-dialog";
+import { DialogDescription, DialogTitle } from "@radix-ui/react-dialog";
 import { ThemeText } from "@/components/molecules/common/ThemeText";
 
 type SocialMediaLink = {
@@ -116,6 +116,8 @@ const SocialLinks: React.FC<SocialLinksProps> = ({
             )}
           </DialogTitle>
         </DialogHeader>
+        <DialogDescription className="sr-only">
+        </DialogDescription>
         {selectedLink ? (
           <div className="space-y-4">
             <Badge className="w-auto h-8 rounded-full bg-gray-300 text-gray-600">
