@@ -1,127 +1,334 @@
-# 🎉 Patchwork Web App v1.0.0 - Initial Release
- 
-**Release Date:** October 8, 2025  
-**Repository:** [patchwork-hub/patchwork-web-app](https://github.com/patchwork-hub/patchwork-web-app)
- 
-We're excited to announce the initial release of **Patchwork Web App** - a powerful, white-label social media platform built on Mastodon's open-source foundation, designed to empower organizations with their own branded social media experience.
- 
+# � Patchwork Web App
+
+![Build Status](https://github.com/patchwork-hub/patchwork-web-app/workflows/CI/badge.svg)
+![CodeQL](https://github.com/patchwork-hub/patchwork-web-app/workflows/CodeQL%20Security%20Analysis/badge.svg)
+![Tests](https://github.com/patchwork-hub/patchwork-web-app/workflows/Tests/badge.svg)
+![License](https://img.shields.io/github/license/patchwork-hub/patchwork-web-app)
+![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
+
+**A revolutionary social media platform built on Mastodon's open-source foundation, designed to empower communities and organizations with their own branded social media experience.**
+
 ---
 
 ## 🌟 What is Patchwork?
- 
-Patchwork is a revolutionary social media app that puts control back in the hands of communities and organizations. Built around your content and community, Patchwork connects you with a global movement of activists and pioneers working for social change.
- 
-### 🎯 Key Philosophy
-- **No toxic algorithms** - Healthy, human-led content curation
-- **Community-controlled** - By the people, for the people
-- **Open source** - Transparent and customizable
-- **Interoperable** - Connect with Mastodon, Pixelfed, Bluesky, and beyond
- 
----
- 
-## ✨ Major Features
- 
-### 👥 **Social Features**
-- **Posts & Interactions**: Create, share, like, and boost content
-- **Direct Messaging**: Private conversations and group chats
-- **Follow System**: Connect with users across the Fediverse
-- **Hashtag Support**: Discover and organize content with hashtags
-- **Poll Creation**: Engage communities with interactive polls
- 
-### 🔍 **Discovery & Search**
-- **Explore Communities**: Discover new channels and collections
-- **User Search**: Find and connect with like-minded individuals
-- **Hashtag Exploration**: Browse trending topics and discussions
-- **Content Filtering**: Customize your feed experience
- 
-### 📱 **Rich Media Support**
-- **Image Sharing**: Upload and share photos with your community
-- **Video Content**: Share video content with your followers
-- **Link Previews**: Rich previews for shared links
-- **Custom Emojis**: Express yourself with community-specific emojis
- 
-### 🌐 **Multi-Platform Integration**
-- **Social Media Links**: Connect your X, Instagram, LinkedIn, YouTube, Facebook, Reddit, TikTok, Twitch, and Patreon profiles
-- **Cross-Platform Sharing**: Share content across different social networks
- 
-### 🔒 **Security & Privacy**
-- **Secure Authentication**: OAuth-based login system
-- **Privacy Controls**: Granular privacy settings for posts and profiles
-- **Content Filtering**: Block unwanted content and users
+
+Patchwork is a powerful, white-label social media app that puts control back in the hands of communities. Built around your content and community, Patchwork connects you with a global movement working for positive social change.
+
+### ✨ Key Features
+
+- 🚀 **Modern Tech Stack**: Next.js 15, TypeScript, Tailwind CSS v4
+- ⚡ **Lightning Fast**: Turbopack for instant development builds
+- 🔒 **Security First**: CodeQL scanning, automated security updates
+- 🌍 **Global Ready**: Multi-language support (8 languages)
+- 🔗 **Federated**: Connect with Mastodon, Pixelfed, Bluesky, and more
+- 🧪 **Well Tested**: Comprehensive test suite with 39+ tests
 
 ---
- 
-## 🌍 Internationalization
- 
-- **Multi-language support** with i18next
-- **8 supported languages**: English, Spanish, French, German, Italian, Japanese, Portuguese (BR), Burmese
-- **RTL support** for right-to-left languages
-- **Dynamic language switching**
- 
+
+## 📋 Prerequisites
+
+This project requires three main components to be set up:
+
+1. **Mastodon Instance** - The federated social network backend
+2. **Patchwork Dashboard** - Admin dashboard for managing the platform
+3. **Patchwork Web App** - This frontend application
+
+### **System Requirements**
+- **Node.js** 18.x or 20.x
+- **Package Manager**: npm, yarn, or pnpm
+- **Docker** (for Patchwork Dashboard)
+- **Git** for version control
+
 ---
 
-## Getting Started
+## 🚀 Complete Setup Guide
 
-First, run the development server:
+### **Step 1: Set Up Mastodon Instance**
+
+Patchwork requires a Mastodon instance as the backend. You have two options:
+
+#### **Option A: Use Existing Mastodon Instance**
+- Use a public instance like `mastodon.social` or `channel.org`
+- Create an account and proceed to OAuth setup
+
+#### **Option B: Self-Host Mastodon (Recommended for Production)**
+
+Follow the official Mastodon documentation:
 
 ```bash
+# Follow the complete installation guide
+# https://docs.joinmastodon.org/admin/install/
+```
+
+**Key steps:**
+1. **Server Setup**: Ubuntu 22.04 LTS with at least 2GB RAM
+2. **Dependencies**: Install Ruby, Node.js, PostgreSQL, Redis, Nginx
+3. **Mastodon Installation**: Clone and configure Mastodon
+4. **Domain Configuration**: Set up SSL certificates
+5. **Admin Account**: Create initial admin user
+
+**📖 Official Guide**: [Mastodon Installation Documentation](https://docs.joinmastodon.org/admin/install/)
+
+### **Step 2: Set Up Patchwork Dashboard**
+
+The Patchwork Dashboard provides admin functionality for managing your platform.
+
+#### **Using Docker (Recommended)**
+
+```bash
+# Pull the latest Patchwork Dashboard image
+docker pull patchworkhub/patchwork-dashboard:latest
+
+# Run the dashboard container
+docker run -d \
+  --name patchwork-dashboard \
+  -p 8080:80 \
+  -e API_URL=https://your-mastodon-instance.com \
+  -e DASHBOARD_SECRET=your-secret-key \
+  patchworkhub/patchwork-dashboard:latest
+```
+
+#### **From Source**
+
+```bash
+# Clone the dashboard repository
+git clone https://github.com/patchwork-hub/patchwork_dashboard.git
+cd patchwork_dashboard
+
+# Install dependencies
+npm install
+# or
+yarn install
+# or
+pnpm install
+
+# Build and run
+npm run build
+npm start
+# or
+yarn build && yarn start
+# or
+pnpm build && pnpm start
+```
+
+**📖 Dashboard Repository**: [patchwork-hub/patchwork_dashboard](https://github.com/patchwork-hub/patchwork_dashboard)
+
+### **Step 3: Configure OAuth Application**
+
+Create an OAuth application in your Mastodon instance:
+
+1. **Log in** to your Mastodon instance
+2. **Go to**: Preferences → Development → New Application
+3. **Configure**:
+   - **Application name**: `Patchwork Web App`
+   - **Website**: `https://your-domain.com`
+   - **Redirect URI**: `https://your-domain.com/auth/sign-in`
+   - **Scopes**: `read write follow push`
+4. **Save** and note the **Client ID** and **Client Secret**
+
+### **Step 4: Set Up Patchwork Web App**
+
+#### **Development Setup**
+
+```bash
+# Clone this repository
+git clone https://github.com/patchwork-hub/patchwork-web-app.git
+cd patchwork-web-app
+
+# Install dependencies (choose one)
+npm install
+# or
+yarn install
+# or
+pnpm install
+
+# Copy environment template
+cp .env.sample .env.local
+
+# Edit environment variables (see configuration below)
+nano .env.local
+
+# Start development server
 npm run dev
 # or
 yarn dev
 # or
 pnpm dev
-# or
-bun dev
 ```
 
-# 🚀 Setup Instructions
-
----
-
-## 1. Mastodon OAuth Setup
-
-1. Go to your **Mastodon instance** → **Preferences** → **Development**.
-2. Click "**New Application**."
-3. Set the **Application Name** and **Redirect URI** to match your `NEXT_PUBLIC_REDIRECT_URI`.
-4. Copy the generated **Client ID** and **Client Secret**. (You will typically store these in your environment variables).
-
----
-
-## 2. Firebase Setup (Optional)
-
-1. Create a project at the [Firebase Console](https://console.firebase.google.com/).
-2. Enable **Authentication**, **Firestore**, and **Cloud Messaging**.
-3. Copy the configuration details from **Project Settings** → **General** → **Your apps**.
-
----
-
-## 3. Tenor API Setup (Optional)
-
-1. Go to the [Google Cloud Console](https://console.cloud.google.com/).
-2. Enable the **Tenor API** for your project.
-3. Create an **API key** and restrict it to the **Tenor API** service for security.
+#### **Production Setup**
 
 ```bash
-# API Configuration
-NEXT_PUBLIC_API_URL=your_domain
-NEXT_PUBLIC_DASHBOARD_API_URL=your_dashboard_domain
+# Clone and install
+git clone https://github.com/patchwork-hub/patchwork-web-app.git
+cd patchwork-web-app
 
-# OAuth (get from your Mastodon instance)
-NEXT_PUBLIC_CLIENT_ID=your_mastodon_client_id
-NEXT_PUBLIC_CLIENT_SECRET=your_mastodon_client_secret
+# Install dependencies
+npm ci --production
+# or
+yarn install --production
+# or
+pnpm install --production
 
-# Firebase (optional for push notifications)
-NEXT_PUBLIC_FIREBASE_API_KEY=your_api_key
-NEXT_PUBLIC_FIREBASE_AUTH_DOMAIN=your-project.firebaseapp.com
-NEXT_PUBLIC_FIREBASE_PROJECT_ID=your_project_id
-NEXT_PUBLIC_FIREBASE_STORAGE_BUCKET=your-project.appspot.com
-NEXT_PUBLIC_FIREBASE_MESSAGING_SENDER_ID=your_sender_id
-NEXT_PUBLIC_FIREBASE_APP_ID=your_app_id
-NEXT_PUBLIC_FIREBASE_MEASUREMENT_ID=your_measurement_id
-NEXT_PUBLIC_FIREBASE_VAPID_KEY=your_vapid_key
+# Copy and configure environment
+cp .env.sample .env
+nano .env
 
-# Development
-NEXT_PUBLIC_GIFV_TENOR_GOOGLE_API_KEY=your_gifv_tenor_google_api_key
-NEXT_PUBLIC_REDIRECT_URI=your_domain/auth/sign-in
+# Build the application
+npm run build
+# or
+yarn build
+# or
+pnpm build
+
+# Start production server
+npm start
+# or
+yarn start
+# or
+pnpm start
 ```
-**Join us in building the future of social media - one that's controlled by the people, for the people! 🌟**
+
+---
+
+## ⚙️ Environment Configuration
+
+### **Required Environment Variables**
+
+Copy the sample environment file:
+
+```bash
+cp .env.sample .env.local  # For development
+# or
+cp .env.sample .env        # For production
+```
+
+## 📜 Available Scripts
+
+| Command | Description |
+|---------|-------------|
+| `npm run dev` / `yarn dev` / `pnpm dev` | Start development server |
+| `npm run build` / `yarn build` / `pnpm build` | Build for production |
+| `npm start` / `yarn start` / `pnpm start` | Start production server |
+| `npm run lint` / `yarn lint` / `pnpm lint` | Run ESLint |
+| `npm test` / `yarn test` / `pnpm test` | Run test suite |
+| `npm run type-check` / `yarn type-check` / `pnpm type-check` | TypeScript checking |
+
+---
+
+## 🏗️ Architecture Overview
+
+```
+┌─────────────────┐    ┌──────────────────┐    ┌─────────────────┐
+│  Patchwork      │    │    Mastodon      │    │   Patchwork     │
+│  Web App        │◄──►│    Instance      │◄──►│   Dashboard     │
+│  (Frontend)     │    │   (Backend)      │    │   (Admin)       │
+└─────────────────┘    └──────────────────┘    └─────────────────┘
+```
+
+- **Patchwork Web App**: Next.js frontend application (this repository)
+- **Mastodon Instance**: Federated social network backend
+- **Patchwork Dashboard**: Admin interface for platform management
+
+---
+
+## 🔧 Deployment
+
+### **Development**
+```bash
+# Start all services locally
+npm run dev        # Web app on :3000
+# Mastodon on :3000 (if self-hosted)
+# Dashboard on :8080
+```
+
+### **Production**
+
+#### **Option 1: Vercel (Recommended for Web App)**
+```bash
+npm i -g vercel
+vercel --prod
+```
+
+#### **Option 2: Docker Compose**
+```yaml
+# docker-compose.yml
+version: '3.8'
+services:
+  web-app:
+    build: .
+    ports:
+      - "3000:3000"
+    environment:
+      - NODE_ENV=production
+  
+  dashboard:
+    image: patchworkhub/patchwork-dashboard:latest
+    ports:
+      - "8080:80"
+```
+
+#### **Option 3: Manual Deployment**
+```bash
+# Build and deploy manually
+npm run build
+npm start
+```
+
+---
+
+## 🧪 Testing
+
+```bash
+# Run all tests
+npm test
+# or
+yarn test
+# or
+pnpm test
+
+# Run tests with coverage
+npm run test:coverage
+# or
+yarn test:coverage
+# or
+pnpm test:coverage
+```
+
+---
+
+## 🤝 Contributing
+
+We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md) for details.
+
+1. Fork the repository
+2. Create a feature branch: `git checkout -b feature/amazing-feature`
+3. Make your changes and add tests
+4. Run the test suite: `npm test`
+5. Commit your changes: `git commit -m 'feat: add amazing feature'`
+6. Push to the branch: `git push origin feature/amazing-feature`
+7. Open a Pull Request
+
+---
+
+## 📄 License
+
+This project is licensed under the [MIT License](./LICENSE).
+
+---
+
+## 🙏 Acknowledgments
+
+- **Mastodon**: For the federated social network foundation
+- **Next.js Team**: For the incredible React framework
+- **Open Source Community**: For the amazing tools and libraries
+
+---
+
+<div align="center">
+
+**Built with ❤️ by the Patchwork Community**
+
+[Website](https://patchwork.app) • [Dashboard Repo](https://github.com/patchwork-hub/patchwork_dashboard) • [Documentation](./docs/) • [Community](https://github.com/patchwork-hub/patchwork-web-app/discussions)
+
+</div>
