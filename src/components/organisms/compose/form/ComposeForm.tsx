@@ -18,7 +18,7 @@ import { Media } from "@/types/status";
 import { format, parseISO } from "date-fns";
 import { ImageIcon, ListIcon, Square, SquareCheck, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useReducer, useState } from "react";
+import { useCallback, useEffect, useReducer, useState } from "react";
 import { CircularProgressbar } from "react-circular-progressbar";
 import "react-circular-progressbar/dist/styles.css";
 import { IoWarningOutline } from "react-icons/io5";
@@ -107,11 +107,11 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
   const [selectedHashtags, setSelectedHashtags] = useState<
     Array<{ hashtag: string; communityId: string }>
   >([]);
-  const [longPost, setLongPost] = useState(false);
+  const [longPost] = useState(false);
   const { userOriginInstance } = useAuthStore();
   const { theme } = useTheme();
   const [showCommuityList, setShowCommunityList] = useState(false);
-  const [selectedCommunities, setSelectedCommunities] = useState([]);
+  const [selectedCommunities] = useState([]);
   const max_characters = server?.configuration?.statuses?.max_characters;
 
   const [totalCharCount, setTotalCharCount] = useState(
@@ -181,7 +181,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     removeDraft,
     draft,
     setSaveAsDraftModalOpen,
-    setNavigateAction,
     setIsDirty,
   } = useDraftStore();
   const { removeSchedule, schedule } = useScheduleStore();
@@ -194,38 +193,48 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     return () => {
       setIsDirty(false);
     };
-  }, [isDirty]);
+  }, [isDirty, setIsDirty]);
 
   const router = useRouter();
 
-  const uploadFiles = async (files: File[]) => {
-    const indices = files.map(() => true);
-    setUploading(indices);
-    const media_res = await Promise.all(
-      files.map(async (file, idx) => {
-        const media = await uploadMedia({ file, description: "" });
-        indices[idx] = false;
-        setUploading([...indices]);
-        return media;
-      })
-    );
-    setMedia(media_res);
-  };
+ const uploadFiles = useCallback(async (files: File[]) => {
+  const indices = files.map(() => true);
+  setUploading(indices);
+  const media_res = await Promise.all(
+    files.map(async (file, idx) => {
+      const media = await uploadMedia({ file, description: "" });
+      indices[idx] = false;
+      setUploading([...indices]);
+      return media;
+    })
+  );
+  setMedia(media_res);
+}, [setUploading, setMedia, uploadMedia]);
 
-  const resetForm = () => {
-    if (editor) {
-      editor.commands.clearContent();
-    }
-    setDate(undefined);
-    dispatch({ type: "RESET_FORM" });
-    resetImages();
-    setLanguage("en");
-    setPollOptions(POLL_INITIAL.options);
-    setPollChoiceType(POLL_INITIAL.multiple ? "multiple" : "single");
-    setPollDuration(POLL_INITIAL.expires_in);
-    dispatch({ type: "TOGGLE_POLL_FORM", payload: false });
-    setPreview(undefined);
-  };
+  const resetForm = useCallback(() => {
+  if (editor) {
+    editor.commands.clearContent();
+  }
+  setDate(undefined);
+  dispatch({ type: "RESET_FORM" });
+  resetImages();
+  setLanguage("en");
+  setPollOptions(POLL_INITIAL.options);
+  setPollChoiceType(POLL_INITIAL.multiple ? "multiple" : "single");
+  setPollDuration(POLL_INITIAL.expires_in);
+  dispatch({ type: "TOGGLE_POLL_FORM", payload: false });
+  setPreview(undefined);
+}, [
+  editor,
+  setDate,
+  dispatch,
+  resetImages,
+  setLanguage,
+  setPollOptions,
+  setPollChoiceType,
+  setPollDuration,
+  setPreview,
+]);
 
   const handleSave = async () => {
     if (
@@ -240,7 +249,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       return;
     }
 
-    const hashtags = getSelectedHashtags();
     const hashtagText = selectedHashtags.map((h) => `#${h.hashtag}`).join(" ");
     const currentEditorText = editor.getText().trim();
     const statusContent = hashtagText
@@ -271,7 +279,9 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
 
     onSubmit(formData).then((isSuccess) => {
       if (isSuccess) {
-        date && toast.success(t("toast.schedule_created"));
+        if(date){
+          toast.success(t("toast.schedule_created"));
+        }
         resetForm();
         if (draft) {
           deleteDraft(draft.id);
@@ -282,7 +292,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
 
   const handleSubmit = async () => {
     if (schedule) {
-      const hashtags = getSelectedHashtags();
       const hashtagText = selectedHashtags
         .map((h) => `#${h.hashtag}`)
         .join(" ");
@@ -427,7 +436,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
         controller.abort();
       };
     }
-  }, [draft, isDirty]);
+  }, [draft, isDirty, disbledDraft, editor, resetForm, setAltTexts, setIsSensitive, setLanguage, setMedia, setMediaLocalUrls, setPollChoiceType, setPollOptions, setVisibility]);
 
   const debouncedExtractPreview = debounce(
     (text: string, callback: (preview: LinkPreview | undefined) => void) => {
@@ -441,7 +450,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
       removeDraft();
       resetForm();
     };
-  }, []);
+  }, [ removeDraft, resetForm]);
 
   useEffect(() => {
     if (schedule) {
@@ -480,7 +489,11 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
         setPollChoiceType(POLL_INITIAL.multiple ? "multiple" : "single");
       }
     }
-  }, [schedule, editor]);
+  }, [schedule, editor, resetForm, setAltTexts, setIsSensitive, setLanguage, setMedia, setMediaLocalUrls, setPollChoiceType, setPollOptions, setVisibility]);
+  
+  const getSelectedHashtags = useCallback(() => {
+    return selectedHashtags;
+  }, [selectedHashtags]);
 
   useEffect(() => {
     const newTotalCharCount = longPost ? max_characters || 500 : 500;
@@ -539,6 +552,9 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     preview,
     editor,
     dispatch,
+    debouncedExtractPreview,
+    setPreview,
+    getSelectedHashtags
   ]);
   useEffect(() => {
     const handlePaste = async (event: ClipboardEvent) => {
@@ -575,7 +591,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     return () => {
       document.removeEventListener("paste", handlePaste);
     };
-  }, [uploadFiles, mediaLocalUrls]);
+  }, [uploadFiles, mediaLocalUrls, setMediaLocalUrls]);
 
   const handleCloseModal = () => {
     if (isDirty && !disbledDraft) {
@@ -586,7 +602,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
   };
 
   const onConfirmSaveAsDraft = () => {
-    handleSaveDraft().then((_) => {
+    handleSaveDraft().then(() => {
       toast.success(t("tosat.saved_draft"));
     });
   };
@@ -622,10 +638,6 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     }
   };
 
-  const getSelectedHashtags = () => {
-    return selectedHashtags;
-  };
-
   const handleSelectAll = () => {
     if (
       selectedHashtags.length ===
@@ -659,38 +671,11 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     }
   };
 
-  const getCommunityButtonText = () => {
-    if (selectedHashtags.length === 0) return "Channel name";
-
-    const communityHashtags = selectedHashtags.filter(
-      (h) => h.communityId !== "default"
-    );
-
-    if (communityHashtags.length === 0) {
-      return "Default hashtags";
-    }
-
-    const communityIds = [
-      ...new Set(communityHashtags.map((h) => h.communityId)),
-    ];
-    const totalCommunities = favouriteChannelLists?.length || 0;
-
-    if (communityIds.length === totalCommunities) return "All communities";
-
-    const firstCommunity = favouriteChannelLists?.find(
-      (c) => c.id === communityIds[0]
-    );
-    const firstName = firstCommunity?.attributes.name || "Community";
-
-    if (communityIds.length === 1) return firstName;
-
-    return `${firstName} +${communityIds.length - 1} more`;
-  };
   useEffect(() => {
     const hashtags = getSelectedHashtags();
     const hashtagText = hashtags.map((h) => `#${h.hashtag}`).join(" ");
     dispatch({ type: "SET_CHAR_COUNT", payload: hashtagText.length });
-  }, [selectedCommunities, dispatch]);
+  }, [selectedCommunities, dispatch, getSelectedHashtags, selectedHashtags]);
 
   const buttonText =
     selectedHashtags.length ===
@@ -713,7 +698,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
         payload: state.charCount + hashtagLength + 1,
       });
     }
-  }, [selectedHashtags]);
+  }, [selectedHashtags, state.charCount]);
 
   useEffect(() => {
     const contentToParse = draft?.params?.text || defaultContent;
@@ -791,7 +776,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     if (!arraysEqual(extractedHashtags, selectedHashtags)) {
       setSelectedHashtags(extractedHashtags);
     }
-  }, [draft, defaultContent, favouriteChannelLists, isEditMode, editor]);
+  }, [draft, defaultContent, favouriteChannelLists, isEditMode, editor, selectedHashtags, setSelectedHashtags]);
   function arraysEqual(a: HashtagWithCommunity[], b: HashtagWithCommunity[]) {
     return (
       a.length === b.length &&
@@ -1144,7 +1129,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
               isUpdatingSchedule
             }
             onClick={() => {
-              handleSaveDraft().then((_) => {
+              handleSaveDraft().then(() => {
                 toast.success(t("toast.saved_draft"));
                 router.push("/home");
                 closeModal();

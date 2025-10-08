@@ -14,9 +14,12 @@ vi.mock("@/providers/localeProvider", () => ({
   }),
 }));
 
-
 vi.mock("@/components/atoms/ui/button", () => ({
-  Button: ({ children, onClick, disabled }: any) => (
+  Button: ({ children, onClick, disabled }: { 
+    children: React.ReactNode; 
+    onClick?: () => void; 
+    disabled?: boolean;
+  }) => (
     <button onClick={onClick} disabled={disabled}>
       {children}
     </button>
@@ -24,7 +27,11 @@ vi.mock("@/components/atoms/ui/button", () => ({
 }));
 
 vi.mock("@/components/atoms/ui/input", () => ({
-  Input: ({ value, onChange, placeholder }: any) => (
+  Input: ({ value, onChange, placeholder }: { 
+    value: string; 
+    onChange: (event: React.ChangeEvent<HTMLInputElement>) => void; 
+    placeholder?: string;
+  }) => (
     <input
       value={value}
       onChange={onChange}
@@ -36,11 +43,11 @@ vi.mock("@/components/atoms/ui/input", () => ({
 
 
 vi.mock("@/components/atoms/ui/select", () => ({
-  Select: ({ children }: any) => <div>{children}</div>,
-  SelectTrigger: ({ children }: any) => <div>{children}</div>,
-  SelectValue: ({ placeholder }: any) => <div>{placeholder}</div>,
-  SelectContent: ({ children }: any) => <div>{children}</div>,
-  SelectItem: ({ children }: any) => <div>{children}</div>,
+  Select: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SelectTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SelectValue: ({ placeholder }: { placeholder?: string }) => <div>{placeholder}</div>,
+  SelectContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  SelectItem: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
 }));
 
 describe("PollForm - Basic Tests", () => {

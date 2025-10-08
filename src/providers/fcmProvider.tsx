@@ -39,7 +39,7 @@ export const FCMProvider = ({ children }: PropsWithChildren) => {
                 setSaved(true);
             }
         }
-    }, [token, pathname, saved, domain])
+    }, [token, pathname, saved, domain, userToken, mutate]);
 
     useEffect(() => {
         if (pathname.startsWith('/auth/')) {

@@ -116,7 +116,7 @@ const ChangeEmailVerificationForm = () => {
         mutate({ id: currentSecretToken, otp_secret: value });
       }
     }
-  }, [value, mutate]);
+  }, [value, mutate, changeNewsmastEmailVerification, currentSecretToken, userOriginInstance]);
 
   return (
     <div className="space-y-4">

@@ -50,18 +50,18 @@ const SignupEmailVerification = () => {
     },
   });
 
-  const { mutate: resendCode } = useSignupOTPVerificationMutation({
-    onSuccess: (res) => {
-      // setResetToken(res.message.access_token);
-      setTimer(60);
-      setValue("");
-      toast.success(t("toast.resend_success"));
-    },
-    onError: (error) => {
-      console.error(error);
-      toast.error(t("toast.send_failure"));
-    },
-  });
+  // const { mutate: resendCode } = useSignupOTPVerificationMutation({
+  //   onSuccess: (res) => {
+  //     // setResetToken(res.message.access_token);
+  //     setTimer(60);
+  //     setValue("");
+  //     toast.success(t("toast.resend_success"));
+  //   },
+  //   onError: (error) => {
+  //     console.error(error);
+  //     toast.error(t("toast.send_failure"));
+  //   },
+  // });
 
   // const handleResendCode = () => {
   //   resendCode({ email });
@@ -80,7 +80,7 @@ const SignupEmailVerification = () => {
     if (value.length === 4 && token) {
       verifyOTP({ id: token, otp_secret: value });
     }
-  }, [value]);
+  }, [value, token, verifyOTP]);
 
   return (
     <div className="flex min-h-svh flex-col items-center justify-center gap-6 p-6 md:p-10">

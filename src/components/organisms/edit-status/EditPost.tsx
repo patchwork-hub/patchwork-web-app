@@ -4,7 +4,7 @@ import { StatusComposeFormData } from "@/components/organisms/compose/types";
 import { useEditStatus } from "@/hooks/mutations/status/useEditStatus";
 import { useGetStatus } from "@/hooks/queries/status/useGetStatus";
 import Cookies from "js-cookie";
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useMediaStore } from "@/components/organisms/compose/store/useMediaStore";
 import { useLinkStore } from "@/components/organisms/compose/store/useLinkStore";
 import { useLanguageStore } from "@/components/organisms/compose/store/useLanguageStore";
@@ -31,7 +31,11 @@ export default function EditPost() {
   const { setVisibility } = useVisibilityStore();
   const { setPollOptions, setPollChoiceType } = usePollStore();
 
-  const mediaAttachments = data?.media_attachments || [];
+  const mediaAttachments = useMemo(() => 
+    data?.media_attachments || [], 
+    [data?.media_attachments]
+  );
+
 
   useEffect(() => {
     return () => {
@@ -72,7 +76,7 @@ export default function EditPost() {
         setPollChoiceType(data.poll.multiple ? "multiple" : "single");
       }
     }
-  }, [data]);
+  }, [data, mediaAttachments, setAltTexts, setIsSensitive, setLanguage, setMedia, setMediaLocalUrls, setPollChoiceType, setPollOptions, setPreview, setVisibility]);
 
   const handleSubmit = async (formData: StatusComposeFormData) => {
     const data = await editStatusMutation.mutateAsync({

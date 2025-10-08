@@ -5,7 +5,7 @@ export const useCreateListMutation = () => {
 
   return useMutation({
     mutationFn: createList,
-    onMutate: async (newList) => {
+    onMutate: async () => {
       queryClient.invalidateQueries({ queryKey: ["lists"] });
     },
     onError: (error) => {

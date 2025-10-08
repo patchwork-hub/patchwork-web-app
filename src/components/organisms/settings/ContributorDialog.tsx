@@ -30,9 +30,7 @@ import { Info } from "lucide-react";
 import Image from "next/image";
 import { useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
-import { RelationShip } from "@/types/profile";
 import { Contributor, SearchContributorRes } from "@/types/patchwork";
-import { Account } from "@/types/account";
 
 type ContributorDialogProps = {
   isOpen: boolean;
@@ -95,7 +93,7 @@ const ContributorDialog = ({
   });
 
   const { mutate: toggleMute } = useMuteUnmuteUserMutation({
-    onSuccess: (response) => {
+    onSuccess: () => {
       const queryKey = ["search-contributor", { keyword: searchKeyword }];
       const previousData =
         queryClient.getQueryData<SearchContributorRes>(queryKey);

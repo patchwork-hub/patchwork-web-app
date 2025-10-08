@@ -31,7 +31,7 @@ export default function MyChannelsPage() {
     });
 
   const domain_name = useSelectedDomain();
-  const { data: serverInfo, isFetching: isSearching } = useSearchServerInstance(
+  const { data: serverInfo } = useSearchServerInstance(
     {
       domain: domain_name,
     }

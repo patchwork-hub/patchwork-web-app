@@ -7,7 +7,7 @@ export type ScheduleState = {
     removeSchedule: () => void;
 }
 
-export const useScheduleStore = create<ScheduleState>((set, get) => ({
+export const useScheduleStore = create<ScheduleState>((set) => ({
     schedule: undefined,
     setSchedule: (schedule) => set({ schedule }),
     removeSchedule: () => set({ schedule: undefined }),

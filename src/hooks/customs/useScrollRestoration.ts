@@ -19,7 +19,9 @@ export default function useScrollRestoration() {
 
             const scrollY = sessionStorage.getItem(url);
 
-            !isNaN(+scrollY!) && window.scrollTo(0, +scrollY!);
+            if(!isNaN(+scrollY!)){
+                 window.scrollTo(0, +scrollY!);
+            }
 
             return () => {
                 window.removeEventListener("beforeunload", beforeUnloadHandler);
@@ -31,7 +33,9 @@ export default function useScrollRestoration() {
         let scrollTimeout: number | undefined;
 
         const scrollHandler = () => {
-            scrollTimeout && clearTimeout(scrollTimeout);
+            if(scrollTimeout){
+                clearTimeout(scrollTimeout);
+            }
             scrollTimeout = window.setTimeout(() => {
                 sessionStorage.setItem(url, window.scrollY.toString());
             }, 30);
@@ -56,7 +60,9 @@ export default function useScrollRestoration() {
 
         return () => {
             controller.abort();
-            scrollTimeout && clearTimeout(scrollTimeout);
+            if(scrollTimeout){
+                clearTimeout(scrollTimeout);
+            }
         };
     }, [url]);
 }

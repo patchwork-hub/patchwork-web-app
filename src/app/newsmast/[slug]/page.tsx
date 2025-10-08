@@ -89,7 +89,7 @@ export default function Following({
     setActiveTab(tab.value);
   };
 
-  const { data: searchResults, isLoading: isSearching } = useSearchQuery({
+  const { data: searchResults } = useSearchQuery({
     query: querySlug,
     type: "accounts",
     enabled: true,

@@ -147,7 +147,7 @@ const AddChannelContentPage = () => {
           {!contributors && isLoadingContributorList && (
             <HorizontalItemRenderer
               data={[1, 2, 3]}
-              renderItem={(item) => (
+              renderItem={() => (
                 <div className="my-2 mx-3 items-center" data-testid="loader">
                   <div className="bg-slate-300 rounded-full w-[80] h-[80]"></div>
                   <div className="bg-slate-300 rounded-full w-[80] h-[10] my-2"></div>

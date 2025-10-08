@@ -1,7 +1,6 @@
 import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi } from "vitest";
 
-import { toast } from "sonner";
 import ContentTypeSwitch from "@/components/organisms/profile/ContentTypeSwitch";
 import { useChangeChannelContentType } from "@/hooks/mutations/profile/useChannelContent";
 

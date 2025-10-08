@@ -49,7 +49,7 @@ const SocialConnections: React.FC<SocialConnectionsProps> = ({
   });
 
   const { mutate } = useUserRelationshipMutation({
-    onMutate: async ({ accountId, isFollowing }) => {
+    onMutate: async ({ accountId }) => {
       await queryClient.cancelQueries({ queryKey });
 
       const previousRelationships =

@@ -5,9 +5,11 @@ import { useMutation, UseMutationOptions } from "@tanstack/react-query";
 import { AxiosError } from "axios";
 import z from "zod";
 
-const schemas = createSchemas();
+const _schemas = createSchemas();
+type SignInFormData = z.infer<typeof _schemas.SignInFormSchema>;
+
 export const useLoginEmailMutation = (
-  options?: UseMutationOptions<LoginResponse, AxiosError, z.infer<typeof schemas.SignInFormSchema>>
+  options?: UseMutationOptions<LoginResponse, AxiosError, SignInFormData>
 ) => {
   return useMutation({ mutationFn: signIn, ...options });
 };

@@ -25,5 +25,5 @@ export const useChannelFeedReOrder = <T extends ChannelList>(
     newList.unshift(movedItem);
 
     return newList;
-  }, [channelList, myChannels]);
+  }, [channelList, myChannels, isMastodonInstance]);
 };

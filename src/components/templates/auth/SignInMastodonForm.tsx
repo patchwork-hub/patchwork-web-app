@@ -145,7 +145,6 @@ const SignInWithMastodon = ({
   // Handle authorization on page load (callback from Mastodon)
   useEffect(() => {
     if (storedClientId && storedClientSecret && storedDomain) {
-      const urlParams = new URLSearchParams(window.location.search);
       if (code) {
         authorizeInstance({
           grant_type: "authorization_code",

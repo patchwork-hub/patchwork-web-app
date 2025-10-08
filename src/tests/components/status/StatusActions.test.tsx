@@ -1,4 +1,4 @@
-import { render, screen, fireEvent, act } from "@testing-library/react";
+import { render, screen, fireEvent } from "@testing-library/react";
 import { describe, it, expect, vi, beforeEach } from "vitest";
 import { Status, AccountRelationship } from "../../../types/status";
 import userEvent from "@testing-library/user-event";
@@ -115,15 +115,23 @@ Object.assign(navigator, {
 
 vi.mock("@/components/organisms/status/LoginDialog", () => ({
   default: ({
-    action,
-    status, 
-    actionType, 
-    openDialog, 
-    setOpenDialog, 
+    action, 
+    actionType,
+    openDialog,
+    // eslint-disable-next-line @typescript-eslint/no-unused-vars
+    setOpenDialog,
     ...restProps 
-  }: any) => (
+  }: { 
+    action: string; 
+    actionType?: string;
+    openDialog?: boolean;
+    setOpenDialog?: () => void;
+    [key: string]: unknown;
+  }) => (
     <div data-testid="login-dialog" {...restProps}>
       {action}
+      {actionType && <span data-testid="action-type">{actionType}</span>}
+      {openDialog && <span data-testid="open-dialog">{openDialog.toString()}</span>}
     </div>
   ),
 }));
@@ -135,7 +143,7 @@ const createTestQueryClient = () =>
   new QueryClient({
     defaultOptions: {
       queries: {
-        retry: false, //
+        retry: false, 
       },
     },
   });

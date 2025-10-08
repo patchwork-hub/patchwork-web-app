@@ -74,7 +74,7 @@ export default function ListsPage() {
                     whileInView="visible"
                     viewport={{ once: true }}
                     variants={itemVariants}
-                    onClick={(e) => {
+                    onClick={() => {
                       router.push(`/lists/${item.id}`);
                     }}
                   >

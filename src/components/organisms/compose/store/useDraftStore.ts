@@ -13,7 +13,7 @@ export type DraftState = {
     setNavigateAction: (action: () => void) => void;
 }
 
-export const useDraftStore = create<DraftState>((set, get) => ({
+export const useDraftStore = create<DraftState>((set) => ({
     isDirty:false,
     setIsDirty: (isDirty) => set({ isDirty }),
     draft: undefined,
