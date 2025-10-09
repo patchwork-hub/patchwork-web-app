@@ -3,7 +3,6 @@
 ![Build Status](https://github.com/patchwork-hub/patchwork-web-app/workflows/CI/badge.svg)
 ![CodeQL](https://github.com/patchwork-hub/patchwork-web-app/workflows/CodeQL%20Security%20Analysis/badge.svg)
 ![Tests](https://github.com/patchwork-hub/patchwork-web-app/workflows/Tests/badge.svg)
-![License](https://img.shields.io/github/license/patchwork-hub/patchwork-web-app)
 ![Node.js Version](https://img.shields.io/badge/node-%3E%3D18.0.0-brightgreen)
 
 **A revolutionary social media platform built on Mastodon's open-source foundation, designed to empower communities and organizations with their own branded social media experience.**
