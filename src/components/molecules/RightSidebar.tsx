@@ -19,7 +19,7 @@ const RightSidebar = () => {
   const { t } = useLocale();
   const searchParams = useSearchParams();
   const pathname = usePathname();
-  const token = getToken()
+  const token = getToken();
   const isHomePage = pathname === "/home";
   const [searchKeyword, setSearchKeyword] = useState("");
 

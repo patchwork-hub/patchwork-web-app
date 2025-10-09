@@ -29,7 +29,7 @@ const MuteAndBlockPage = () => {
   } = useGetBlockedUserList();
   const { theme } = useTheme();
   const mutedList = mutedUserPages?.pages?.flatMap((page) => page.data);
-  const {t} = useLocale()
+  const {t} = useLocale();
   const blockedList = blockedUserPages?.pages?.flatMap((page) => page.data);
 
   const hasValidMutedUser = mutedList?.some((item) => item !== undefined);

@@ -49,7 +49,6 @@ export default function ListCreateForm() {
   const [formData, setFormData] = useState({
     acceptTerms: false,
   });
-  console.log('Rendering options:', options)
   const handleToggle = (newState: boolean) => {
     setFormData((prev) => ({ ...prev, acceptTerms: newState }));
   };

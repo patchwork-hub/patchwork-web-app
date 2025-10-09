@@ -41,7 +41,7 @@ const FollowerPage: React.FC<FollowerPage> = ({ accountId, acct, isRemoteUser })
     if (hasNextPage) {
       fetchNextPage();
     }
-  })
+  });
 
   return (
     <>

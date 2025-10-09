@@ -39,7 +39,7 @@ export const ReportDialog: React.FC<ReportDialogProps> = ({
   const [isRemoteUser, setIsRemoteUser] = useState(false);
   const fileReportMutation = useFileReport();
   const { data: rules } = useFetchRules();
-  const {t} = useLocale()
+  const {t} = useLocale();
 
   const accountId = account?.id || status?.account?.id || "";
   const username = account?.acct || status?.account?.acct || "";

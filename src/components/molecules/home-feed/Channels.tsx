@@ -33,7 +33,7 @@ const Channels = ({
   hideSpecialCard = false,
 }: TChannels) => {
   const router = useRouter();
-  const {t} = useLocale()
+  const {t} = useLocale();
   const domain = Cookies.get("domain") ?? DEFAULT_API_URL;
   const { data: userInfo } = useVerifyAuthToken({ enabled: true });
 

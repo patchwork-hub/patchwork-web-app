@@ -35,7 +35,7 @@ const MyChannels = ({
       domain: domain_name,
     }
   );
-  const {t} = useLocale()
+  const {t} = useLocale();
   const router = useRouter();
 
   const renderHeader = () => (

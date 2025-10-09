@@ -61,7 +61,7 @@ export const HomeTimeline: React.FC<{
   });
 
   const hasStatuses = data?.pages.some((page) => page.statuses.length > 0);
-  const token = getToken()
+  const token = getToken();
 
   const { data: account } = useVerifyAuthToken({ enabled: !!token });
 

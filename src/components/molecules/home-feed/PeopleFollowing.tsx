@@ -19,7 +19,7 @@ type TFollowing = {
 
 const PeopleFollowing = ({ data = [], loading = false }: TFollowing) => {
   const { theme } = useTheme();
-  const {t} = useLocale()
+  const {t} = useLocale();
   const router = useRouter();
   const modifiedData = Cookies.get("domain")
     ? [{ id: "icon" } as Account, ...data]
