@@ -9,8 +9,7 @@
     "lint": "eslint",
     "test": "vitest",
     "test:ui": "vitest --ui",
-    "type-check": "tsc --noEmit",
-    "test:coverage": "vitest run --coverage"
+    "type-check": "tsc --noEmit"
   },
   "dependencies": {
     "@emoji-mart/data": "^1.2.1",

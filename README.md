@@ -1,4 +1,4 @@
-# � Patchwork Web App
+# Patchwork Web App
 
 ![Build Status](https://github.com/patchwork-hub/patchwork-web-app/workflows/CI/badge.svg)
 ![CodeQL](https://github.com/patchwork-hub/patchwork-web-app/workflows/CodeQL%20Security%20Analysis/badge.svg)
@@ -86,29 +86,6 @@ docker run -d \
   -e API_URL=https://your-mastodon-instance.com \
   -e DASHBOARD_SECRET=your-secret-key \
   patchworkhub/patchwork-dashboard:latest
-```
-
-#### **From Source**
-
-```bash
-# Clone the dashboard repository
-git clone https://github.com/patchwork-hub/patchwork_dashboard.git
-cd patchwork_dashboard
-
-# Install dependencies
-npm install
-# or
-yarn install
-# or
-pnpm install
-
-# Build and run
-npm run build
-npm start
-# or
-yarn build && yarn start
-# or
-pnpm build && pnpm start
 ```
 
 **📖 Dashboard Repository**: [patchwork-hub/patchwork_dashboard](https://github.com/patchwork-hub/patchwork_dashboard)
@@ -287,12 +264,12 @@ yarn test
 # or
 pnpm test
 
-# Run tests with coverage
-npm run test:coverage
+# Run tests with ui
+npm run test:ui
 # or
-yarn test:coverage
+yarn test:ui
 # or
-pnpm test:coverage
+pnpm test:ui
 ```
 
 ---
@@ -313,7 +290,7 @@ We welcome contributions! Please see our [Contributing Guide](./CONTRIBUTING.md)
 
 ## 📄 License
 
-This project is licensed under the [MIT License](./LICENSE).
+Patchwork is an open source project, licensed under AGPL-3.0. Have fun!
 
 ---
 
