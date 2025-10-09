@@ -4,7 +4,6 @@ import { ThemeText } from "./ThemeText";
 import { useLocale } from "@/providers/localeProvider";
 import { ChannelDetail } from "@/types/patchwork";
 
-
 type Props = {
   channelAbout: ChannelDetail;
 };
@@ -24,42 +23,39 @@ const ChannelGuidelines: React.FC<Props> = ({ channelAbout }) => {
           {t("channel.channel_guidelines")}
         </ThemeText>
         <div>
-          {channelAbout &&
-            ((channelAbout?.rules?.length ?? 0) > 0 ||
-            (channelAbout?.attributes?.patchwork_community_rules?.length ?? 0) >
-              0 ? (
-              (channelAbout?.rules?.length ?? 0) > 0 ? (
-                channelAbout.rules?.map(
-                  (item: { text: string }, idx: number) => (
-                    <div className="flex items-center gap-2 my-2" key={idx}>
-                      <ThemeText className="text-bold text-white bg-orange-500 w-6 h-6 rounded-full px-2.5 py-1">
-                        {idx + 1}
-                      </ThemeText>
-                      <ThemeText>{item.text}</ThemeText>
-                    </div>
-                  )
+          {(channelAbout?.rules?.length ?? 0) > 0 ||
+          (channelAbout?.attributes?.patchwork_community_rules?.length ?? 0) >
+            0 ? (
+            (channelAbout?.rules?.length ?? 0) > 0 ? (
+              channelAbout.rules?.map((item: { text: string }, idx: number) => (
+                <div className="flex items-center gap-2 my-2" key={idx}>
+                  <ThemeText className="text-bold text-white bg-orange-500 w-6 h-6 rounded-full px-2.5 py-1">
+                    {idx + 1}
+                  </ThemeText>
+                  <ThemeText>{item.text}</ThemeText>
+                </div>
+              ))
+            ) : Array.isArray(
+                channelAbout.attributes?.patchwork_community_rules
+              ) ? (
+              channelAbout.attributes.patchwork_community_rules.map(
+                (rule: string, idx: number) => (
+                  <div className="flex items-center gap-2 my-2" key={idx}>
+                    <ThemeText className="text-bold text-white bg-orange-500 rounded-full px-2.5 py-1">
+                      {idx + 1}
+                    </ThemeText>
+                    <ThemeText>{rule}</ThemeText>
+                  </div>
                 )
-              ) : Array.isArray(
-                  channelAbout.attributes?.patchwork_community_rules
-                ) ? (
-                channelAbout.attributes.patchwork_community_rules.map(
-                  (rule: string, idx: number) => (
-                    <div className="flex items-center gap-2 my-2" key={idx}>
-                      <ThemeText className="text-bold text-white bg-orange-500 rounded-full px-2.5 py-1">
-                        {idx + 1}
-                      </ThemeText>
-                      <ThemeText>{rule}</ThemeText>
-                    </div>
-                  )
-                )
-              ) : (
-                <ThemeText className="mb-4">
-                  {channelAbout.attributes?.patchwork_community_rules}
-                </ThemeText>
               )
             ) : (
-              <ThemeText className="mb-4">No guidelines available.</ThemeText>
-            ))}
+              <ThemeText className="mb-4">
+                {channelAbout.attributes?.patchwork_community_rules}
+              </ThemeText>
+            )
+          ) : (
+            <ThemeText className="mb-4">No guidelines available.</ThemeText>
+          )}
         </div>
       </div>
       <p className="w-full bg-gray-/600 h-px"></p>

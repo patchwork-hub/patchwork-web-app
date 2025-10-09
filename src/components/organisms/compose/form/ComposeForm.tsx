@@ -705,7 +705,7 @@ const ComposeForm: React.FC<ComposeFormProps> = ({
     if (!contentToParse || !favouriteChannelLists) return;
 
     let extractedHashtags: HashtagWithCommunity[] = [];
-    let mainContent = contentToParse;
+    let mainContent: string;
 
     if (draft?.params?.text) {
       const [contentPart, hashtagsPart] = contentToParse.split("\n\n");

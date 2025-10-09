@@ -28,7 +28,7 @@ type DateTimePickerProps = {
   hideLabel?: boolean;
   disablePastDates?: boolean;
   disabled?: boolean;
-}
+};
 
 export function DateTimePicker({
   value,
@@ -38,9 +38,9 @@ export function DateTimePicker({
   disabled = false,
 }: DateTimePickerProps) {
   const [date, setDate] = useState<Date | undefined>(value);
-  const {t} = useLocale();
+  const { t } = useLocale();
   const { isDateOpen, setIsDateOpen } = useDateTimePickerStore();
-  const [isOpen, setIsOpen] = useState(isDateOpen??false);
+  const [isOpen, setIsOpen] = useState(isDateOpen ?? false);
   const { theme } = useTheme();
   // Sync internal state with external value prop
   useEffect(() => {
@@ -139,10 +139,13 @@ export function DateTimePicker({
   };
 
   return (
-    <Popover open={isOpen} onOpenChange={(open) => {
+    <Popover
+      open={isOpen}
+      onOpenChange={(open) => {
         setIsDateOpen(open);
         setIsOpen(open);
-    }}>
+      }}
+    >
       <Tooltip>
         <TooltipTrigger asChild>
           <PopoverTrigger asChild>
@@ -157,11 +160,10 @@ export function DateTimePicker({
                   : "text-background"
               )}
               disabled={disabled}
-              
             >
               <CalendarIcon className="h-4 w-4" />
               {!hideLabel && (
-                <span className={cn(hideLabel ? "" : "ml-2")}>
+                <span className="ml-2">
                   {date
                     ? format(date, "MM/dd/yyyy hh:mm aa")
                     : "MM/DD/YYYY hh:mm aa"}

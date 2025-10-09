@@ -166,7 +166,7 @@ function ChannelProfile({
                 <ChannelGuidelines channelAbout={channelAbout as unknown as ChannelDetail} />
                 <CommunityAbout
                   channelAdditionalInfo={channelAdditionalInfo}
-                  channelAbout={channelAbout ?? channelAbout}
+                  channelAbout={channelAbout}
                   channelDetail={channelDetail}
                 />
               </>

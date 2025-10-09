@@ -102,7 +102,7 @@ const PeopleToFollowView: React.FC<SuggestedPeopleBySearchProps> = ({
       {data && data.length > 0 ? (
         <>
           <div className="flex items-center justify-between">
-            {data && data.length > 0 ? (
+            {Array.isArray(data) && data.length > 0 ? (
               <p className="my-3">{t("screen.people_to_follow")}</p>
             ): null}
             {!hideViewAll && data && data?.length > 5 && (

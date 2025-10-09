@@ -18,6 +18,6 @@ export default function StatusDetailPage({
   });
 
   return data ? (
-    <Context id={id} currentAcct={data?.acct} domain={domain ?? domain} />
+    <Context id={id} currentAcct={data?.acct} domain={domain} />
   ) : null;
 }

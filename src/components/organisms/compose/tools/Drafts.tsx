@@ -93,7 +93,7 @@ export const Drafts = () => {
         {isGettingDrafts ? (
           <div className="text-white">Loading...</div>
         ) : !draftsData ||
-          (draftsData &&
+          (Array.isArray(draftsData) &&
             (draftsData.length === 0 ||
               (draftsData.length > 0 && draftsData[0].datas.length === 0))) ? (
           <div className="text-foreground text-center">No drafts available.</div>
