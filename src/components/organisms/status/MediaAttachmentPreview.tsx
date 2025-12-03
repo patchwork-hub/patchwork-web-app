@@ -5,8 +5,10 @@ import {
   DialogDescription,
   DialogHeader,
 } from "@/components/atoms/ui/dialog";
+import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { cn } from "@/lib/utils";
 import { Media } from "@/types/status";
+import { isValidImageUrl } from "@/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Image from "next/image";
@@ -114,7 +116,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
         >
           <div className="max-w-[90vw] max-h-[90vh]">
             <Image
-              src={media.url || media.preview_url}
+              src={isValidImageUrl(media.url || media.preview_url) ? media.url || media.preview_url : FALLBACK_PREVIEW_IMAGE_URL}
               alt={media.description}
               aria-label={media.description}
               className="max-w-full max-h-[90vh] object-contain"
