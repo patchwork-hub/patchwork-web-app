@@ -8,7 +8,6 @@ import {
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 import { cn } from "@/lib/utils";
 import { Media } from "@/types/status";
-import { isValidImageUrl } from "@/utils";
 import { DialogTitle } from "@radix-ui/react-dialog";
 import { useTheme } from "next-themes";
 import Image from "next/image";
@@ -38,17 +37,6 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
   const closeImageViewer = () => {
     setIsImageViewerOpen(false);
   };
-
-  const url = media?.url ?? "";
-  const preview = media?.preview_url ?? "";
-
-  const isHttps = (v: string) => v.startsWith("https://");
-
-  const finalSrc = isHttps(url)
-    ? url
-    : isHttps(preview)
-    ? preview
-    : FALLBACK_PREVIEW_IMAGE_URL;
 
   return (
     <div className={cn("relative w-full bg-background rounded-md", className)}>
@@ -132,7 +120,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
         >
           <div className="max-w-[90vw] max-h-[90vh]">
             <Image
-              src={finalSrc}
+              src={media?.url || media?.preview_url}
               alt={media.description || "image detail"}
               aria-label={media.description}
               width={800}
