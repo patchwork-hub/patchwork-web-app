@@ -42,10 +42,15 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
   return (
     <div className={cn("relative w-full bg-background rounded-md", className)}>
       {media.type === "image" ? (
-        <div className={cn("relative w-full h-[350px] bg-background rounded-md", className)}>
+        <div
+          className={cn(
+            "relative w-full h-[350px] bg-background rounded-md",
+            className
+          )}
+        >
           <Image
             src={media.preview_url}
-            alt={media.description??"media preview"}
+            alt={media.description ?? "media preview"}
             aria-label={media.description}
             fill
             className="object-cover rounded-md cursor-pointer"
@@ -116,7 +121,11 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
         >
           <div className="max-w-[90vw] max-h-[90vh]">
             <Image
-              src={isValidImageUrl(media.url || media.preview_url) ? media.url || media.preview_url : FALLBACK_PREVIEW_IMAGE_URL}
+              src={
+                media.url.startsWith("https://") || media.preview_url.startsWith("https://")
+                  ? media.url || media.preview_url
+                  : FALLBACK_PREVIEW_IMAGE_URL
+              }
               alt={media.description}
               aria-label={media.description}
               className="max-w-full max-h-[90vh] object-contain"
