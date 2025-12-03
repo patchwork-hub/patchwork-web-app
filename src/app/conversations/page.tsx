@@ -219,6 +219,8 @@ const ConversationListItem: React.FC<{
             <Image
               className="w-12 h-12 aspect-square rounded-2xl bg-[#96a6c2]"
               src={account.avatar}
+              width={48}
+              height={48}
               alt="avatar"
             />
           </div>
