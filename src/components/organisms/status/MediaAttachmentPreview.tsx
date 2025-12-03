@@ -39,6 +39,17 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
     setIsImageViewerOpen(false);
   };
 
+  const url = media?.url ?? "";
+  const preview = media?.preview_url ?? "";
+
+  const isHttps = (v: string) => v.startsWith("https://");
+
+  const finalSrc = isHttps(url)
+    ? url
+    : isHttps(preview)
+    ? preview
+    : FALLBACK_PREVIEW_IMAGE_URL;
+
   return (
     <div className={cn("relative w-full bg-background rounded-md", className)}>
       {media.type === "image" ? (
@@ -121,11 +132,7 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
         >
           <div className="max-w-[90vw] max-h-[90vh]">
             <Image
-              src={
-                media.url.startsWith("https://") || media.preview_url.startsWith("https://")
-                  ? media.url || media.preview_url
-                  : FALLBACK_PREVIEW_IMAGE_URL
-              }
+              src={finalSrc}
               alt={media.description}
               aria-label={media.description}
               className="max-w-full max-h-[90vh] object-contain"
