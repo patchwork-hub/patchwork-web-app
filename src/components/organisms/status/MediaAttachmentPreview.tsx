@@ -133,8 +133,10 @@ const MediaAttachmentPreview: React.FC<MediaAttachmentPreviewProps> = ({
           <div className="max-w-[90vw] max-h-[90vh]">
             <Image
               src={finalSrc}
-              alt={media.description}
+              alt={media.description || "image detail"}
               aria-label={media.description}
+              width={800}
+              height={400}
               className="max-w-full max-h-[90vh] object-contain"
             />
           </div>
