@@ -23,6 +23,7 @@ import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import Image from "next/image";
 import { MastodonCustomEmoji } from "../compose/tools/Emoji";
 import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
+import { isValidImageUrl } from "@/utils";
 
 type StatusProps = {
   status: StatusType;
@@ -197,7 +198,7 @@ const Status: React.FC<StatusProps> = ({
           <div className="relative">
             <Image
               src={
-                data?.account?.avatar.startsWith("https://")
+                isValidImageUrl(data?.account?.avatar)
                   ? data?.account?.avatar
                   : FALLBACK_PREVIEW_IMAGE_URL
               }
@@ -210,7 +211,7 @@ const Status: React.FC<StatusProps> = ({
               <Image
                 className="w-6 aspect-square object-cover rounded-full absolute bottom-0 end-0 translate-2"
                 src={
-                  status?.account?.avatar.startsWith("https://")
+                  isValidImageUrl(status?.account?.avatar)
                     ? status?.account?.avatar
                     : FALLBACK_PREVIEW_IMAGE_URL
                 }
