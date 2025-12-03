@@ -22,6 +22,7 @@ import LoadingSpinner from "@/components/molecules/common/LoadingSpinner";
 import { useTipTapEditor } from "@/hooks/customs/useTipTapEditor";
 import Image from "next/image";
 import { MastodonCustomEmoji } from "../compose/tools/Emoji";
+import { FALLBACK_PREVIEW_IMAGE_URL } from "@/constants/url";
 
 type StatusProps = {
   status: StatusType;
@@ -195,16 +196,16 @@ const Status: React.FC<StatusProps> = ({
         >
           <div className="relative">
             <Image
-              src={data.account.avatar}
+              src={data?.account?.avatar || FALLBACK_PREVIEW_IMAGE_URL}
               alt="avatar photo"
               width={40}
               height={40}
-              className="w-10 aspect-square rounded-full bg-background"
+              className="w-10 aspect-square object-cover rounded-full bg-background"
             />
             {status.reblog && (
               <Image
-                className="w-6 aspect-square rounded-full absolute bottom-0 end-0 translate-2"
-                src={status?.account?.avatar}
+                className="w-6 aspect-square object-cover rounded-full absolute bottom-0 end-0 translate-2"
+                src={status?.account?.avatar || FALLBACK_PREVIEW_IMAGE_URL}
                 alt="avatar photo"
                 width={24}
                 height={24}
